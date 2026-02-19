@@ -1,6 +1,6 @@
 # Resu — AI-Powered Personal Resume Builder
 
-Resu is a local-first, AI-powered resume builder that ingests your full career profile, accepts a job description, and uses OpenAI GPT to generate a tailored resume + cover letter with ATS optimization. It renders editable templates in the browser and exports pixel-perfect PDFs via Puppeteer.
+Resu is a local-first, AI-powered resume builder that ingests your full career profile, accepts a job description, and uses AI (OpenAI, Azure OpenAI, or Anthropic Claude) to generate a tailored resume + cover letter with ATS optimization. It renders fully inline-editable templates in the browser and exports pixel-perfect PDFs (resume & cover letter) via Puppeteer.
 
 ---
 
@@ -29,7 +29,11 @@ Make sure you have the following installed on your machine:
 | **npm**     | v9+             | `npm --version`  |
 | **Git**     | any recent      | `git --version`  |
 
-You also need an **OpenAI API key** (get one at [platform.openai.com/api-keys](https://platform.openai.com/api-keys)).
+You also need an API key for at least one AI provider:
+
+- **OpenAI** — [platform.openai.com/api-keys](https://platform.openai.com/api-keys)
+- **Azure OpenAI** — via Azure Portal
+- **Anthropic** — [console.anthropic.com](https://console.anthropic.com/)
 
 ---
 
@@ -68,10 +72,31 @@ This single command installs dependencies for **all three packages** (client, se
 cp .env.example .env
 ```
 
-Open `.env` and add your OpenAI API key:
+Open `.env` and configure your AI provider. Pick **one** of:
 
-```
+```bash
+# ─── Option A: OpenAI (default) ───
+AI_PROVIDER=openai
 OPENAI_API_KEY=sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+# ─── Option B: Azure OpenAI ───
+AI_PROVIDER=azure
+AZURE_OPENAI_API_KEY=your-azure-key
+AZURE_OPENAI_ENDPOINT=https://your-resource.openai.azure.com
+AZURE_OPENAI_API_VERSION=2024-10-21
+AZURE_OPENAI_DEPLOYMENT_FAST=gpt-4o-mini   # or your deployment name
+AZURE_OPENAI_DEPLOYMENT_SMART=gpt-4o       # or your deployment name
+
+# ─── Option C: Anthropic ───
+AI_PROVIDER=anthropic
+ANTHROPIC_API_KEY=sk-ant-xxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+You can also override model names per tier:
+
+```bash
+AI_MODEL_FAST=gpt-4o-mini     # used for JD parsing (fast, cheap)
+AI_MODEL_SMART=gpt-4o         # used for generation + scoring (accurate)
 ```
 
 ### 4. Set up your personal profile
@@ -99,7 +124,7 @@ Resu/
 ├── apps/
 │   ├── client/              # Frontend — Vite + React + TypeScript
 │   │   ├── src/
-│   │   │   ├── components/  # Layout, resume templates
+│   │   │   ├── components/  # Layout, resume templates, EditableText
 │   │   │   ├── lib/         # API client functions
 │   │   │   ├── pages/       # Dashboard, Generate, Preview pages
 │   │   │   ├── stores/      # Zustand state management
@@ -115,8 +140,14 @@ Resu/
 │           ├── routes/      # API endpoints
 │           ├── scripts/     # CLI utilities (validate-profile)
 │           ├── services/
-│           │   ├── ai/      # OpenAI pipeline (parse, select, generate, score)
-│           │   └── pdf/     # Puppeteer PDF generation
+│           │   ├── ai/      # Multi-provider AI pipeline (parse, select, generate, score)
+│           │   │   ├── aiClient.ts          # Unified provider abstraction (OpenAI/Azure/Anthropic)
+│           │   │   ├── parseJobDescription.ts
+│           │   │   ├── selectRelevantItems.ts
+│           │   │   ├── generateResume.ts     # Includes response normalization
+│           │   │   ├── generateCoverLetter.ts
+│           │   │   └── atsScorer.ts
+│           │   └── pdf/     # Puppeteer PDF generation (resume + cover letter)
 │           └── index.ts     # Server entry point
 │
 ├── packages/
@@ -134,10 +165,19 @@ Resu/
 
 ### Environment Variables
 
-| Variable         | Required | Description                       |
-| ---------------- | -------- | --------------------------------- |
-| `OPENAI_API_KEY` | Yes      | Your OpenAI API key for GPT calls |
-| `PORT`           | No       | Server port (default: `3001`)     |
+| Variable                         | Required         | Description                                        |
+| -------------------------------- | ---------------- | -------------------------------------------------- |
+| `AI_PROVIDER`                    | No               | `openai` (default), `azure`, or `anthropic`        |
+| `OPENAI_API_KEY`                 | If provider=openai | Your OpenAI API key                               |
+| `AZURE_OPENAI_API_KEY`           | If provider=azure  | Azure OpenAI resource key                         |
+| `AZURE_OPENAI_ENDPOINT`          | If provider=azure  | Azure OpenAI endpoint URL                         |
+| `AZURE_OPENAI_API_VERSION`       | If provider=azure  | API version (e.g. `2024-10-21`)                   |
+| `AZURE_OPENAI_DEPLOYMENT_FAST`   | If provider=azure  | Deployment name for fast/cheap model tier         |
+| `AZURE_OPENAI_DEPLOYMENT_SMART`  | If provider=azure  | Deployment name for smart/accurate model tier     |
+| `ANTHROPIC_API_KEY`              | If provider=anthropic | Anthropic API key                              |
+| `AI_MODEL_FAST`                  | No               | Override fast-tier model (default: gpt-4o-mini)    |
+| `AI_MODEL_SMART`                 | No               | Override smart-tier model (default: gpt-4o)        |
+| `PORT`                           | No               | Server port (default: `3001`)                      |
 
 ### Key Files
 
@@ -275,17 +315,25 @@ Your profile lives at `apps/server/data/profile.json`. This is the master data s
 7. Click **"Confirm & Generate"** — the AI generates the polished resume + cover letter and scores ATS compatibility
 8. You're redirected to the **Preview page** where you can:
    - View resume and cover letter tabs
-   - Click "Edit Resume" to inline-edit any section
-   - Check the ATS score and follow suggestions
-   - Export to PDF
+   - Click **"Edit Resume"** to inline-edit **any section** — summary, experience (title/company/location/dates/bullets), education, skills (category names + skills list), projects, and certifications
+   - Edit cover letter text (opening, body paragraphs, closing)
+   - Check the ATS score breakdown (keywords, sections, format) and follow suggestions
+   - **Download Resume PDF** — exports the resume with the selected template
+   - **Download Cover Letter PDF** — exports a formatted cover letter with header, date, and signature
 
 ### Cost per generation
 
-Each resume generation uses approximately:
+Cost depends on your AI provider and model. With OpenAI defaults:
 
-- **gpt-4o-mini** for JD parsing (~$0.001)
-- **gpt-4o** for relevance selection + resume generation + cover letter (~$0.04–0.05)
-- **Total: ~$0.05 per resume**
+| Step                    | Model      | Approx. Cost |
+| ----------------------- | ---------- | ------------ |
+| JD Parsing              | gpt-4o-mini (fast tier) | ~$0.001 |
+| Relevance Selection     | gpt-4o (smart tier)     | ~$0.02  |
+| Resume + Cover Letter   | gpt-4o (smart tier)     | ~$0.03  |
+| ATS Scoring             | gpt-4o-mini (fast tier) | ~$0.001 |
+| **Total**               |            | **~$0.05**   |
+
+Azure OpenAI pricing varies by deployment. Anthropic Claude costs are comparable.
 
 ---
 
@@ -321,7 +369,7 @@ npm run build --workspace=packages/shared
 | **State**         | Zustand + TanStack React Query | Minimal boilerplate, great caching                |
 | **Backend**       | Fastify + TypeScript           | First-class TS support, built-in validation, fast |
 | **Database**      | SQLite (better-sqlite3)        | Zero-config, file-based, perfect for single-user  |
-| **AI**            | OpenAI GPT-4o / GPT-4o-mini    | Multi-step pipeline for accuracy                  |
+| **AI**            | OpenAI / Azure OpenAI / Anthropic | Multi-provider abstraction with model tiers (fast/smart) |
 | **PDF**           | Puppeteer                      | CSS fidelity, selectable text for ATS             |
 | **Validation**    | Zod                            | Runtime type-safe validation, shared schemas      |
 | **Notifications** | Sonner                         | Lightweight toast notifications                   |
@@ -391,6 +439,55 @@ The database file is auto-created at `apps/server/data/resu.db` on first server 
 rm apps/server/data/resu.db
 # Restart the server — tables are recreated automatically
 ```
+
+---
+
+---
+
+## Changelog
+
+### v0.2.0 — Multi-Provider AI, Full Editing & Cover Letter Export
+
+**Multi-Provider AI Support**
+- Added unified AI client abstraction (`aiClient.ts`) supporting **OpenAI**, **Azure OpenAI**, and **Anthropic Claude**
+- Two model tiers: `fast` (cheap, used for parsing/scoring) and `smart` (accurate, used for generation)
+- Configurable via `AI_PROVIDER` env var — switch providers without code changes
+- Automatic temperature handling (skipped for models like GPT-5 that don't support it)
+- Per-provider model overrides via `AI_MODEL_FAST` / `AI_MODEL_SMART`
+
+**AI Response Normalization**
+- Added `normalizeSelectionResponse()` in `selectRelevantItems.ts` — handles AI returning objects instead of strings, missing fields, wrong casing
+- Added `normalizeResumeResponse()` in `generateResume.ts` — handles `professionalSummary` → `summary`, flat skill arrays → `{categories:[...]}`, various field name conventions
+- Updated AI prompts with exact JSON schemas and CRITICAL RULES to reduce schema drift
+- Made `industryDomain` and `teamSize` nullable in JD schema to handle AI returning nulls
+
+**Full Inline Editing**
+- All resume sections are now editable: summary, experience (title, company, location, dates, bullets), education (degree, field, institution, dates, GPA), skills (category names + comma-separated skills), projects (name, description, highlights), certifications (name, issuer, date)
+- Extracted `EditableText` into a standalone `React.memo` component to fix cursor/typing bug (text was reversing due to inline component remounting on every keystroke)
+- Cover letter editing: opening, body paragraphs, and closing with labeled textareas
+
+**Cover Letter PDF Export**
+- Added `renderCoverLetterHTML()` — generates formatted cover letter with header (name, date, RE: line), body paragraphs, and signature block
+- Added `generateCoverLetterPDF()` in the PDF generator
+- Server export route now supports `type: 'cover-letter'` to generate cover letter PDFs
+- Added "Download Cover Letter PDF" button on the Preview page
+
+**Bug Fixes**
+- Fixed `.env` not loading — dotenv now resolves from monorepo root
+- Fixed Turborepo requiring `packageManager` field in root `package.json`
+- Fixed shared package resolution — exports point to TypeScript source (no build step needed)
+- Fixed GPT-5 temperature rejection — temperature param is skipped for gpt-5 models
+
+### v0.1.0 — Initial Release
+
+- Full monorepo scaffold (npm workspaces + Turborepo)
+- Fastify server with SQLite database
+- React client with Vite, Zustand, TanStack React Query
+- 4-step AI pipeline: parse JD → select relevant items → generate resume + cover letter → ATS score
+- Two resume templates: ATS Classic and Clean Minimal
+- PDF export via Puppeteer
+- Profile validation script
+- Dashboard with resume listing
 
 ---
 
