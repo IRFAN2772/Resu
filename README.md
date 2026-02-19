@@ -165,19 +165,19 @@ Resu/
 
 ### Environment Variables
 
-| Variable                         | Required         | Description                                        |
-| -------------------------------- | ---------------- | -------------------------------------------------- |
-| `AI_PROVIDER`                    | No               | `openai` (default), `azure`, or `anthropic`        |
-| `OPENAI_API_KEY`                 | If provider=openai | Your OpenAI API key                               |
-| `AZURE_OPENAI_API_KEY`           | If provider=azure  | Azure OpenAI resource key                         |
-| `AZURE_OPENAI_ENDPOINT`          | If provider=azure  | Azure OpenAI endpoint URL                         |
-| `AZURE_OPENAI_API_VERSION`       | If provider=azure  | API version (e.g. `2024-10-21`)                   |
-| `AZURE_OPENAI_DEPLOYMENT_FAST`   | If provider=azure  | Deployment name for fast/cheap model tier         |
-| `AZURE_OPENAI_DEPLOYMENT_SMART`  | If provider=azure  | Deployment name for smart/accurate model tier     |
-| `ANTHROPIC_API_KEY`              | If provider=anthropic | Anthropic API key                              |
-| `AI_MODEL_FAST`                  | No               | Override fast-tier model (default: gpt-4o-mini)    |
-| `AI_MODEL_SMART`                 | No               | Override smart-tier model (default: gpt-4o)        |
-| `PORT`                           | No               | Server port (default: `3001`)                      |
+| Variable                        | Required              | Description                                     |
+| ------------------------------- | --------------------- | ----------------------------------------------- |
+| `AI_PROVIDER`                   | No                    | `openai` (default), `azure`, or `anthropic`     |
+| `OPENAI_API_KEY`                | If provider=openai    | Your OpenAI API key                             |
+| `AZURE_OPENAI_API_KEY`          | If provider=azure     | Azure OpenAI resource key                       |
+| `AZURE_OPENAI_ENDPOINT`         | If provider=azure     | Azure OpenAI endpoint URL                       |
+| `AZURE_OPENAI_API_VERSION`      | If provider=azure     | API version (e.g. `2024-10-21`)                 |
+| `AZURE_OPENAI_DEPLOYMENT_FAST`  | If provider=azure     | Deployment name for fast/cheap model tier       |
+| `AZURE_OPENAI_DEPLOYMENT_SMART` | If provider=azure     | Deployment name for smart/accurate model tier   |
+| `ANTHROPIC_API_KEY`             | If provider=anthropic | Anthropic API key                               |
+| `AI_MODEL_FAST`                 | No                    | Override fast-tier model (default: gpt-4o-mini) |
+| `AI_MODEL_SMART`                | No                    | Override smart-tier model (default: gpt-4o)     |
+| `PORT`                          | No                    | Server port (default: `3001`)                   |
 
 ### Key Files
 
@@ -325,13 +325,13 @@ Your profile lives at `apps/server/data/profile.json`. This is the master data s
 
 Cost depends on your AI provider and model. With OpenAI defaults:
 
-| Step                    | Model      | Approx. Cost |
-| ----------------------- | ---------- | ------------ |
-| JD Parsing              | gpt-4o-mini (fast tier) | ~$0.001 |
-| Relevance Selection     | gpt-4o (smart tier)     | ~$0.02  |
-| Resume + Cover Letter   | gpt-4o (smart tier)     | ~$0.03  |
-| ATS Scoring             | gpt-4o-mini (fast tier) | ~$0.001 |
-| **Total**               |            | **~$0.05**   |
+| Step                  | Model                   | Approx. Cost |
+| --------------------- | ----------------------- | ------------ |
+| JD Parsing            | gpt-4o-mini (fast tier) | ~$0.001      |
+| Relevance Selection   | gpt-4o (smart tier)     | ~$0.02       |
+| Resume + Cover Letter | gpt-4o (smart tier)     | ~$0.03       |
+| ATS Scoring           | gpt-4o-mini (fast tier) | ~$0.001      |
+| **Total**             |                         | **~$0.05**   |
 
 Azure OpenAI pricing varies by deployment. Anthropic Claude costs are comparable.
 
@@ -362,17 +362,17 @@ npm run build --workspace=packages/shared
 
 ## Tech Stack
 
-| Layer             | Technology                     | Why                                               |
-| ----------------- | ------------------------------ | ------------------------------------------------- |
-| **Monorepo**      | npm workspaces + Turborepo     | Fast builds, shared types across packages         |
-| **Frontend**      | React 19 + TypeScript + Vite   | Fast dev server, modern React features            |
-| **State**         | Zustand + TanStack React Query | Minimal boilerplate, great caching                |
-| **Backend**       | Fastify + TypeScript           | First-class TS support, built-in validation, fast |
-| **Database**      | SQLite (better-sqlite3)        | Zero-config, file-based, perfect for single-user  |
+| Layer             | Technology                        | Why                                                      |
+| ----------------- | --------------------------------- | -------------------------------------------------------- |
+| **Monorepo**      | npm workspaces + Turborepo        | Fast builds, shared types across packages                |
+| **Frontend**      | React 19 + TypeScript + Vite      | Fast dev server, modern React features                   |
+| **State**         | Zustand + TanStack React Query    | Minimal boilerplate, great caching                       |
+| **Backend**       | Fastify + TypeScript              | First-class TS support, built-in validation, fast        |
+| **Database**      | SQLite (better-sqlite3)           | Zero-config, file-based, perfect for single-user         |
 | **AI**            | OpenAI / Azure OpenAI / Anthropic | Multi-provider abstraction with model tiers (fast/smart) |
-| **PDF**           | Puppeteer                      | CSS fidelity, selectable text for ATS             |
-| **Validation**    | Zod                            | Runtime type-safe validation, shared schemas      |
-| **Notifications** | Sonner                         | Lightweight toast notifications                   |
+| **PDF**           | Puppeteer                         | CSS fidelity, selectable text for ATS                    |
+| **Validation**    | Zod                               | Runtime type-safe validation, shared schemas             |
+| **Notifications** | Sonner                            | Lightweight toast notifications                          |
 
 ---
 
@@ -449,6 +449,7 @@ rm apps/server/data/resu.db
 ### v0.2.0 — Multi-Provider AI, Full Editing & Cover Letter Export
 
 **Multi-Provider AI Support**
+
 - Added unified AI client abstraction (`aiClient.ts`) supporting **OpenAI**, **Azure OpenAI**, and **Anthropic Claude**
 - Two model tiers: `fast` (cheap, used for parsing/scoring) and `smart` (accurate, used for generation)
 - Configurable via `AI_PROVIDER` env var — switch providers without code changes
@@ -456,23 +457,27 @@ rm apps/server/data/resu.db
 - Per-provider model overrides via `AI_MODEL_FAST` / `AI_MODEL_SMART`
 
 **AI Response Normalization**
+
 - Added `normalizeSelectionResponse()` in `selectRelevantItems.ts` — handles AI returning objects instead of strings, missing fields, wrong casing
 - Added `normalizeResumeResponse()` in `generateResume.ts` — handles `professionalSummary` → `summary`, flat skill arrays → `{categories:[...]}`, various field name conventions
 - Updated AI prompts with exact JSON schemas and CRITICAL RULES to reduce schema drift
 - Made `industryDomain` and `teamSize` nullable in JD schema to handle AI returning nulls
 
 **Full Inline Editing**
+
 - All resume sections are now editable: summary, experience (title, company, location, dates, bullets), education (degree, field, institution, dates, GPA), skills (category names + comma-separated skills), projects (name, description, highlights), certifications (name, issuer, date)
 - Extracted `EditableText` into a standalone `React.memo` component to fix cursor/typing bug (text was reversing due to inline component remounting on every keystroke)
 - Cover letter editing: opening, body paragraphs, and closing with labeled textareas
 
 **Cover Letter PDF Export**
+
 - Added `renderCoverLetterHTML()` — generates formatted cover letter with header (name, date, RE: line), body paragraphs, and signature block
 - Added `generateCoverLetterPDF()` in the PDF generator
 - Server export route now supports `type: 'cover-letter'` to generate cover letter PDFs
 - Added "Download Cover Letter PDF" button on the Preview page
 
 **Bug Fixes**
+
 - Fixed `.env` not loading — dotenv now resolves from monorepo root
 - Fixed Turborepo requiring `packageManager` field in root `package.json`
 - Fixed shared package resolution — exports point to TypeScript source (no build step needed)
