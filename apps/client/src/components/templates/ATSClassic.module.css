@@ -1,0 +1,136 @@
+.ats-classic {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 11pt;
+  line-height: 1.4;
+  color: #1a1a1a;
+}
+
+.ats-classic .header {
+  text-align: center;
+  margin-bottom: 14px;
+}
+
+.ats-classic .name {
+  font-size: 22pt;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  margin: 0;
+}
+
+.ats-classic .contact-info {
+  font-size: 9.5pt;
+  color: #444;
+  margin-top: 4px;
+}
+
+.ats-classic .contact-info .sep {
+  margin: 0 6px;
+}
+
+.ats-classic .section {
+  margin-bottom: 12px;
+}
+
+.ats-classic .section-title {
+  font-size: 12pt;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-bottom: 1.5px solid #333;
+  padding-bottom: 2px;
+  margin-bottom: 8px;
+  margin-top: 0;
+}
+
+.ats-classic .entry {
+  margin-bottom: 10px;
+}
+
+.ats-classic .entry-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+}
+
+.ats-classic .entry-title {
+  font-weight: 700;
+}
+
+.ats-classic .entry-company {
+  font-style: italic;
+}
+
+.ats-classic .entry-dates {
+  font-size: 9.5pt;
+  color: #555;
+  white-space: nowrap;
+}
+
+.ats-classic .summary {
+  font-size: 10.5pt;
+  color: #333;
+}
+
+.ats-classic .bullets {
+  margin-left: 18px;
+  margin-top: 4px;
+  padding: 0;
+}
+
+.ats-classic .bullets li {
+  margin-bottom: 2px;
+  font-size: 10.5pt;
+}
+
+.ats-classic .skills-section {
+  font-size: 10.5pt;
+}
+
+.ats-classic .skill-category {
+  margin-bottom: 3px;
+}
+
+.ats-classic .gpa {
+  font-size: 10pt;
+  color: #555;
+  margin-top: 2px;
+}
+
+/* Edit mode */
+.ats-classic .editable {
+  cursor: pointer;
+  border-radius: 2px;
+  transition: background 0.15s ease;
+}
+.ats-classic .editable:hover {
+  background: #eff6ff;
+}
+.ats-classic .edit-input {
+  width: 100%;
+  padding: 4px 6px;
+  border: 1px solid #2563eb;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  background: #eff6ff;
+}
+.ats-classic .edit-textarea {
+  width: 100%;
+  padding: 4px 6px;
+  border: 1px solid #2563eb;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  resize: vertical;
+  min-height: 40px;
+  background: #eff6ff;
+}
+.ats-classic .edit-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 12px;
+}

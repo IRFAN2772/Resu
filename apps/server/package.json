@@ -1,0 +1,32 @@
+{
+  "name": "@resu/server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "lint": "eslint src/",
+    "test": "vitest run",
+    "validate-profile": "tsx src/scripts/validateProfile.ts"
+  },
+  "dependencies": {
+    "@resu/shared": "*",
+    "fastify": "^5.2.0",
+    "@fastify/cors": "^11.0.0",
+    "better-sqlite3": "^11.8.0",
+    "openai": "^4.85.0",
+    "puppeteer": "^24.2.0",
+    "dotenv": "^16.4.0",
+    "uuid": "^11.1.0",
+    "zod": "^3.24.0"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.0",
+    "@types/uuid": "^10.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0",
+    "vitest": "^3.0.0"
+  }
+}

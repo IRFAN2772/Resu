@@ -1,0 +1,220 @@
+.preview-page {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 24px;
+  align-items: start;
+}
+
+.preview-main {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.preview-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid var(--border);
+}
+.preview-tab {
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.preview-tab.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+
+.resume-preview {
+  background: white;
+  color: #1a1a1a;
+  padding: 48px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  min-height: 600px;
+}
+
+.cover-letter-preview {
+  background: white;
+  color: #1a1a1a;
+  padding: 48px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  line-height: 1.7;
+}
+.cover-letter-preview p {
+  margin-bottom: 16px;
+}
+
+/* ─── Sidebar ─── */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: sticky;
+  top: 80px;
+}
+
+.sidebar-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.sidebar-card-header {
+  padding: 12px 16px;
+  font-weight: 600;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border);
+}
+.sidebar-card-body {
+  padding: 16px;
+}
+
+.ats-score-display {
+  text-align: center;
+  padding: 8px 0;
+}
+.ats-score-number {
+  font-size: 48px;
+  font-weight: 800;
+  line-height: 1;
+}
+.ats-score-label {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+.ats-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+}
+.ats-breakdown-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+}
+.ats-breakdown-bar {
+  height: 4px;
+  border-radius: 2px;
+  background: var(--border);
+  margin-top: 4px;
+}
+.ats-breakdown-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+.suggestions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.suggestion {
+  font-size: 13px;
+  padding: 8px;
+  border-radius: 4px;
+  background: var(--bg-secondary);
+}
+.suggestion.critical {
+  background: #fee2e2;
+  color: #991b1b;
+}
+.suggestion.warning {
+  background: #fef9c3;
+  color: #854d0e;
+}
+.suggestion.info {
+  background: #eff6ff;
+  color: #1e40af;
+}
+
+.sidebar-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* ─── Version history ─── */
+.version-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.version-item {
+  padding: 8px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.version-item:hover {
+  background: var(--bg-secondary);
+}
+.version-date {
+  color: var(--text-secondary);
+  font-size: 11px;
+}
+
+.loading-page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px 0;
+}
+
+/* ─── Cover Letter Edit ─── */
+.cl-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+  margin-top: 16px;
+}
+.cl-label:first-child {
+  margin-top: 0;
+}
+.cl-textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.7;
+  resize: vertical;
+  min-height: 80px;
+  background: var(--bg);
+  color: var(--text);
+  transition: border-color 0.15s;
+}
+.cl-textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
+}
+.cl-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+  justify-content: flex-end;
+}

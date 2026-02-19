@@ -1,0 +1,189 @@
+{
+  "contact": {
+    "name": "Mohammad irfanuddin",
+    "email": "irfan2772uddin@gmail.com",
+    "phone": "+1-555-000-0000",
+    "location": "hyderabad, telangana, india",
+    "linkedin": "linkedin.com/in/yourname",
+    "github": "github.com/yourname",
+    "website": "yourwebsite.com"
+  },
+  "summary": "Experienced software engineer with 2+ years of experience building scalable web applications. Passionate about clean architecture, developer tooling, and delivering impactful user experiences.",
+  "experience": [
+    {
+      "id": "exp-1",
+      "title": "Software Engineer",
+      "titleAliases": ["SDE", "Developer", "Full Stack Engineer"],
+      "company": "Skillsoft Corp",
+      "location": "hyderabad, telangana, india",
+      "startDate": "2024-07",
+      "bullets": [
+        {
+          "text": "Led the migration of a monolithic React application to a micro-frontend architecture, reducing bundle size by 40% and improving page load times by 2.5 seconds",
+          "tags": ["react", "micro-frontend", "performance", "architecture", "migration"],
+          "category": "technical",
+          "strength": 5
+        },
+        {
+          "text": "Designed and implemented a real-time notification system using WebSockets and Redis, serving 50K+ concurrent users with 99.9% uptime",
+          "tags": ["websockets", "redis", "real-time", "scalability", "backend"],
+          "category": "technical",
+          "strength": 5
+        },
+        {
+          "text": "Mentored a team of 4 junior engineers through code reviews, pair programming, and weekly 1:1s, resulting in 30% faster onboarding",
+          "tags": ["mentorship", "leadership", "code-review", "team-building"],
+          "category": "leadership",
+          "strength": 4
+        },
+        {
+          "text": "Established CI/CD pipelines with GitHub Actions and Docker, reducing deployment time from 45 minutes to 8 minutes",
+          "tags": ["ci/cd", "github-actions", "docker", "devops", "automation"],
+          "category": "process",
+          "strength": 4
+        }
+      ],
+      "tags": ["frontend", "backend", "full-stack", "leadership", "ownership"]
+    },
+    {
+      "id": "exp-2",
+      "title": "Software Engineer",
+      "titleAliases": ["SDE", "Developer", "Full Stack Engineer"],
+      "company": "Skillsoft Corp",
+      "location": "hyderabad, telangana, india",
+      "startDate": "2024-07",
+      "endDate": "still working",
+      "bullets": [
+        {
+          "text": "Built a customer-facing dashboard from scratch using React, TypeScript, and D3.js, increasing user engagement by 60%",
+          "tags": ["react", "typescript", "d3", "dashboard", "frontend", "data-visualization"],
+          "category": "technical",
+          "strength": 5
+        },
+        {
+          "text": "Developed RESTful APIs with Node.js and Express, handling 10K+ requests/minute with comprehensive test coverage",
+          "tags": ["node.js", "express", "rest-api", "backend", "testing"],
+          "category": "technical",
+          "strength": 4
+        },
+        {
+          "text": "Collaborated with product and design teams to define technical requirements and deliver features on a 2-week sprint cycle",
+          "tags": ["agile", "collaboration", "product", "sprint"],
+          "category": "collaboration",
+          "strength": 3
+        }
+      ],
+      "tags": ["frontend", "backend", "full-stack", "startup"]
+    }
+  ],
+  "skills": [
+    {
+      "name": "TypeScript",
+      "aliases": ["TS", "typescript"],
+      "proficiency": "expert",
+      "category": "languages"
+    },
+    {
+      "name": "JavaScript",
+      "aliases": ["JS", "ES6", "ECMAScript", "ES2015+"],
+      "proficiency": "expert",
+      "category": "languages"
+    },
+    {
+      "name": "React",
+      "aliases": ["React.js", "ReactJS"],
+      "proficiency": "expert",
+      "category": "frontend"
+    },
+    {
+      "name": "Node.js",
+      "aliases": ["NodeJS", "Node"],
+      "proficiency": "advanced",
+      "category": "backend"
+    },
+    {
+      "name": "Python",
+      "aliases": ["Python3", "py"],
+      "proficiency": "advanced",
+      "category": "languages"
+    },
+    {
+      "name": "PostgreSQL",
+      "aliases": ["Postgres", "psql"],
+      "proficiency": "advanced",
+      "category": "databases"
+    },
+    {
+      "name": "Docker",
+      "aliases": ["Containerization", "docker-compose"],
+      "proficiency": "advanced",
+      "category": "devops"
+    },
+    {
+      "name": "AWS",
+      "aliases": ["Amazon Web Services", "S3", "Lambda", "EC2"],
+      "proficiency": "intermediate",
+      "category": "cloud"
+    },
+    {
+      "name": "Git",
+      "aliases": ["GitHub", "Version Control", "git"],
+      "proficiency": "expert",
+      "category": "tools"
+    }
+  ],
+  "education": [
+    {
+      "id": "edu-1",
+      "institution": "VJIT College of Engineering",
+      "degree": "Bachelor of Technology",
+      "field": "Information Technology",
+      "startDate": "2021-04",
+      "endDate": "2024-04",
+      "gpa": "8.47/10",
+      "highlights": ["Dean's List", "Senior Capstone: AI-powered scheduling system"]
+    }
+  ],
+  "projects": [
+    {
+      "id": "proj-1",
+      "name": "Big mart Sales Prediction",
+      "description": "A command-line tool for automating code scaffolding with 500+ GitHub stars",
+      "url": "https://github.com/yourname/cli-tool",
+      "tags": ["node.js", "cli", "open-source", "typescript"],
+      "highlights": [
+        "Built with Node.js and TypeScript, published to npm with 10K+ monthly downloads",
+        "Implemented plugin system allowing community extensions"
+      ]
+    },
+    {
+      "id": "proj-2",
+      "name": "Missing person detection system",
+      "description": "A system for detecting missing persons using AI and computer vision",
+      "url": "https://github.com/yourname/missing-person-detection",
+      "tags": ["python", "ai", "computer-vision", "open-source"],
+      "highlights": [
+        "Developed with Python and TensorFlow, achieving 95% accuracy in detection",
+        "Integrated with real-time alert system for immediate notifications"
+      ]
+    }
+  ],
+  "certifications": [
+    {
+      "id": "cert-1",
+      "name": "AWS Solutions Architect Associate",
+      "issuer": "Amazon Web Services",
+      "date": "2023-06",
+      "url": "https://aws.amazon.com/certification/",
+      "tags": ["aws", "cloud", "architecture"]
+    }
+  ],
+  "achievements": [
+    {
+      "id": "ach-1",
+      "title": "Hackathon Winner",
+      "description": "1st place at Company Hackathon 2023 — built an AI-powered code review tool in 48 hours",
+      "tags": ["ai", "hackathon", "innovation"]
+    }
+  ]
+}
