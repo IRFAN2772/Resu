@@ -29,7 +29,14 @@ function renderBody(data: ResumeData, templateId: string): string {
   <header class="header">
     <h1 class="name">${escapeHTML(data.contact.name)}</h1>
     <div class="contact-info">
-      ${[data.contact.email, data.contact.phone, data.contact.location, data.contact.linkedin, data.contact.github, data.contact.website]
+      ${[
+        data.contact.email,
+        data.contact.phone,
+        data.contact.location,
+        data.contact.linkedin,
+        data.contact.github,
+        data.contact.website,
+      ]
         .filter(Boolean)
         .map((item) => `<span>${escapeHTML(item!)}</span>`)
         .join(' <span class="sep">|</span> ')}
@@ -37,17 +44,25 @@ function renderBody(data: ResumeData, templateId: string): string {
   </header>
 
   <!-- Professional Summary -->
-  ${data.summary ? `
+  ${
+    data.summary
+      ? `
   <section class="section">
     <h2 class="section-title" style="color: ${accentColor}">Professional Summary</h2>
     <p class="summary">${escapeHTML(data.summary)}</p>
-  </section>` : ''}
+  </section>`
+      : ''
+  }
 
   <!-- Experience -->
-  ${data.experience.length > 0 ? `
+  ${
+    data.experience.length > 0
+      ? `
   <section class="section">
     <h2 class="section-title" style="color: ${accentColor}">Experience</h2>
-    ${data.experience.map((exp) => `
+    ${data.experience
+      .map(
+        (exp) => `
     <div class="entry">
       <div class="entry-header">
         <div>
@@ -60,14 +75,22 @@ function renderBody(data: ResumeData, templateId: string): string {
       <ul class="bullets">
         ${exp.bullets.map((b) => `<li>${escapeHTML(b)}</li>`).join('\n        ')}
       </ul>
-    </div>`).join('\n')}
-  </section>` : ''}
+    </div>`,
+      )
+      .join('\n')}
+  </section>`
+      : ''
+  }
 
   <!-- Education -->
-  ${data.education.length > 0 ? `
+  ${
+    data.education.length > 0
+      ? `
   <section class="section">
     <h2 class="section-title" style="color: ${accentColor}">Education</h2>
-    ${data.education.map((edu) => `
+    ${data.education
+      .map(
+        (edu) => `
     <div class="entry">
       <div class="entry-header">
         <div>
@@ -78,26 +101,42 @@ function renderBody(data: ResumeData, templateId: string): string {
       </div>
       ${edu.gpa ? `<p class="gpa">GPA: ${escapeHTML(edu.gpa)}</p>` : ''}
       ${edu.highlights.length > 0 ? `<ul class="bullets">${edu.highlights.map((h) => `<li>${escapeHTML(h)}</li>`).join('')}</ul>` : ''}
-    </div>`).join('\n')}
-  </section>` : ''}
+    </div>`,
+      )
+      .join('\n')}
+  </section>`
+      : ''
+  }
 
   <!-- Skills -->
-  ${data.skills.categories.length > 0 ? `
+  ${
+    data.skills.categories.length > 0
+      ? `
   <section class="section">
     <h2 class="section-title" style="color: ${accentColor}">Skills</h2>
     <div class="skills">
-      ${data.skills.categories.map((cat) => `
+      ${data.skills.categories
+        .map(
+          (cat) => `
       <div class="skill-category">
         <strong>${escapeHTML(cat.name)}:</strong> ${cat.skills.map((s) => escapeHTML(s)).join(', ')}
-      </div>`).join('\n')}
+      </div>`,
+        )
+        .join('\n')}
     </div>
-  </section>` : ''}
+  </section>`
+      : ''
+  }
 
   <!-- Projects -->
-  ${data.projects.length > 0 ? `
+  ${
+    data.projects.length > 0
+      ? `
   <section class="section">
     <h2 class="section-title" style="color: ${accentColor}">Projects</h2>
-    ${data.projects.map((proj) => `
+    ${data.projects
+      .map(
+        (proj) => `
     <div class="entry">
       <div class="entry-header">
         <span class="entry-title">${escapeHTML(proj.name)}</span>
@@ -105,17 +144,25 @@ function renderBody(data: ResumeData, templateId: string): string {
       </div>
       <p>${escapeHTML(proj.description)}</p>
       ${proj.highlights.length > 0 ? `<ul class="bullets">${proj.highlights.map((h) => `<li>${escapeHTML(h)}</li>`).join('')}</ul>` : ''}
-    </div>`).join('\n')}
-  </section>` : ''}
+    </div>`,
+      )
+      .join('\n')}
+  </section>`
+      : ''
+  }
 
   <!-- Certifications -->
-  ${data.certifications.length > 0 ? `
+  ${
+    data.certifications.length > 0
+      ? `
   <section class="section">
     <h2 class="section-title" style="color: ${accentColor}">Certifications</h2>
     <ul class="bullets">
       ${data.certifications.map((cert) => `<li><strong>${escapeHTML(cert.name)}</strong> — ${escapeHTML(cert.issuer)} (${escapeHTML(cert.date)})</li>`).join('\n')}
     </ul>
-  </section>` : ''}
+  </section>`
+      : ''
+  }
 </div>`;
 }
 
@@ -149,11 +196,14 @@ function getTemplateCSS(templateId: string): string {
   `;
 
   if (templateId === 'clean-minimal') {
-    return base + `
+    return (
+      base +
+      `
       body { font-family: 'Calibri', 'Helvetica Neue', Arial, sans-serif; }
       .name { color: #2563eb; }
       .section-title { color: #2563eb; border-bottom-color: #2563eb; }
-    `;
+    `
+    );
   }
 
   // ats-classic: just base styles (conservative)

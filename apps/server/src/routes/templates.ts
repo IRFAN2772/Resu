@@ -11,7 +11,8 @@ const TEMPLATES: TemplateInfo[] = [
   {
     id: 'clean-minimal',
     name: 'Clean Minimal',
-    description: 'Subtle accent colors, clear typographic hierarchy. ATS-friendly with visual appeal.',
+    description:
+      'Subtle accent colors, clear typographic hierarchy. ATS-friendly with visual appeal.',
   },
 ];
 

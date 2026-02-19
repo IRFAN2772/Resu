@@ -45,9 +45,7 @@ export async function generateResume(
     })
     .filter(Boolean);
 
-  const selectedSkills = profile.skills.filter((s) =>
-    selection.selectedSkills.includes(s.name),
-  );
+  const selectedSkills = profile.skills.filter((s) => selection.selectedSkills.includes(s.name));
 
   const selectedProjects = profile.projects.filter((p) =>
     selection.selectedProjects.includes(p.id),
@@ -105,8 +103,11 @@ function normalizeResumeResponse(raw: any): any {
 
   return {
     contact: raw.contact ?? {},
-    summary: raw.summary ?? raw.professionalSummary ?? raw.professional_summary ?? raw.objective ?? '',
-    experience: normalizeExperience(raw.experience ?? raw.workExperience ?? raw.work_experience ?? []),
+    summary:
+      raw.summary ?? raw.professionalSummary ?? raw.professional_summary ?? raw.objective ?? '',
+    experience: normalizeExperience(
+      raw.experience ?? raw.workExperience ?? raw.work_experience ?? [],
+    ),
     education: normalizeEducation(raw.education ?? []),
     skills: normalizeSkills(raw.skills ?? raw.technicalSkills ?? raw.technical_skills ?? {}),
     projects: normalizeProjects(raw.projects ?? []),
@@ -123,8 +124,10 @@ function normalizeExperience(arr: any[]): any[] {
     startDate: e.startDate ?? e.start_date ?? e.from ?? '',
     endDate: e.endDate ?? e.end_date ?? e.to,
     bullets: Array.isArray(e.bullets)
-      ? e.bullets.map((b: any) => typeof b === 'string' ? b : b.text ?? b.bullet ?? String(b))
-      : Array.isArray(e.achievements) ? e.achievements : [],
+      ? e.bullets.map((b: any) => (typeof b === 'string' ? b : (b.text ?? b.bullet ?? String(b))))
+      : Array.isArray(e.achievements)
+        ? e.achievements
+        : [],
   }));
 }
 
@@ -154,7 +157,8 @@ function normalizeSkills(skills: any): any {
 
   // If it's an array of objects with name+skills
   if (Array.isArray(skills)) {
-    const hasCategories = skills.length > 0 && typeof skills[0] === 'object' && (skills[0].name || skills[0].category);
+    const hasCategories =
+      skills.length > 0 && typeof skills[0] === 'object' && (skills[0].name || skills[0].category);
     if (hasCategories) {
       return {
         categories: skills.map((c: any) => ({

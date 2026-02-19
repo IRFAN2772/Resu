@@ -23,7 +23,9 @@ export const resumeRoutes: FastifyPluginAsync = async (app) => {
     async (request, reply) => {
       const parseResult = UpdateResumeRequestSchema.safeParse(request.body);
       if (!parseResult.success) {
-        return reply.status(400).send({ error: 'Invalid request', details: parseResult.error.issues });
+        return reply
+          .status(400)
+          .send({ error: 'Invalid request', details: parseResult.error.issues });
       }
 
       const updated = updateResume(app.db, request.params.id, parseResult.data);

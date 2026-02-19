@@ -55,7 +55,11 @@ export function DashboardPage() {
       {isLoading ? (
         <div className={styles['resume-list']}>
           {[1, 2, 3].map((i) => (
-            <div key={i} className="skeleton" style={{ height: 72, borderRadius: 'var(--radius)' }} />
+            <div
+              key={i}
+              className="skeleton"
+              style={{ height: 72, borderRadius: 'var(--radius)' }}
+            />
           ))}
         </div>
       ) : filtered.length === 0 ? (
@@ -71,11 +75,7 @@ export function DashboardPage() {
       ) : (
         <div className={styles['resume-list']}>
           {filtered.map((resume) => (
-            <Link
-              key={resume.id}
-              to={`/resume/${resume.id}`}
-              className={styles['resume-card']}
-            >
+            <Link key={resume.id} to={`/resume/${resume.id}`} className={styles['resume-card']}>
               <div className={styles['resume-info']}>
                 <span className={styles['resume-company']}>{resume.company}</span>
                 <span className={styles['resume-title']}>{resume.jobTitle}</span>

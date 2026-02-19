@@ -23,11 +23,11 @@ Resu is a local-first, AI-powered resume builder that ingests your full career p
 
 Make sure you have the following installed on your machine:
 
-| Tool | Minimum Version | Check with |
-|------|----------------|------------|
-| **Node.js** | v18+ | `node --version` |
-| **npm** | v9+ | `npm --version` |
-| **Git** | any recent | `git --version` |
+| Tool        | Minimum Version | Check with       |
+| ----------- | --------------- | ---------------- |
+| **Node.js** | v18+            | `node --version` |
+| **npm**     | v9+             | `npm --version`  |
+| **Git**     | any recent      | `git --version`  |
 
 You also need an **OpenAI API key** (get one at [platform.openai.com/api-keys](https://platform.openai.com/api-keys)).
 
@@ -43,9 +43,11 @@ cd Resu
 ```
 
 > If you're opening in VS Code, you can also use:
+>
 > ```
 > code Resu
 > ```
+>
 > Then open the integrated terminal with `` Ctrl+` `` (or `` Cmd+` `` on macOS).
 
 ### 2. Install dependencies
@@ -132,18 +134,18 @@ Resu/
 
 ### Environment Variables
 
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `OPENAI_API_KEY` | Yes | Your OpenAI API key for GPT calls |
-| `PORT` | No | Server port (default: `3001`) |
+| Variable         | Required | Description                       |
+| ---------------- | -------- | --------------------------------- |
+| `OPENAI_API_KEY` | Yes      | Your OpenAI API key for GPT calls |
+| `PORT`           | No       | Server port (default: `3001`)     |
 
 ### Key Files
 
-| File | Purpose |
-|------|---------|
+| File                            | Purpose                                                                 |
+| ------------------------------- | ----------------------------------------------------------------------- |
 | `apps/server/data/profile.json` | **Your career profile** — the source of truth for all resume generation |
-| `.env` | API keys and local config (git-ignored) |
-| `apps/server/src/prompts/*.txt` | AI prompt templates — edit these to tune generation quality |
+| `.env`                          | API keys and local config (git-ignored)                                 |
+| `apps/server/src/prompts/*.txt` | AI prompt templates — edit these to tune generation quality             |
 
 ---
 
@@ -159,10 +161,10 @@ npm run dev
 
 This starts **both** the frontend and backend concurrently via Turborepo:
 
-| Service | URL | Description |
-|---------|-----|-------------|
+| Service      | URL                                            | Description                 |
+| ------------ | ---------------------------------------------- | --------------------------- |
 | **Frontend** | [http://localhost:5173](http://localhost:5173) | React app (Vite dev server) |
-| **Backend** | [http://localhost:3001](http://localhost:3001) | Fastify API server |
+| **Backend**  | [http://localhost:3001](http://localhost:3001) | Fastify API server          |
 
 The frontend automatically proxies `/api/*` requests to the backend, so you only need to open `http://localhost:5173` in your browser.
 
@@ -197,45 +199,56 @@ Your profile lives at `apps/server/data/profile.json`. This is the master data s
   "contact": {
     "name": "Your Full Name",
     "email": "you@example.com",
-    "phone": "+1-555-000-0000",        // optional
-    "location": "City, State",          // optional
-    "linkedin": "linkedin.com/in/you",  // optional
-    "github": "github.com/you",         // optional
-    "website": "yoursite.com"           // optional
+    "phone": "+1-555-000-0000", // optional
+    "location": "City, State", // optional
+    "linkedin": "linkedin.com/in/you", // optional
+    "github": "github.com/you", // optional
+    "website": "yoursite.com", // optional
   },
   "summary": "Your default professional summary...",
   "experience": [
     {
-      "id": "exp-1",                           // unique ID
+      "id": "exp-1", // unique ID
       "title": "Senior Software Engineer",
-      "titleAliases": ["Sr. SDE", "Senior Developer"],  // alternative titles for matching
+      "titleAliases": ["Sr. SDE", "Senior Developer"], // alternative titles for matching
       "company": "Company Name",
       "location": "City, State",
       "startDate": "2022-01",
-      "endDate": null,                         // null or omit = "Present"
+      "endDate": null, // null or omit = "Present"
       "bullets": [
         {
           "text": "Your achievement or responsibility...",
-          "tags": ["react", "typescript", "performance"],  // keywords for matching
-          "category": "technical",   // technical | leadership | impact | collaboration | process | other
-          "strength": 5              // 1-5 rating of how impressive this bullet is
-        }
+          "tags": ["react", "typescript", "performance"], // keywords for matching
+          "category": "technical", // technical | leadership | impact | collaboration | process | other
+          "strength": 5, // 1-5 rating of how impressive this bullet is
+        },
       ],
-      "tags": ["frontend", "senior", "full-stack"]
-    }
+      "tags": ["frontend", "senior", "full-stack"],
+    },
   ],
   "skills": [
     {
       "name": "TypeScript",
-      "aliases": ["TS", "typescript"],         // alternative names for JD matching
-      "proficiency": "expert",                 // expert | advanced | intermediate
-      "category": "languages"                  // your own grouping
-    }
+      "aliases": ["TS", "typescript"], // alternative names for JD matching
+      "proficiency": "expert", // expert | advanced | intermediate
+      "category": "languages", // your own grouping
+    },
   ],
-  "education": [{ "id": "edu-1", "institution": "...", "degree": "...", "field": "...", "startDate": "...", "endDate": "..." }],
-  "projects": [{ "id": "proj-1", "name": "...", "description": "...", "tags": [], "highlights": [] }],
+  "education": [
+    {
+      "id": "edu-1",
+      "institution": "...",
+      "degree": "...",
+      "field": "...",
+      "startDate": "...",
+      "endDate": "...",
+    },
+  ],
+  "projects": [
+    { "id": "proj-1", "name": "...", "description": "...", "tags": [], "highlights": [] },
+  ],
   "certifications": [{ "id": "cert-1", "name": "...", "issuer": "...", "date": "...", "tags": [] }],
-  "achievements": [{ "id": "ach-1", "title": "...", "description": "...", "tags": [] }]
+  "achievements": [{ "id": "ach-1", "title": "...", "description": "...", "tags": [] }],
 }
 ```
 
@@ -269,6 +282,7 @@ Your profile lives at `apps/server/data/profile.json`. This is the master data s
 ### Cost per generation
 
 Each resume generation uses approximately:
+
 - **gpt-4o-mini** for JD parsing (~$0.001)
 - **gpt-4o** for relevance selection + resume generation + cover letter (~$0.04–0.05)
 - **Total: ~$0.05 per resume**
@@ -279,13 +293,13 @@ Each resume generation uses approximately:
 
 All scripts are run from the **root** directory (`Resu/`):
 
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | Start both client and server in development mode |
-| `npm run build` | Build all packages for production |
-| `npm run lint` | Run ESLint across all packages |
-| `npm run test` | Run tests across all packages |
-| `npm run validate-profile` | Validate `profile.json` against the schema |
+| Command                    | Description                                      |
+| -------------------------- | ------------------------------------------------ |
+| `npm run dev`              | Start both client and server in development mode |
+| `npm run build`            | Build all packages for production                |
+| `npm run lint`             | Run ESLint across all packages                   |
+| `npm run test`             | Run tests across all packages                    |
+| `npm run validate-profile` | Validate `profile.json` against the schema       |
 
 ### Workspace-specific commands
 
@@ -300,17 +314,17 @@ npm run build --workspace=packages/shared
 
 ## Tech Stack
 
-| Layer | Technology | Why |
-|-------|-----------|-----|
-| **Monorepo** | npm workspaces + Turborepo | Fast builds, shared types across packages |
-| **Frontend** | React 19 + TypeScript + Vite | Fast dev server, modern React features |
-| **State** | Zustand + TanStack React Query | Minimal boilerplate, great caching |
-| **Backend** | Fastify + TypeScript | First-class TS support, built-in validation, fast |
-| **Database** | SQLite (better-sqlite3) | Zero-config, file-based, perfect for single-user |
-| **AI** | OpenAI GPT-4o / GPT-4o-mini | Multi-step pipeline for accuracy |
-| **PDF** | Puppeteer | CSS fidelity, selectable text for ATS |
-| **Validation** | Zod | Runtime type-safe validation, shared schemas |
-| **Notifications** | Sonner | Lightweight toast notifications |
+| Layer             | Technology                     | Why                                               |
+| ----------------- | ------------------------------ | ------------------------------------------------- |
+| **Monorepo**      | npm workspaces + Turborepo     | Fast builds, shared types across packages         |
+| **Frontend**      | React 19 + TypeScript + Vite   | Fast dev server, modern React features            |
+| **State**         | Zustand + TanStack React Query | Minimal boilerplate, great caching                |
+| **Backend**       | Fastify + TypeScript           | First-class TS support, built-in validation, fast |
+| **Database**      | SQLite (better-sqlite3)        | Zero-config, file-based, perfect for single-user  |
+| **AI**            | OpenAI GPT-4o / GPT-4o-mini    | Multi-step pipeline for accuracy                  |
+| **PDF**           | Puppeteer                      | CSS fidelity, selectable text for ATS             |
+| **Validation**    | Zod                            | Runtime type-safe validation, shared schemas      |
+| **Notifications** | Sonner                         | Lightweight toast notifications                   |
 
 ---
 
@@ -325,6 +339,7 @@ npm install --legacy-peer-deps
 ### Server fails to start — "Profile not found"
 
 Make sure `apps/server/data/profile.json` exists. Copy from the example:
+
 ```bash
 # The repo includes a sample profile.json — edit it with your data
 ```
@@ -332,6 +347,7 @@ Make sure `apps/server/data/profile.json` exists. Copy from the example:
 ### Server fails to start — "OPENAI_API_KEY is not set"
 
 Create a `.env` file in the root:
+
 ```bash
 cp .env.example .env
 # Then add your API key to .env
@@ -340,11 +356,13 @@ cp .env.example .env
 ### `better-sqlite3` build fails
 
 This native module needs build tools. On macOS:
+
 ```bash
 xcode-select --install
 ```
 
 On Ubuntu/Debian:
+
 ```bash
 sudo apt-get install build-essential python3
 ```
@@ -352,6 +370,7 @@ sudo apt-get install build-essential python3
 ### Puppeteer can't launch Chrome
 
 Puppeteer downloads Chromium automatically during install. If it fails:
+
 ```bash
 npx puppeteer browsers install chrome
 ```
@@ -359,6 +378,7 @@ npx puppeteer browsers install chrome
 ### Port already in use
 
 Change the server port via environment variable:
+
 ```bash
 PORT=3002 npm run dev --workspace=apps/server
 ```
@@ -366,6 +386,7 @@ PORT=3002 npm run dev --workspace=apps/server
 ### SQLite database issues
 
 The database file is auto-created at `apps/server/data/resu.db` on first server start. To reset:
+
 ```bash
 rm apps/server/data/resu.db
 # Restart the server — tables are recreated automatically

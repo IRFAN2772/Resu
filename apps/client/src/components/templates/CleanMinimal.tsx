@@ -8,7 +8,9 @@ export function CleanMinimalTemplate({ data, mode, onSave }: ResumeTemplateProps
   const [editData, setEditData] = useState<ResumeData>(data);
   const [editingField, setEditingField] = useState<string | null>(null);
 
-  useEffect(() => { setEditData(data); }, [data]);
+  useEffect(() => {
+    setEditData(data);
+  }, [data]);
 
   const isEdit = mode === 'edit';
 
@@ -45,7 +47,13 @@ export function CleanMinimalTemplate({ data, mode, onSave }: ResumeTemplateProps
     if (field === 'name') {
       newCats[catIdx] = { ...newCats[catIdx], name: value };
     } else {
-      newCats[catIdx] = { ...newCats[catIdx], skills: value.split(',').map((s) => s.trim()).filter(Boolean) };
+      newCats[catIdx] = {
+        ...newCats[catIdx],
+        skills: value
+          .split(',')
+          .map((s) => s.trim())
+          .filter(Boolean),
+      };
     }
     setEditData({ ...editData, skills: { categories: newCats } });
   };

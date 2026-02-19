@@ -13,7 +13,9 @@ export const exportRoutes: FastifyPluginAsync = async (app) => {
       }
 
       const parseResult = ExportRequestSchema.safeParse(request.body || {});
-      const exportConfig = parseResult.success ? parseResult.data : { type: 'resume' as const, pageSize: 'letter' as const };
+      const exportConfig = parseResult.success
+        ? parseResult.data
+        : { type: 'resume' as const, pageSize: 'letter' as const };
 
       try {
         let pdfBuffer: Buffer;

@@ -77,7 +77,10 @@ export function PreviewPage() {
   const handleCoverLetterSave = useCallback(async () => {
     if (!id || !coverLetterData) return;
     try {
-      await updateResume(id, { coverLetter: coverLetterData, changeDescription: 'Cover letter edit' });
+      await updateResume(id, {
+        coverLetter: coverLetterData,
+        changeDescription: 'Cover letter edit',
+      });
       toast.success('Cover letter saved');
       queryClient.invalidateQueries({ queryKey: ['resume', id] });
       setEditCoverLetter(false);
@@ -190,7 +193,10 @@ export function PreviewPage() {
                   <button className="btn btn-primary btn-sm" onClick={handleCoverLetterSave}>
                     Save Changes
                   </button>
-                  <button className="btn btn-secondary btn-sm" onClick={() => setEditCoverLetter(false)}>
+                  <button
+                    className="btn btn-secondary btn-sm"
+                    onClick={() => setEditCoverLetter(false)}
+                  >
                     Cancel
                   </button>
                 </div>

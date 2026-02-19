@@ -7,8 +7,12 @@ export function scoreATS(resumeData: ResumeData, parsedJD: ParsedJobDescription)
 
   // ─── 1. Keyword Match Score ───
   const jdKeywords = new Set(
-    [...parsedJD.requiredSkills, ...parsedJD.preferredSkills, ...parsedJD.keywords, ...parsedJD.techStack]
-      .map((k) => k.toLowerCase().trim()),
+    [
+      ...parsedJD.requiredSkills,
+      ...parsedJD.preferredSkills,
+      ...parsedJD.keywords,
+      ...parsedJD.techStack,
+    ].map((k) => k.toLowerCase().trim()),
   );
 
   // Flatten all resume text
@@ -32,7 +36,8 @@ export function scoreATS(resumeData: ResumeData, parsedJD: ParsedJobDescription)
     }
   }
 
-  const keywordMatch = jdKeywords.size > 0 ? Math.round((matchedKeywords / jdKeywords.size) * 100) : 100;
+  const keywordMatch =
+    jdKeywords.size > 0 ? Math.round((matchedKeywords / jdKeywords.size) * 100) : 100;
 
   if (missingKeywords.length > 0) {
     // Only suggest top 5 missing required skills

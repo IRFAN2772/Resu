@@ -29,6 +29,8 @@ export function loadProfile(): PersonalProfile {
   }
 
   cachedProfile = result.data;
-  console.log(`✅ Profile loaded: ${result.data.contact.name} — ${result.data.experience.length} experiences, ${result.data.skills.length} skills`);
+  console.log(
+    `✅ Profile loaded: ${result.data.contact.name} — ${result.data.experience.length} experiences, ${result.data.skills.length} skills`,
+  );
   return cachedProfile;
 }

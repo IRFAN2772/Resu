@@ -1,6 +1,10 @@
 // Step 1: Parse a raw job description into structured data (fast model).
 
-import { ParsedJobDescriptionSchema, type ParsedJobDescription, type GenerationConfig } from '@resu/shared';
+import {
+  ParsedJobDescriptionSchema,
+  type ParsedJobDescription,
+  type GenerationConfig,
+} from '@resu/shared';
 import { chatCompletion, type TokenUsage } from './aiClient.js';
 import { loadPrompt } from './promptLoader.js';
 

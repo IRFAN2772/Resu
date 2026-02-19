@@ -141,9 +141,9 @@ export function updateResume(
     changeDescription?: string;
   },
 ): boolean {
-  const existing = db
-    .prepare('SELECT resume_data FROM resumes WHERE id = ?')
-    .get(id) as { resume_data: string } | undefined;
+  const existing = db.prepare('SELECT resume_data FROM resumes WHERE id = ?').get(id) as
+    | { resume_data: string }
+    | undefined;
 
   if (!existing) return false;
 
@@ -156,7 +156,7 @@ export function updateResume(
   }
 
   // Build dynamic update
-  const sets: string[] = ['updated_at = datetime(\'now\')'];
+  const sets: string[] = ["updated_at = datetime('now')"];
   const values: unknown[] = [];
 
   if (updates.resumeData) {

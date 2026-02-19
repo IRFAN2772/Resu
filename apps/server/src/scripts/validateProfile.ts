@@ -21,7 +21,9 @@ try {
     }
     for (const bullet of exp.bullets) {
       if (bullet.tags.length === 0) {
-        warnings.push(`Bullet in "${exp.title} @ ${exp.company}" has no tags: "${bullet.text.slice(0, 50)}..."`);
+        warnings.push(
+          `Bullet in "${exp.title} @ ${exp.company}" has no tags: "${bullet.text.slice(0, 50)}..."`,
+        );
       }
     }
   }

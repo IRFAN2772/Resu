@@ -28,7 +28,9 @@ export const generateRoutes: FastifyPluginAsync = async (app) => {
 
     const parseResult = GenerateParseRequestSchema.safeParse(request.body);
     if (!parseResult.success) {
-      return reply.status(400).send({ error: 'Invalid request', details: parseResult.error.issues });
+      return reply
+        .status(400)
+        .send({ error: 'Invalid request', details: parseResult.error.issues });
     }
 
     const { jdText, config } = parseResult.data;
@@ -37,12 +39,18 @@ export const generateRoutes: FastifyPluginAsync = async (app) => {
       generationInProgress = true;
 
       // Step 1: Parse JD
-      const { parsedJD, tokenUsage: parseTokens, cost: parseCost } =
-        await parseJobDescription(jdText, config);
+      const {
+        parsedJD,
+        tokenUsage: parseTokens,
+        cost: parseCost,
+      } = await parseJobDescription(jdText, config);
 
       // Step 2: Select relevant items
-      const { selection, tokenUsage: selectTokens, cost: selectCost } =
-        await selectRelevantItems(app.profile, parsedJD, config);
+      const {
+        selection,
+        tokenUsage: selectTokens,
+        cost: selectCost,
+      } = await selectRelevantItems(app.profile, parsedJD, config);
 
       return {
         parsedJD,
@@ -73,7 +81,9 @@ export const generateRoutes: FastifyPluginAsync = async (app) => {
 
     const parseResult = GenerateConfirmRequestSchema.safeParse(request.body);
     if (!parseResult.success) {
-      return reply.status(400).send({ error: 'Invalid request', details: parseResult.error.issues });
+      return reply
+        .status(400)
+        .send({ error: 'Invalid request', details: parseResult.error.issues });
     }
 
     const { jdText, parsedJD, relevanceSelection, config } = parseResult.data;

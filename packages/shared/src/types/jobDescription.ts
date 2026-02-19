@@ -6,7 +6,18 @@ import { z } from 'zod';
 export const ParsedJobDescriptionSchema = z.object({
   companyName: z.string(),
   roleTitle: z.string(),
-  seniorityLevel: z.enum(['intern', 'junior', 'mid', 'senior', 'staff', 'principal', 'lead', 'manager', 'director', 'unknown']),
+  seniorityLevel: z.enum([
+    'intern',
+    'junior',
+    'mid',
+    'senior',
+    'staff',
+    'principal',
+    'lead',
+    'manager',
+    'director',
+    'unknown',
+  ]),
   requiredSkills: z.array(z.string()),
   preferredSkills: z.array(z.string()),
   keywords: z.array(z.string()), // All important terms extracted from JD

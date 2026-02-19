@@ -69,10 +69,20 @@ function normalizeSelectionResponse(raw: any): any {
 
   return {
     proposedSummary: raw.proposedSummary ?? raw.proposed_summary ?? raw.summary ?? '',
-    selectedExperiences: normalizeExperiences(raw.selectedExperiences ?? raw.selected_experiences ?? raw.experiences ?? []),
-    selectedSkills: normalizeStringArray(raw.selectedSkills ?? raw.selected_skills ?? raw.skills ?? []),
-    selectedProjects: normalizeStringArray(raw.selectedProjects ?? raw.selected_projects ?? raw.projects ?? [], 'id'),
-    selectedCertifications: normalizeStringArray(raw.selectedCertifications ?? raw.selected_certifications ?? raw.certifications ?? [], 'id'),
+    selectedExperiences: normalizeExperiences(
+      raw.selectedExperiences ?? raw.selected_experiences ?? raw.experiences ?? [],
+    ),
+    selectedSkills: normalizeStringArray(
+      raw.selectedSkills ?? raw.selected_skills ?? raw.skills ?? [],
+    ),
+    selectedProjects: normalizeStringArray(
+      raw.selectedProjects ?? raw.selected_projects ?? raw.projects ?? [],
+      'id',
+    ),
+    selectedCertifications: normalizeStringArray(
+      raw.selectedCertifications ?? raw.selected_certifications ?? raw.certifications ?? [],
+      'id',
+    ),
     overallMatchScore: raw.overallMatchScore ?? raw.overall_match_score ?? raw.matchScore ?? 50,
   };
 }
@@ -91,12 +101,20 @@ function normalizeExperiences(arr: any[]): any[] {
   return arr.map((exp) => ({
     experienceId: exp.experienceId ?? exp.experience_id ?? exp.id ?? '',
     include: exp.include ?? true,
-    selectedBullets: (exp.selectedBullets ?? exp.selected_bullets ?? exp.bullets ?? []).map((b: any) => ({
-      experienceId: b.experienceId ?? b.experience_id ?? exp.experienceId ?? exp.experience_id ?? exp.id ?? '',
-      bulletIndex: b.bulletIndex ?? b.bullet_index ?? b.index ?? 0,
-      originalText: b.originalText ?? b.original_text ?? b.text ?? '',
-      relevanceScore: b.relevanceScore ?? b.relevance_score ?? b.score ?? 50,
-      matchedKeywords: b.matchedKeywords ?? b.matched_keywords ?? b.keywords ?? [],
-    })),
+    selectedBullets: (exp.selectedBullets ?? exp.selected_bullets ?? exp.bullets ?? []).map(
+      (b: any) => ({
+        experienceId:
+          b.experienceId ??
+          b.experience_id ??
+          exp.experienceId ??
+          exp.experience_id ??
+          exp.id ??
+          '',
+        bulletIndex: b.bulletIndex ?? b.bullet_index ?? b.index ?? 0,
+        originalText: b.originalText ?? b.original_text ?? b.text ?? '',
+        relevanceScore: b.relevanceScore ?? b.relevance_score ?? b.score ?? 50,
+        matchedKeywords: b.matchedKeywords ?? b.matched_keywords ?? b.keywords ?? [],
+      }),
+    ),
   }));
 }

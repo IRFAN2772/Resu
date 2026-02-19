@@ -9,7 +9,9 @@ export function ATSClassicTemplate({ data, mode, onSave }: ResumeTemplateProps) 
   const [editingField, setEditingField] = useState<string | null>(null);
 
   // Sync when data changes externally (e.g. version switch)
-  useEffect(() => { setEditData(data); }, [data]);
+  useEffect(() => {
+    setEditData(data);
+  }, [data]);
 
   const isEdit = mode === 'edit';
 
@@ -49,7 +51,13 @@ export function ATSClassicTemplate({ data, mode, onSave }: ResumeTemplateProps) 
     if (field === 'name') {
       newCats[catIdx] = { ...newCats[catIdx], name: value };
     } else {
-      newCats[catIdx] = { ...newCats[catIdx], skills: value.split(',').map((s) => s.trim()).filter(Boolean) };
+      newCats[catIdx] = {
+        ...newCats[catIdx],
+        skills: value
+          .split(',')
+          .map((s) => s.trim())
+          .filter(Boolean),
+      };
     }
     setEditData({ ...editData, skills: { categories: newCats } });
   };

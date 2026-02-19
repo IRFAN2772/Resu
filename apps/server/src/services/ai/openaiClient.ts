@@ -19,9 +19,7 @@ export interface TokenUsage {
   totalTokens: number;
 }
 
-export function extractTokenUsage(
-  response: OpenAI.Chat.Completions.ChatCompletion,
-): TokenUsage {
+export function extractTokenUsage(response: OpenAI.Chat.Completions.ChatCompletion): TokenUsage {
   return {
     promptTokens: response.usage?.prompt_tokens ?? 0,
     completionTokens: response.usage?.completion_tokens ?? 0,
@@ -30,10 +28,7 @@ export function extractTokenUsage(
 }
 
 // Approximate cost calculation (gpt-4o and gpt-4o-mini pricing as of early 2025)
-export function estimateCost(
-  model: string,
-  usage: TokenUsage,
-): number {
+export function estimateCost(model: string, usage: TokenUsage): number {
   const pricing: Record<string, { input: number; output: number }> = {
     'gpt-4o': { input: 2.5 / 1_000_000, output: 10 / 1_000_000 },
     'gpt-4o-mini': { input: 0.15 / 1_000_000, output: 0.6 / 1_000_000 },

@@ -83,7 +83,16 @@ export function GeneratePage() {
           ...se,
           selectedBullets: bulletExists
             ? se.selectedBullets.filter((b) => b.bulletIndex !== bulletIdx)
-            : [...se.selectedBullets, { experienceId: expId, bulletIndex: bulletIdx, originalText: '', relevanceScore: 50, matchedKeywords: [] } as SelectedBullet],
+            : [
+                ...se.selectedBullets,
+                {
+                  experienceId: expId,
+                  bulletIndex: bulletIdx,
+                  originalText: '',
+                  relevanceScore: 50,
+                  matchedKeywords: [],
+                } as SelectedBullet,
+              ],
         };
       }),
     });
@@ -112,7 +121,9 @@ export function GeneratePage() {
     { key: 'cover-letter', label: 'Generating cover letter...' },
   ];
 
-  const isProcessing = ['parsing', 'selecting', 'generating', 'scoring', 'cover-letter'].includes(stage);
+  const isProcessing = ['parsing', 'selecting', 'generating', 'scoring', 'cover-letter'].includes(
+    stage,
+  );
 
   return (
     <div className={styles['generate-page']}>
@@ -120,17 +131,23 @@ export function GeneratePage() {
 
       {/* Step indicator */}
       <div className={styles.steps}>
-        <div className={`${styles.step} ${stage === 'idle' || isProcessing ? styles.active : ''} ${stage === 'reviewing' || stage === 'complete' ? styles.done : ''}`}>
+        <div
+          className={`${styles.step} ${stage === 'idle' || isProcessing ? styles.active : ''} ${stage === 'reviewing' || stage === 'complete' ? styles.done : ''}`}
+        >
           <span className={styles['step-dot']}>1</span>
           <span>Input JD</span>
         </div>
         <div className={styles['step-line']} />
-        <div className={`${styles.step} ${stage === 'reviewing' ? styles.active : ''} ${stage === 'generating' || stage === 'complete' ? styles.done : ''}`}>
+        <div
+          className={`${styles.step} ${stage === 'reviewing' ? styles.active : ''} ${stage === 'generating' || stage === 'complete' ? styles.done : ''}`}
+        >
           <span className={styles['step-dot']}>2</span>
           <span>Review</span>
         </div>
         <div className={styles['step-line']} />
-        <div className={`${styles.step} ${['generating', 'scoring', 'cover-letter'].includes(stage) ? styles.active : ''} ${stage === 'complete' ? styles.done : ''}`}>
+        <div
+          className={`${styles.step} ${['generating', 'scoring', 'cover-letter'].includes(stage) ? styles.active : ''} ${stage === 'complete' ? styles.done : ''}`}
+        >
           <span className={styles['step-dot']}>3</span>
           <span>Generate</span>
         </div>
@@ -140,7 +157,13 @@ export function GeneratePage() {
       {store.error && (
         <div className={styles['error-box']}>
           <span>{store.error}</span>
-          <button className="btn btn-sm btn-secondary" onClick={() => { store.setStage('idle'); store.setError(null); }}>
+          <button
+            className="btn btn-sm btn-secondary"
+            onClick={() => {
+              store.setStage('idle');
+              store.setError(null);
+            }}
+          >
             Try Again
           </button>
         </div>
@@ -184,7 +207,9 @@ export function GeneratePage() {
                 <label>Tone</label>
                 <select
                   value={store.config.tone}
-                  onChange={(e) => store.setConfig({ tone: e.target.value as GenerationConfig['tone'] })}
+                  onChange={(e) =>
+                    store.setConfig({ tone: e.target.value as GenerationConfig['tone'] })
+                  }
                 >
                   <option value="professional">Professional</option>
                   <option value="formal">Formal</option>
@@ -195,7 +220,9 @@ export function GeneratePage() {
                 <label>Target Length</label>
                 <select
                   value={store.config.targetPageLength}
-                  onChange={(e) => store.setConfig({ targetPageLength: Number(e.target.value) as 1 | 2 })}
+                  onChange={(e) =>
+                    store.setConfig({ targetPageLength: Number(e.target.value) as 1 | 2 })
+                  }
                 >
                   <option value={1}>1 Page</option>
                   <option value={2}>2 Pages</option>
@@ -248,7 +275,13 @@ export function GeneratePage() {
         <div className={styles['progress-section']}>
           <div className={styles['progress-stages']}>
             {stageLabels.map((sl) => {
-              const stageOrder: PipelineStage[] = ['parsing', 'selecting', 'generating', 'scoring', 'cover-letter'];
+              const stageOrder: PipelineStage[] = [
+                'parsing',
+                'selecting',
+                'generating',
+                'scoring',
+                'cover-letter',
+              ];
               const currentIdx = stageOrder.indexOf(stage);
               const thisIdx = stageOrder.indexOf(sl.key);
               let className = styles['progress-stage'];
@@ -284,8 +317,8 @@ export function GeneratePage() {
                   editableSelection.overallMatchScore >= 80
                     ? 'var(--success)'
                     : editableSelection.overallMatchScore >= 60
-                    ? 'var(--warning)'
-                    : 'var(--danger)',
+                      ? 'var(--warning)'
+                      : 'var(--danger)',
               }}
             >
               {editableSelection.overallMatchScore}% match
@@ -337,7 +370,8 @@ export function GeneratePage() {
                     <div>
                       <div>{bullet.originalText}</div>
                       <div style={{ fontSize: 12, color: 'var(--text-secondary)', marginTop: 2 }}>
-                        Relevance: {bullet.relevanceScore}% | Keywords: {bullet.matchedKeywords.join(', ')}
+                        Relevance: {bullet.relevanceScore}% | Keywords:{' '}
+                        {bullet.matchedKeywords.join(', ')}
                       </div>
                     </div>
                   </div>
@@ -350,22 +384,29 @@ export function GeneratePage() {
             <div className={styles['review-group-header']}>Skills</div>
             <div style={{ padding: 16 }}>
               <div className={styles['skills-list']}>
-                {store.parsedJD.requiredSkills.concat(store.parsedJD.preferredSkills).map((skill) => (
-                  <span
-                    key={skill}
-                    className={`${styles['skill-chip']} ${editableSelection.selectedSkills.includes(skill) ? styles.selected : ''}`}
-                    onClick={() => toggleSkill(skill)}
-                  >
-                    {skill}
-                  </span>
-                ))}
+                {store.parsedJD.requiredSkills
+                  .concat(store.parsedJD.preferredSkills)
+                  .map((skill) => (
+                    <span
+                      key={skill}
+                      className={`${styles['skill-chip']} ${editableSelection.selectedSkills.includes(skill) ? styles.selected : ''}`}
+                      onClick={() => toggleSkill(skill)}
+                    >
+                      {skill}
+                    </span>
+                  ))}
               </div>
             </div>
           </div>
 
           {/* Actions */}
           <div className={styles['review-actions']}>
-            <button className="btn btn-secondary" onClick={() => { store.setStage('idle'); }}>
+            <button
+              className="btn btn-secondary"
+              onClick={() => {
+                store.setStage('idle');
+              }}
+            >
               ← Back to Edit
             </button>
             <button className="btn btn-primary" onClick={handleConfirmAndGenerate}>

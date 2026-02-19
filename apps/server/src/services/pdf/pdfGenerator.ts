@@ -22,11 +22,7 @@ export async function generateCoverLetterPDF(
   return renderHTMLToPDF(html, pageSize);
 }
 
-async function renderHTMLToPDF(
-  html: string,
-  pageSize: 'letter' | 'a4',
-): Promise<Buffer> {
-
+async function renderHTMLToPDF(html: string, pageSize: 'letter' | 'a4'): Promise<Buffer> {
   const browser = await puppeteer.launch({
     headless: true,
     args: ['--no-sandbox', '--disable-setuid-sandbox'],

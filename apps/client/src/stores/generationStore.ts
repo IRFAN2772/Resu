@@ -10,13 +10,13 @@ import type {
 
 export type PipelineStage =
   | 'idle'
-  | 'parsing'       // Step 1: Parsing JD
-  | 'selecting'     // Step 2: Selecting relevant items
-  | 'reviewing'     // Checkpoint: User reviewing selections
-  | 'generating'    // Step 3: Generating resume
-  | 'scoring'       // Step 4: ATS scoring
-  | 'cover-letter'  // Step 5: Generating cover letter
-  | 'complete'      // All done
+  | 'parsing' // Step 1: Parsing JD
+  | 'selecting' // Step 2: Selecting relevant items
+  | 'reviewing' // Checkpoint: User reviewing selections
+  | 'generating' // Step 3: Generating resume
+  | 'scoring' // Step 4: ATS scoring
+  | 'cover-letter' // Step 5: Generating cover letter
+  | 'complete' // All done
   | 'error';
 
 interface GenerationState {

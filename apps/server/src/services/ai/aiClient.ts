@@ -41,9 +41,7 @@ export interface ChatCompletionOptions {
 function getProvider(): AIProvider {
   const raw = (process.env.AI_PROVIDER || 'openai').toLowerCase().trim();
   if (!['openai', 'azure', 'anthropic'].includes(raw)) {
-    throw new Error(
-      `Unknown AI_PROVIDER="${raw}". Valid values: openai, azure, anthropic`,
-    );
+    throw new Error(`Unknown AI_PROVIDER="${raw}". Valid values: openai, azure, anthropic`);
   }
   return raw as AIProvider;
 }
@@ -241,9 +239,7 @@ async function completionViaAnthropic(
  * });
  * console.log(result.content); // parsed JSON string
  */
-export async function chatCompletion(
-  opts: ChatCompletionOptions,
-): Promise<ChatCompletionResult> {
+export async function chatCompletion(opts: ChatCompletionOptions): Promise<ChatCompletionResult> {
   const provider = getProvider();
   const model = getModelName(provider, opts.modelTier);
 
