@@ -155,7 +155,9 @@
   border: 1px dashed #93b4f5;
   border-radius: 4px;
   cursor: pointer;
-  transition: background 0.15s, border-color 0.15s;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
 }
 .clean-minimal .add-btn:hover {
   background: #eff6ff;

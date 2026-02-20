@@ -132,7 +132,10 @@ export function DashboardPage() {
         <div className={styles['modal-overlay']} onClick={() => setDeleteId(null)}>
           <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
             <h3>Delete Resume?</h3>
-            <p>This action cannot be undone. The resume and all its versions will be permanently removed.</p>
+            <p>
+              This action cannot be undone. The resume and all its versions will be permanently
+              removed.
+            </p>
             <div className={styles['modal-actions']}>
               <button className="btn btn-secondary" onClick={() => setDeleteId(null)}>
                 Cancel

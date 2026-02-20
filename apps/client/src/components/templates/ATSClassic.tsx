@@ -93,18 +93,34 @@ export function ATSClassicTemplate({ data, mode, onSave }: ResumeTemplateProps) 
   // ─── Add / Remove helpers ───
   const addExpBullet = (expIdx: number) => {
     const newExp = [...editData.experience];
-    newExp[expIdx] = { ...newExp[expIdx], bullets: [...newExp[expIdx].bullets, 'New bullet point'] };
+    newExp[expIdx] = {
+      ...newExp[expIdx],
+      bullets: [...newExp[expIdx].bullets, 'New bullet point'],
+    };
     setEditData({ ...editData, experience: newExp });
   };
   const removeExpBullet = (expIdx: number, bIdx: number) => {
     const newExp = [...editData.experience];
-    newExp[expIdx] = { ...newExp[expIdx], bullets: newExp[expIdx].bullets.filter((_, i) => i !== bIdx) };
+    newExp[expIdx] = {
+      ...newExp[expIdx],
+      bullets: newExp[expIdx].bullets.filter((_, i) => i !== bIdx),
+    };
     setEditData({ ...editData, experience: newExp });
   };
   const addExperience = () => {
     setEditData({
       ...editData,
-      experience: [...editData.experience, { title: 'New Role', company: 'Company', location: '', startDate: 'YYYY-MM', endDate: 'Present', bullets: ['Describe your achievement...'] }],
+      experience: [
+        ...editData.experience,
+        {
+          title: 'New Role',
+          company: 'Company',
+          location: '',
+          startDate: 'YYYY-MM',
+          endDate: 'Present',
+          bullets: ['Describe your achievement...'],
+        },
+      ],
     });
   };
   const removeExperience = (idx: number) => {
@@ -113,7 +129,18 @@ export function ATSClassicTemplate({ data, mode, onSave }: ResumeTemplateProps) 
   const addEducation = () => {
     setEditData({
       ...editData,
-      education: [...editData.education, { institution: 'University', degree: 'Degree', field: 'Field of Study', startDate: 'YYYY', endDate: 'YYYY', gpa: '', highlights: [] }],
+      education: [
+        ...editData.education,
+        {
+          institution: 'University',
+          degree: 'Degree',
+          field: 'Field of Study',
+          startDate: 'YYYY',
+          endDate: 'YYYY',
+          gpa: '',
+          highlights: [],
+        },
+      ],
     });
   };
   const removeEducation = (idx: number) => {
@@ -122,16 +149,24 @@ export function ATSClassicTemplate({ data, mode, onSave }: ResumeTemplateProps) 
   const addSkillCategory = () => {
     setEditData({
       ...editData,
-      skills: { categories: [...editData.skills.categories, { name: 'New Category', skills: ['Skill 1'] }] },
+      skills: {
+        categories: [...editData.skills.categories, { name: 'New Category', skills: ['Skill 1'] }],
+      },
     });
   };
   const removeSkillCategory = (idx: number) => {
-    setEditData({ ...editData, skills: { categories: editData.skills.categories.filter((_, i) => i !== idx) } });
+    setEditData({
+      ...editData,
+      skills: { categories: editData.skills.categories.filter((_, i) => i !== idx) },
+    });
   };
   const addProject = () => {
     setEditData({
       ...editData,
-      projects: [...editData.projects, { name: 'New Project', description: 'Project description...', highlights: [] }],
+      projects: [
+        ...editData.projects,
+        { name: 'New Project', description: 'Project description...', highlights: [] },
+      ],
     });
   };
   const removeProject = (idx: number) => {
@@ -139,22 +174,34 @@ export function ATSClassicTemplate({ data, mode, onSave }: ResumeTemplateProps) 
   };
   const addProjectHighlight = (projIdx: number) => {
     const newProj = [...editData.projects];
-    newProj[projIdx] = { ...newProj[projIdx], highlights: [...newProj[projIdx].highlights, 'New highlight'] };
+    newProj[projIdx] = {
+      ...newProj[projIdx],
+      highlights: [...newProj[projIdx].highlights, 'New highlight'],
+    };
     setEditData({ ...editData, projects: newProj });
   };
   const removeProjectHighlight = (projIdx: number, hIdx: number) => {
     const newProj = [...editData.projects];
-    newProj[projIdx] = { ...newProj[projIdx], highlights: newProj[projIdx].highlights.filter((_, i) => i !== hIdx) };
+    newProj[projIdx] = {
+      ...newProj[projIdx],
+      highlights: newProj[projIdx].highlights.filter((_, i) => i !== hIdx),
+    };
     setEditData({ ...editData, projects: newProj });
   };
   const addCertification = () => {
     setEditData({
       ...editData,
-      certifications: [...editData.certifications, { name: 'Certification Name', issuer: 'Issuer', date: 'YYYY-MM' }],
+      certifications: [
+        ...editData.certifications,
+        { name: 'Certification Name', issuer: 'Issuer', date: 'YYYY-MM' },
+      ],
     });
   };
   const removeCertification = (idx: number) => {
-    setEditData({ ...editData, certifications: editData.certifications.filter((_, i) => i !== idx) });
+    setEditData({
+      ...editData,
+      certifications: editData.certifications.filter((_, i) => i !== idx),
+    });
   };
 
   const clearEditing = useCallback(() => setEditingField(null), []);
@@ -205,7 +252,13 @@ export function ATSClassicTemplate({ data, mode, onSave }: ResumeTemplateProps) 
           {d.experience.map((exp, expIdx) => (
             <div key={expIdx} className={styles.entry}>
               {isEdit && (
-                <button className={styles['remove-btn']} title="Remove experience" onClick={() => removeExperience(expIdx)}>×</button>
+                <button
+                  className={styles['remove-btn']}
+                  title="Remove experience"
+                  onClick={() => removeExperience(expIdx)}
+                >
+                  ×
+                </button>
               )}
               <div className={styles['entry-header']}>
                 <div>
@@ -263,18 +316,28 @@ export function ATSClassicTemplate({ data, mode, onSave }: ResumeTemplateProps) 
                       multiline
                     />
                     {isEdit && (
-                      <button className={styles['remove-btn-inline']} title="Remove bullet" onClick={() => removeExpBullet(expIdx, bIdx)}>×</button>
+                      <button
+                        className={styles['remove-btn-inline']}
+                        title="Remove bullet"
+                        onClick={() => removeExpBullet(expIdx, bIdx)}
+                      >
+                        ×
+                      </button>
                     )}
                   </li>
                 ))}
               </ul>
               {isEdit && (
-                <button className={styles['add-btn']} onClick={() => addExpBullet(expIdx)}>+ Add Bullet</button>
+                <button className={styles['add-btn']} onClick={() => addExpBullet(expIdx)}>
+                  + Add Bullet
+                </button>
               )}
             </div>
           ))}
           {isEdit && (
-            <button className={styles['add-btn']} onClick={addExperience}>+ Add Experience</button>
+            <button className={styles['add-btn']} onClick={addExperience}>
+              + Add Experience
+            </button>
           )}
         </section>
       )}
@@ -286,7 +349,13 @@ export function ATSClassicTemplate({ data, mode, onSave }: ResumeTemplateProps) 
           {d.education.map((edu, i) => (
             <div key={i} className={styles.entry}>
               {isEdit && (
-                <button className={styles['remove-btn']} title="Remove education" onClick={() => removeEducation(i)}>×</button>
+                <button
+                  className={styles['remove-btn']}
+                  title="Remove education"
+                  onClick={() => removeEducation(i)}
+                >
+                  ×
+                </button>
               )}
               <div className={styles['entry-header']}>
                 <div>
@@ -347,7 +416,9 @@ export function ATSClassicTemplate({ data, mode, onSave }: ResumeTemplateProps) 
             </div>
           ))}
           {isEdit && (
-            <button className={styles['add-btn']} onClick={addEducation}>+ Add Education</button>
+            <button className={styles['add-btn']} onClick={addEducation}>
+              + Add Education
+            </button>
           )}
         </section>
       )}
@@ -375,13 +446,21 @@ export function ATSClassicTemplate({ data, mode, onSave }: ResumeTemplateProps) 
                   multiline
                 />
                 {isEdit && (
-                  <button className={styles['remove-btn-inline']} title="Remove category" onClick={() => removeSkillCategory(i)}>×</button>
+                  <button
+                    className={styles['remove-btn-inline']}
+                    title="Remove category"
+                    onClick={() => removeSkillCategory(i)}
+                  >
+                    ×
+                  </button>
                 )}
               </div>
             ))}
           </div>
           {isEdit && (
-            <button className={styles['add-btn']} onClick={addSkillCategory}>+ Add Skill Category</button>
+            <button className={styles['add-btn']} onClick={addSkillCategory}>
+              + Add Skill Category
+            </button>
           )}
         </section>
       )}
@@ -393,7 +472,13 @@ export function ATSClassicTemplate({ data, mode, onSave }: ResumeTemplateProps) 
           {d.projects.map((proj, i) => (
             <div key={i} className={styles.entry}>
               {isEdit && (
-                <button className={styles['remove-btn']} title="Remove project" onClick={() => removeProject(i)}>×</button>
+                <button
+                  className={styles['remove-btn']}
+                  title="Remove project"
+                  onClick={() => removeProject(i)}
+                >
+                  ×
+                </button>
               )}
               <div className={styles['entry-header']}>
                 <EditableText
@@ -424,19 +509,29 @@ export function ATSClassicTemplate({ data, mode, onSave }: ResumeTemplateProps) 
                         multiline
                       />
                       {isEdit && (
-                        <button className={styles['remove-btn-inline']} title="Remove highlight" onClick={() => removeProjectHighlight(i, j)}>×</button>
+                        <button
+                          className={styles['remove-btn-inline']}
+                          title="Remove highlight"
+                          onClick={() => removeProjectHighlight(i, j)}
+                        >
+                          ×
+                        </button>
                       )}
                     </li>
                   ))}
                 </ul>
               )}
               {isEdit && (
-                <button className={styles['add-btn']} onClick={() => addProjectHighlight(i)}>+ Add Highlight</button>
+                <button className={styles['add-btn']} onClick={() => addProjectHighlight(i)}>
+                  + Add Highlight
+                </button>
               )}
             </div>
           ))}
           {isEdit && (
-            <button className={styles['add-btn']} onClick={addProject}>+ Add Project</button>
+            <button className={styles['add-btn']} onClick={addProject}>
+              + Add Project
+            </button>
           )}
         </section>
       )}
@@ -471,13 +566,21 @@ export function ATSClassicTemplate({ data, mode, onSave }: ResumeTemplateProps) 
                 />
                 <span>)</span>
                 {isEdit && (
-                  <button className={styles['remove-btn-inline']} title="Remove certification" onClick={() => removeCertification(i)}>×</button>
+                  <button
+                    className={styles['remove-btn-inline']}
+                    title="Remove certification"
+                    onClick={() => removeCertification(i)}
+                  >
+                    ×
+                  </button>
                 )}
               </li>
             ))}
           </ul>
           {isEdit && (
-            <button className={styles['add-btn']} onClick={addCertification}>+ Add Certification</button>
+            <button className={styles['add-btn']} onClick={addCertification}>
+              + Add Certification
+            </button>
           )}
         </section>
       )}

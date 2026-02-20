@@ -34,7 +34,10 @@ export function PreviewPage() {
     async (templateId: string) => {
       if (!id || templateId === resume?.templateId) return;
       try {
-        await updateResume(id, { templateId, changeDescription: `Switched template to ${templateId}` });
+        await updateResume(id, {
+          templateId,
+          changeDescription: `Switched template to ${templateId}`,
+        });
         queryClient.invalidateQueries({ queryKey: ['resume', id] });
         toast.success('Template updated');
       } catch (err) {
@@ -160,7 +163,7 @@ export function PreviewPage() {
     'ats-classic': ATSClassicTemplate,
     'clean-minimal': CleanMinimalTemplate,
     'modern-two-column': ModernTwoColumnTemplate,
-    'executive': ExecutiveTemplate,
+    executive: ExecutiveTemplate,
   };
 
   const TemplateComponent = TEMPLATE_MAP[resume.templateId] || ATSClassicTemplate;

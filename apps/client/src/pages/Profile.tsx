@@ -60,7 +60,9 @@ export function ProfilePage() {
       <div className={styles.header}>
         <div>
           <h1>Profile</h1>
-          <p className={styles.subtitle}>Your master profile — the source of truth for all resume generation</p>
+          <p className={styles.subtitle}>
+            Your master profile — the source of truth for all resume generation
+          </p>
         </div>
         <div className={styles['header-actions']}>
           <button className="btn btn-secondary" onClick={handleReset} disabled={saving}>
@@ -94,7 +96,9 @@ export function ProfilePage() {
           {activeSection === 'skills' && <SkillsSection form={form} setForm={setForm} />}
           {activeSection === 'education' && <EducationSection form={form} setForm={setForm} />}
           {activeSection === 'projects' && <ProjectsSection form={form} setForm={setForm} />}
-          {activeSection === 'certifications' && <CertificationsSection form={form} setForm={setForm} />}
+          {activeSection === 'certifications' && (
+            <CertificationsSection form={form} setForm={setForm} />
+          )}
         </div>
       </div>
     </div>
@@ -104,13 +108,28 @@ export function ProfilePage() {
 // ─── Helpers ───
 type SectionProps = { form: PersonalProfile; setForm: (f: PersonalProfile) => void };
 
-function Field({ label, value, onChange, type = 'text', placeholder }: {
-  label: string; value: string; onChange: (v: string) => void; type?: string; placeholder?: string;
+function Field({
+  label,
+  value,
+  onChange,
+  type = 'text',
+  placeholder,
+}: {
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+  type?: string;
+  placeholder?: string;
 }) {
   return (
     <div className={styles.field}>
       <label>{label}</label>
-      <input type={type} value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} />
+      <input
+        type={type}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={placeholder}
+      />
     </div>
   );
 }
@@ -129,9 +148,24 @@ function ContactSection({ form, setForm }: SectionProps) {
         <Field label="Email" value={c.email} onChange={(v) => set('email', v)} type="email" />
         <Field label="Phone" value={c.phone || ''} onChange={(v) => set('phone', v)} />
         <Field label="Location" value={c.location || ''} onChange={(v) => set('location', v)} />
-        <Field label="LinkedIn" value={c.linkedin || ''} onChange={(v) => set('linkedin', v)} placeholder="linkedin.com/in/..." />
-        <Field label="GitHub" value={c.github || ''} onChange={(v) => set('github', v)} placeholder="github.com/..." />
-        <Field label="Website" value={c.website || ''} onChange={(v) => set('website', v)} placeholder="https://..." />
+        <Field
+          label="LinkedIn"
+          value={c.linkedin || ''}
+          onChange={(v) => set('linkedin', v)}
+          placeholder="linkedin.com/in/..."
+        />
+        <Field
+          label="GitHub"
+          value={c.github || ''}
+          onChange={(v) => set('github', v)}
+          placeholder="github.com/..."
+        />
+        <Field
+          label="Website"
+          value={c.website || ''}
+          onChange={(v) => set('website', v)}
+          placeholder="https://..."
+        />
       </div>
     </div>
   );
@@ -188,7 +222,10 @@ function ExperienceSection({ form, setForm }: SectionProps) {
     const exps = [...form.experience];
     exps[expIdx] = {
       ...exps[expIdx],
-      bullets: [...exps[expIdx].bullets, { text: '', tags: [], category: 'other' as const, strength: 3 }],
+      bullets: [
+        ...exps[expIdx].bullets,
+        { text: '', tags: [], category: 'other' as const, strength: 3 },
+      ],
     };
     setForm({ ...form, experience: exps });
   };
@@ -214,26 +251,66 @@ function ExperienceSection({ form, setForm }: SectionProps) {
     <div className={styles.section}>
       <div className={styles['section-header']}>
         <h2>Experience</h2>
-        <button className="btn btn-sm btn-primary" onClick={addExperience}>+ Add</button>
+        <button className="btn btn-sm btn-primary" onClick={addExperience}>
+          + Add
+        </button>
       </div>
       {form.experience.map((exp, i) => (
         <div key={exp.id} className={styles.card}>
           <div className={styles['card-header']}>
-            <span className={styles['card-title']}>{exp.title || 'New Position'} — {exp.company || 'Company'}</span>
-            <button className="btn btn-sm btn-danger" onClick={() => removeExperience(i)}>Remove</button>
+            <span className={styles['card-title']}>
+              {exp.title || 'New Position'} — {exp.company || 'Company'}
+            </span>
+            <button className="btn btn-sm btn-danger" onClick={() => removeExperience(i)}>
+              Remove
+            </button>
           </div>
           <div className={styles.grid}>
             <Field label="Title" value={exp.title} onChange={(v) => updateExp(i, 'title', v)} />
-            <Field label="Company" value={exp.company} onChange={(v) => updateExp(i, 'company', v)} />
-            <Field label="Location" value={exp.location || ''} onChange={(v) => updateExp(i, 'location', v)} />
-            <Field label="Start Date" value={exp.startDate} onChange={(v) => updateExp(i, 'startDate', v)} placeholder="2020-01" />
-            <Field label="End Date" value={exp.endDate || ''} onChange={(v) => updateExp(i, 'endDate', v)} placeholder="Present" />
-            <Field label="Tags" value={exp.tags.join(', ')} onChange={(v) => updateExp(i, 'tags', v.split(',').map(s => s.trim()).filter(Boolean))} placeholder="react, typescript, ..." />
+            <Field
+              label="Company"
+              value={exp.company}
+              onChange={(v) => updateExp(i, 'company', v)}
+            />
+            <Field
+              label="Location"
+              value={exp.location || ''}
+              onChange={(v) => updateExp(i, 'location', v)}
+            />
+            <Field
+              label="Start Date"
+              value={exp.startDate}
+              onChange={(v) => updateExp(i, 'startDate', v)}
+              placeholder="2020-01"
+            />
+            <Field
+              label="End Date"
+              value={exp.endDate || ''}
+              onChange={(v) => updateExp(i, 'endDate', v)}
+              placeholder="Present"
+            />
+            <Field
+              label="Tags"
+              value={exp.tags.join(', ')}
+              onChange={(v) =>
+                updateExp(
+                  i,
+                  'tags',
+                  v
+                    .split(',')
+                    .map((s) => s.trim())
+                    .filter(Boolean),
+                )
+              }
+              placeholder="react, typescript, ..."
+            />
           </div>
           <div className={styles.bullets}>
             <div className={styles['bullets-header']}>
               <label>Bullets ({exp.bullets.length})</label>
-              <button className="btn btn-sm btn-secondary" onClick={() => addBullet(i)}>+ Bullet</button>
+              <button className="btn btn-sm btn-secondary" onClick={() => addBullet(i)}>
+                + Bullet
+              </button>
             </div>
             {exp.bullets.map((b, bi) => (
               <div key={bi} className={styles['bullet-row']}>
@@ -259,7 +336,13 @@ function ExperienceSection({ form, setForm }: SectionProps) {
                   <option value="process">Process</option>
                   <option value="other">Other</option>
                 </select>
-                <button className={styles['remove-btn']} onClick={() => removeBullet(i, bi)} title="Remove bullet">×</button>
+                <button
+                  className={styles['remove-btn']}
+                  onClick={() => removeBullet(i, bi)}
+                  title="Remove bullet"
+                >
+                  ×
+                </button>
               </div>
             ))}
           </div>
@@ -274,7 +357,10 @@ function SkillsSection({ form, setForm }: SectionProps) {
   const addSkill = () => {
     setForm({
       ...form,
-      skills: [...form.skills, { name: '', aliases: [], proficiency: 'intermediate' as const, category: '' }],
+      skills: [
+        ...form.skills,
+        { name: '', aliases: [], proficiency: 'intermediate' as const, category: '' },
+      ],
     });
   };
 
@@ -292,7 +378,9 @@ function SkillsSection({ form, setForm }: SectionProps) {
     <div className={styles.section}>
       <div className={styles['section-header']}>
         <h2>Skills</h2>
-        <button className="btn btn-sm btn-primary" onClick={addSkill}>+ Add</button>
+        <button className="btn btn-sm btn-primary" onClick={addSkill}>
+          + Add
+        </button>
       </div>
       <div className={styles['skill-grid']}>
         {form.skills.map((skill, i) => (
@@ -317,7 +405,9 @@ function SkillsSection({ form, setForm }: SectionProps) {
               <option value="advanced">Advanced</option>
               <option value="intermediate">Intermediate</option>
             </select>
-            <button className={styles['remove-btn']} onClick={() => removeSkill(i)} title="Remove">×</button>
+            <button className={styles['remove-btn']} onClick={() => removeSkill(i)} title="Remove">
+              ×
+            </button>
           </div>
         ))}
       </div>
@@ -332,7 +422,14 @@ function EducationSection({ form, setForm }: SectionProps) {
       ...form,
       education: [
         ...form.education,
-        { id: crypto.randomUUID(), institution: '', degree: '', field: '', startDate: '', highlights: [] },
+        {
+          id: crypto.randomUUID(),
+          institution: '',
+          degree: '',
+          field: '',
+          startDate: '',
+          highlights: [],
+        },
       ],
     });
   };
@@ -351,20 +448,42 @@ function EducationSection({ form, setForm }: SectionProps) {
     <div className={styles.section}>
       <div className={styles['section-header']}>
         <h2>Education</h2>
-        <button className="btn btn-sm btn-primary" onClick={addEducation}>+ Add</button>
+        <button className="btn btn-sm btn-primary" onClick={addEducation}>
+          + Add
+        </button>
       </div>
       {form.education.map((edu, i) => (
         <div key={edu.id} className={styles.card}>
           <div className={styles['card-header']}>
-            <span className={styles['card-title']}>{edu.degree || 'New Degree'} — {edu.institution || 'Institution'}</span>
-            <button className="btn btn-sm btn-danger" onClick={() => removeEducation(i)}>Remove</button>
+            <span className={styles['card-title']}>
+              {edu.degree || 'New Degree'} — {edu.institution || 'Institution'}
+            </span>
+            <button className="btn btn-sm btn-danger" onClick={() => removeEducation(i)}>
+              Remove
+            </button>
           </div>
           <div className={styles.grid}>
-            <Field label="Institution" value={edu.institution} onChange={(v) => updateEdu(i, 'institution', v)} />
+            <Field
+              label="Institution"
+              value={edu.institution}
+              onChange={(v) => updateEdu(i, 'institution', v)}
+            />
             <Field label="Degree" value={edu.degree} onChange={(v) => updateEdu(i, 'degree', v)} />
-            <Field label="Field of Study" value={edu.field} onChange={(v) => updateEdu(i, 'field', v)} />
-            <Field label="Start Date" value={edu.startDate} onChange={(v) => updateEdu(i, 'startDate', v)} />
-            <Field label="End Date" value={edu.endDate || ''} onChange={(v) => updateEdu(i, 'endDate', v)} />
+            <Field
+              label="Field of Study"
+              value={edu.field}
+              onChange={(v) => updateEdu(i, 'field', v)}
+            />
+            <Field
+              label="Start Date"
+              value={edu.startDate}
+              onChange={(v) => updateEdu(i, 'startDate', v)}
+            />
+            <Field
+              label="End Date"
+              value={edu.endDate || ''}
+              onChange={(v) => updateEdu(i, 'endDate', v)}
+            />
             <Field label="GPA" value={edu.gpa || ''} onChange={(v) => updateEdu(i, 'gpa', v)} />
           </div>
         </div>
@@ -399,18 +518,35 @@ function ProjectsSection({ form, setForm }: SectionProps) {
     <div className={styles.section}>
       <div className={styles['section-header']}>
         <h2>Projects</h2>
-        <button className="btn btn-sm btn-primary" onClick={addProject}>+ Add</button>
+        <button className="btn btn-sm btn-primary" onClick={addProject}>
+          + Add
+        </button>
       </div>
       {form.projects.map((proj, i) => (
         <div key={proj.id} className={styles.card}>
           <div className={styles['card-header']}>
             <span className={styles['card-title']}>{proj.name || 'New Project'}</span>
-            <button className="btn btn-sm btn-danger" onClick={() => removeProject(i)}>Remove</button>
+            <button className="btn btn-sm btn-danger" onClick={() => removeProject(i)}>
+              Remove
+            </button>
           </div>
           <div className={styles.grid}>
             <Field label="Name" value={proj.name} onChange={(v) => updateProj(i, 'name', v)} />
             <Field label="URL" value={proj.url || ''} onChange={(v) => updateProj(i, 'url', v)} />
-            <Field label="Tags" value={proj.tags.join(', ')} onChange={(v) => updateProj(i, 'tags', v.split(',').map(s => s.trim()).filter(Boolean))} />
+            <Field
+              label="Tags"
+              value={proj.tags.join(', ')}
+              onChange={(v) =>
+                updateProj(
+                  i,
+                  'tags',
+                  v
+                    .split(',')
+                    .map((s) => s.trim())
+                    .filter(Boolean),
+                )
+              }
+            />
           </div>
           <div className={styles.field} style={{ marginTop: 8 }}>
             <label>Description</label>
@@ -453,20 +589,41 @@ function CertificationsSection({ form, setForm }: SectionProps) {
     <div className={styles.section}>
       <div className={styles['section-header']}>
         <h2>Certifications</h2>
-        <button className="btn btn-sm btn-primary" onClick={addCert}>+ Add</button>
+        <button className="btn btn-sm btn-primary" onClick={addCert}>
+          + Add
+        </button>
       </div>
       {form.certifications.map((cert, i) => (
         <div key={cert.id} className={styles.card}>
           <div className={styles['card-header']}>
             <span className={styles['card-title']}>{cert.name || 'New Certification'}</span>
-            <button className="btn btn-sm btn-danger" onClick={() => removeCert(i)}>Remove</button>
+            <button className="btn btn-sm btn-danger" onClick={() => removeCert(i)}>
+              Remove
+            </button>
           </div>
           <div className={styles.grid}>
             <Field label="Name" value={cert.name} onChange={(v) => updateCert(i, 'name', v)} />
-            <Field label="Issuer" value={cert.issuer} onChange={(v) => updateCert(i, 'issuer', v)} />
+            <Field
+              label="Issuer"
+              value={cert.issuer}
+              onChange={(v) => updateCert(i, 'issuer', v)}
+            />
             <Field label="Date" value={cert.date} onChange={(v) => updateCert(i, 'date', v)} />
             <Field label="URL" value={cert.url || ''} onChange={(v) => updateCert(i, 'url', v)} />
-            <Field label="Tags" value={cert.tags.join(', ')} onChange={(v) => updateCert(i, 'tags', v.split(',').map(s => s.trim()).filter(Boolean))} />
+            <Field
+              label="Tags"
+              value={cert.tags.join(', ')}
+              onChange={(v) =>
+                updateCert(
+                  i,
+                  'tags',
+                  v
+                    .split(',')
+                    .map((s) => s.trim())
+                    .filter(Boolean),
+                )
+              }
+            />
           </div>
         </div>
       ))}
