@@ -1,0 +1,23 @@
+.container {
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.code {
+  font-size: 96px;
+  font-weight: 800;
+  color: var(--primary);
+  line-height: 1;
+  margin-bottom: 16px;
+}
+
+.container h1 {
+  font-size: 24px;
+  margin-bottom: 8px;
+}
+
+.container p {
+  color: var(--text-secondary);
+  font-size: 16px;
+  margin-bottom: 24px;
+}

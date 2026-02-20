@@ -34,3 +34,13 @@ export function loadProfile(): PersonalProfile {
   );
   return cachedProfile;
 }
+
+export function saveProfile(profile: PersonalProfile): void {
+  fs.writeFileSync(PROFILE_PATH, JSON.stringify(profile, null, 2), 'utf-8');
+  cachedProfile = profile;
+  console.log(`✅ Profile saved: ${profile.contact.name}`);
+}
+
+export function invalidateProfileCache(): void {
+  cachedProfile = null;
+}

@@ -1,0 +1,228 @@
+/* ─── Modern Two-Column Resume Template ─── */
+.template {
+  font-family: 'Segoe UI', -apple-system, sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #1a1a1a;
+}
+
+/* ── Header ── */
+.header {
+  text-align: center;
+  padding-bottom: 16px;
+  margin-bottom: 20px;
+  border-bottom: 3px solid #2563eb;
+}
+.name {
+  font-size: 28px;
+  font-weight: 700;
+  color: #2563eb;
+  margin-bottom: 6px;
+  letter-spacing: 0.5px;
+}
+.contactRow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px 16px;
+  font-size: 12px;
+  color: #555;
+}
+.contactItem {
+  display: inline;
+}
+
+/* ── Two Columns ── */
+.columns {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 24px;
+  align-items: start;
+}
+.mainCol {
+  min-width: 0;
+}
+.sideCol {
+  background: #f8fafc;
+  border-radius: 8px;
+  padding: 16px;
+  border: 1px solid #e5e7eb;
+}
+
+/* ── Sections ── */
+.section {
+  margin-bottom: 18px;
+}
+.sectionTitle {
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #2563eb;
+  margin-bottom: 10px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid #e5e7eb;
+}
+.summaryText {
+  font-size: 13px;
+  color: #374151;
+}
+
+/* ── Entry ── */
+.entry {
+  margin-bottom: 14px;
+  position: relative;
+}
+.entryHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 4px;
+}
+.entryLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.entryTitle {
+  font-weight: 600;
+  font-size: 14px;
+}
+.entryCompany {
+  color: #555;
+  font-size: 13px;
+}
+.entryDates {
+  font-size: 12px;
+  color: #6b7280;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ── Bullets ── */
+.bullets {
+  margin: 4px 0 0 16px;
+  padding: 0;
+  list-style: disc;
+}
+.bullets li {
+  margin-bottom: 2px;
+  font-size: 13px;
+  line-height: 1.5;
+  position: relative;
+}
+
+/* ── Skills (sidebar) ── */
+.skillGroup {
+  margin-bottom: 10px;
+  position: relative;
+}
+.skillLabel {
+  font-size: 12px;
+  color: #2563eb;
+  display: block;
+  margin-bottom: 2px;
+}
+.skillItems {
+  font-size: 12px;
+  color: #374151;
+  line-height: 1.6;
+}
+
+/* ── Education (sidebar) ── */
+.eduEntry {
+  margin-bottom: 12px;
+  position: relative;
+}
+.eduField {
+  font-size: 12px;
+  color: #555;
+}
+.eduInst {
+  font-size: 12px;
+  color: #6b7280;
+}
+.eduDates {
+  font-size: 11px;
+  color: #9ca3af;
+}
+
+/* ── Certifications (sidebar) ── */
+.certEntry {
+  margin-bottom: 10px;
+  position: relative;
+}
+.certMeta {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+/* ── Edit Mode ── */
+.removeBtn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #fee2e2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  cursor: pointer;
+  z-index: 1;
+}
+.removeBtn:hover {
+  background: #dc2626;
+  color: white;
+}
+
+.removeBtnInline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fee2e2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+  font-size: 12px;
+  cursor: pointer;
+  margin-left: 4px;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+.removeBtnInline:hover {
+  background: #dc2626;
+  color: white;
+}
+
+.addBtn {
+  display: inline-block;
+  margin-top: 4px;
+  padding: 2px 10px;
+  font-size: 12px;
+  color: #2563eb;
+  background: #eff6ff;
+  border: 1px dashed #93c5fd;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.addBtn:hover {
+  background: #dbeafe;
+}
+
+.editActions {
+  margin-top: 16px;
+  text-align: right;
+}
+
+/* ── Editable field highlight ── */
+.editing {
+  outline: 2px solid #2563eb;
+  border-radius: 2px;
+}

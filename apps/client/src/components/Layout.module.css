@@ -71,3 +71,35 @@
   flex: 1;
   padding: 24px;
 }
+
+/* ─── Responsive ─── */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 10px 16px;
+  }
+  .navbar-brand {
+    font-size: 18px;
+  }
+  .navbar-links {
+    gap: 14px;
+  }
+  .navbar-links a {
+    font-size: 13px;
+  }
+  .main-content {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar-links {
+    gap: 10px;
+  }
+  .navbar-links a {
+    font-size: 12px;
+  }
+  .theme-toggle {
+    padding: 4px 8px;
+    font-size: 14px;
+  }
+}

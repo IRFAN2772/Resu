@@ -35,6 +35,9 @@ export function Layout() {
           <Link to="/generate" className={isActive('/generate')}>
             Generate
           </Link>
+          <Link to="/profile" className={isActive('/profile')}>
+            Profile
+          </Link>
           <button className={styles['theme-toggle']} onClick={toggleTheme} title="Toggle theme">
             {theme === 'light' ? '🌙' : '☀️'}
           </button>

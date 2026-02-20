@@ -92,3 +92,10 @@ export function listTemplates() {
 export function getProfile() {
   return fetchJSON<PersonalProfile>('/profile');
 }
+
+export function updateProfile(data: PersonalProfile) {
+  return fetchJSON<{ success: boolean }>('/profile', {
+    method: 'PUT',
+    body: JSON.stringify(data),
+  });
+}

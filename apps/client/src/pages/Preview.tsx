@@ -2,9 +2,11 @@ import { useState, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
-import { getResume, updateResume, exportResumePDF } from '../lib/api';
+import { getResume, updateResume, exportResumePDF, listTemplates } from '../lib/api';
 import { ATSClassicTemplate } from '../components/templates/ATSClassic';
 import { CleanMinimalTemplate } from '../components/templates/CleanMinimal';
+import { ModernTwoColumnTemplate } from '../components/templates/ModernTwoColumn';
+import { ExecutiveTemplate } from '../components/templates/Executive';
 import type { ResumeData, CoverLetterData } from '@resu/shared';
 import styles from './Preview.module.css';
 
@@ -21,6 +23,26 @@ export function PreviewPage() {
     queryFn: () => getResume(id!),
     enabled: !!id,
   });
+
+  const { data: templates } = useQuery({
+    queryKey: ['templates'],
+    queryFn: listTemplates,
+  });
+
+  // ─── Template switching ───
+  const handleTemplateChange = useCallback(
+    async (templateId: string) => {
+      if (!id || templateId === resume?.templateId) return;
+      try {
+        await updateResume(id, { templateId, changeDescription: `Switched template to ${templateId}` });
+        queryClient.invalidateQueries({ queryKey: ['resume', id] });
+        toast.success('Template updated');
+      } catch (err) {
+        toast.error(err instanceof Error ? err.message : 'Template switch failed');
+      }
+    },
+    [id, resume?.templateId, queryClient],
+  );
 
   // ─── PDF Export ───
   const handleExport = useCallback(async () => {
@@ -96,6 +118,24 @@ export function PreviewPage() {
     }
   }, [resume]);
 
+  // ─── Restore a version ───
+  const handleRestoreVersion = useCallback(
+    async (version: { id: string; resumeData: ResumeData; changeDescription: string }) => {
+      if (!id) return;
+      try {
+        await updateResume(id, {
+          resumeData: version.resumeData,
+          changeDescription: `Restored from: ${version.changeDescription}`,
+        });
+        toast.success('Version restored');
+        queryClient.invalidateQueries({ queryKey: ['resume', id] });
+      } catch (err) {
+        toast.error(err instanceof Error ? err.message : 'Restore failed');
+      }
+    },
+    [id, queryClient],
+  );
+
   const updateCLField = (field: 'opening' | 'closing', value: string) => {
     if (coverLetterData) setCoverLetterData({ ...coverLetterData, [field]: value });
   };
@@ -116,8 +156,14 @@ export function PreviewPage() {
     );
   }
 
-  const TemplateComponent =
-    resume.templateId === 'clean-minimal' ? CleanMinimalTemplate : ATSClassicTemplate;
+  const TEMPLATE_MAP: Record<string, typeof ATSClassicTemplate> = {
+    'ats-classic': ATSClassicTemplate,
+    'clean-minimal': CleanMinimalTemplate,
+    'modern-two-column': ModernTwoColumnTemplate,
+    'executive': ExecutiveTemplate,
+  };
+
+  const TemplateComponent = TEMPLATE_MAP[resume.templateId] || ATSClassicTemplate;
 
   function getScoreColor(score: number) {
     if (score >= 80) return 'var(--success)';
@@ -243,6 +289,27 @@ export function PreviewPage() {
           </div>
         </div>
 
+        {/* Template Selector */}
+        {templates && templates.length > 0 && (
+          <div className={styles['sidebar-card']}>
+            <div className={styles['sidebar-card-header']}>Template</div>
+            <div className={styles['sidebar-card-body']}>
+              <div className={styles['template-list']}>
+                {templates.map((t) => (
+                  <button
+                    key={t.id}
+                    className={`${styles['template-option']} ${resume.templateId === t.id ? styles['template-active'] : ''}`}
+                    onClick={() => handleTemplateChange(t.id)}
+                  >
+                    <span className={styles['template-name']}>{t.name}</span>
+                    <span className={styles['template-desc']}>{t.description}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* ATS Score */}
         <div className={styles['sidebar-card']}>
           <div className={styles['sidebar-card-header']}>ATS Score</div>
@@ -310,10 +377,18 @@ export function PreviewPage() {
               <div className={styles['version-list']}>
                 {resume.versions.map((v) => (
                   <div key={v.id} className={styles['version-item']}>
-                    <div>{v.changeDescription}</div>
-                    <div className={styles['version-date']}>
-                      {new Date(v.createdAt).toLocaleString()}
+                    <div className={styles['version-info']}>
+                      <div>{v.changeDescription}</div>
+                      <div className={styles['version-date']}>
+                        {new Date(v.createdAt).toLocaleString()}
+                      </div>
                     </div>
+                    <button
+                      className="btn btn-sm btn-secondary"
+                      onClick={() => handleRestoreVersion(v)}
+                    >
+                      Restore
+                    </button>
                   </div>
                 ))}
               </div>

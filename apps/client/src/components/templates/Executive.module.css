@@ -1,0 +1,228 @@
+/* ─── Executive Resume Template ─── */
+/* Premium, serif-accented design for senior professionals */
+
+.template {
+  font-family: 'Georgia', 'Times New Roman', serif;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #1a1a1a;
+}
+
+/* ── Header ── */
+.header {
+  text-align: center;
+  padding-bottom: 20px;
+  margin-bottom: 24px;
+  border-bottom: 2px double #1a1a1a;
+}
+.name {
+  font-size: 32px;
+  font-weight: 400;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  color: #1a1a1a;
+}
+.contactRow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px 20px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 12px;
+  color: #555;
+}
+.contactItem {
+  position: relative;
+}
+
+/* ── Sections ── */
+.section {
+  margin-bottom: 20px;
+}
+.sectionTitle {
+  font-size: 14px;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #1a1a1a;
+  margin-bottom: 12px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #d1d5db;
+}
+.summaryText {
+  font-size: 13px;
+  color: #374151;
+  font-style: italic;
+}
+
+/* ── Entry ── */
+.entry {
+  margin-bottom: 16px;
+  position: relative;
+}
+.entryHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 2px;
+}
+.entryTitle {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+}
+.entrySubheader {
+  display: flex;
+  gap: 8px;
+  font-size: 13px;
+  color: #555;
+  margin-bottom: 4px;
+}
+.entryCompany {
+  font-style: italic;
+}
+.entryLocation {
+  color: #6b7280;
+}
+.entryDates {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 12px;
+  color: #6b7280;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ── Bullets ── */
+.bullets {
+  margin: 6px 0 0 18px;
+  padding: 0;
+  list-style: square;
+}
+.bullets li {
+  margin-bottom: 3px;
+  font-size: 13px;
+  line-height: 1.5;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  position: relative;
+}
+
+/* ── Skills ── */
+.skillGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.skillGroup {
+  position: relative;
+}
+.skillLabel {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 12px;
+  color: #374151;
+  display: block;
+}
+.skillItems {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+/* ── Education ── */
+.eduEntry {
+  margin-bottom: 12px;
+  position: relative;
+}
+.eduInst {
+  font-size: 13px;
+  color: #6b7280;
+  font-style: italic;
+}
+
+/* ── Certifications ── */
+.certGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.certEntry {
+  position: relative;
+}
+.certMeta {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 12px;
+  color: #6b7280;
+  display: block;
+}
+
+/* ── Edit Mode ── */
+.removeBtn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #fee2e2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  cursor: pointer;
+  z-index: 1;
+}
+.removeBtn:hover {
+  background: #dc2626;
+  color: white;
+}
+
+.removeBtnInline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fee2e2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+  font-size: 12px;
+  cursor: pointer;
+  margin-left: 4px;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+.removeBtnInline:hover {
+  background: #dc2626;
+  color: white;
+}
+
+.addBtn {
+  display: inline-block;
+  margin-top: 4px;
+  padding: 2px 10px;
+  font-size: 12px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: #6b7280;
+  background: #f9fafb;
+  border: 1px dashed #d1d5db;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.addBtn:hover {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.editActions {
+  margin-top: 16px;
+  text-align: right;
+}
+
+/* ── Editable field highlight ── */
+.editing {
+  outline: 2px solid #6b7280;
+  border-radius: 2px;
+}

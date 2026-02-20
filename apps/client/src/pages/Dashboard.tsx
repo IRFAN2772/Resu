@@ -1,12 +1,15 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
-import { listResumes } from '../lib/api';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { toast } from 'sonner';
+import { listResumes, deleteResume } from '../lib/api';
 import styles from './Dashboard.module.css';
 
 export function DashboardPage() {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const [search, setSearch] = useState('');
+  const [deleteId, setDeleteId] = useState<string | null>(null);
 
   const { data: resumes, isLoading } = useQuery({
     queryKey: ['resumes'],
@@ -17,6 +20,20 @@ export function DashboardPage() {
     (r) =>
       r.company.toLowerCase().includes(search.toLowerCase()) ||
       r.jobTitle.toLowerCase().includes(search.toLowerCase()),
+  );
+
+  const handleDelete = useCallback(
+    async (id: string) => {
+      try {
+        await deleteResume(id);
+        queryClient.invalidateQueries({ queryKey: ['resumes'] });
+        toast.success('Resume deleted');
+        setDeleteId(null);
+      } catch (err) {
+        toast.error(err instanceof Error ? err.message : 'Delete failed');
+      }
+    },
+    [queryClient],
   );
 
   function getScoreColor(score: number) {
@@ -75,25 +92,56 @@ export function DashboardPage() {
       ) : (
         <div className={styles['resume-list']}>
           {filtered.map((resume) => (
-            <Link key={resume.id} to={`/resume/${resume.id}`} className={styles['resume-card']}>
-              <div className={styles['resume-info']}>
-                <span className={styles['resume-company']}>{resume.company}</span>
-                <span className={styles['resume-title']}>{resume.jobTitle}</span>
-              </div>
-              <div className={styles['resume-meta']}>
-                <span className={getStatusBadge(resume.status)}>{resume.status}</span>
-                <span
-                  className={styles['ats-score']}
-                  style={{ color: getScoreColor(resume.atsScore) }}
-                >
-                  ATS: {resume.atsScore}
-                </span>
-                <span className={styles['resume-date']}>
-                  {new Date(resume.createdAt).toLocaleDateString()}
-                </span>
-              </div>
-            </Link>
+            <div key={resume.id} className={styles['resume-card']}>
+              <Link to={`/resume/${resume.id}`} className={styles['resume-link']}>
+                <div className={styles['resume-info']}>
+                  <span className={styles['resume-company']}>{resume.company}</span>
+                  <span className={styles['resume-title']}>{resume.jobTitle}</span>
+                </div>
+                <div className={styles['resume-meta']}>
+                  <span className={getStatusBadge(resume.status)}>{resume.status}</span>
+                  <span
+                    className={styles['ats-score']}
+                    style={{ color: getScoreColor(resume.atsScore) }}
+                  >
+                    ATS: {resume.atsScore}
+                  </span>
+                  <span className={styles['resume-date']}>
+                    {new Date(resume.createdAt).toLocaleDateString()}
+                  </span>
+                </div>
+              </Link>
+              <button
+                className={styles['delete-btn']}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setDeleteId(resume.id);
+                }}
+                title="Delete resume"
+              >
+                ×
+              </button>
+            </div>
           ))}
+        </div>
+      )}
+
+      {/* Delete confirmation modal */}
+      {deleteId && (
+        <div className={styles['modal-overlay']} onClick={() => setDeleteId(null)}>
+          <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+            <h3>Delete Resume?</h3>
+            <p>This action cannot be undone. The resume and all its versions will be permanently removed.</p>
+            <div className={styles['modal-actions']}>
+              <button className="btn btn-secondary" onClick={() => setDeleteId(null)}>
+                Cancel
+              </button>
+              <button className="btn btn-danger" onClick={() => handleDelete(deleteId)}>
+                Delete
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>

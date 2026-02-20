@@ -269,3 +269,27 @@
   align-items: center;
   justify-content: space-between;
 }
+
+/* ─── Responsive ─── */
+@media (max-width: 768px) {
+  .steps {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .step {
+    font-size: 12px;
+  }
+  .step-dot {
+    width: 24px;
+    height: 24px;
+    font-size: 11px;
+  }
+  .review-actions {
+    flex-direction: column;
+  }
+  .error-box {
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+  }
+}
