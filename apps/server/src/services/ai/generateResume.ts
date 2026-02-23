@@ -60,7 +60,12 @@ export async function generateResume(
       seenExtra.add(lower);
       return true;
     })
-    .map((name) => ({ name, aliases: [], proficiency: 'intermediate' as const, category: 'other' }));
+    .map((name) => ({
+      name,
+      aliases: [],
+      proficiency: 'intermediate' as const,
+      category: 'other',
+    }));
 
   const allSelectedSkills = [...selectedSkills, ...extraSkills];
 
