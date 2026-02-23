@@ -45,7 +45,24 @@ export async function generateResume(
     })
     .filter(Boolean);
 
-  const selectedSkills = profile.skills.filter((s) => selection.selectedSkills.includes(s.name));
+  const selectedSkills = profile.skills.filter((s) =>
+    selection.selectedSkills.some((sel) => sel.toLowerCase() === s.name.toLowerCase()),
+  );
+
+  // Include skills added via ATS gap chips that don't exist in the profile
+  // Deduplicate by lowercase name to avoid "full-stack development" + "Full-stack development"
+  const profileSkillNames = new Set(profile.skills.map((s) => s.name.toLowerCase()));
+  const seenExtra = new Set<string>();
+  const extraSkills = selection.selectedSkills
+    .filter((s) => {
+      const lower = s.toLowerCase();
+      if (profileSkillNames.has(lower) || seenExtra.has(lower)) return false;
+      seenExtra.add(lower);
+      return true;
+    })
+    .map((name) => ({ name, aliases: [], proficiency: 'intermediate' as const, category: 'other' }));
+
+  const allSelectedSkills = [...selectedSkills, ...extraSkills];
 
   const selectedProjects = profile.projects.filter((p) =>
     selection.selectedProjects.includes(p.id),
@@ -60,7 +77,7 @@ export async function generateResume(
       contact: profile.contact,
       proposedSummary: selection.proposedSummary,
       selectedExperiences,
-      selectedSkills,
+      selectedSkills: allSelectedSkills,
       education: profile.education,
       selectedProjects,
       selectedCertifications: selectedCerts,

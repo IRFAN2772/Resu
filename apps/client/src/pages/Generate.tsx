@@ -1,9 +1,10 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { useGenerationStore, type PipelineStage } from '../stores/generationStore';
 import { parseJD, confirmGeneration, listTemplates } from '../lib/api';
+import { computeATSPreview } from '../lib/atsPreview';
 import type { RelevanceSelection, SelectedBullet, GenerationConfig } from '@resu/shared';
 import styles from './Generate.module.css';
 
@@ -98,17 +99,24 @@ export function GeneratePage() {
     });
   };
 
-  // ─── Toggle skill selection ───
+  // ─── Toggle skill selection (case-insensitive) ───
   const toggleSkill = (skillName: string) => {
     if (!editableSelection) return;
-    const exists = editableSelection.selectedSkills.includes(skillName);
+    const lower = skillName.toLowerCase();
+    const exists = editableSelection.selectedSkills.some((s) => s.toLowerCase() === lower);
     setEditableSelection({
       ...editableSelection,
       selectedSkills: exists
-        ? editableSelection.selectedSkills.filter((s) => s !== skillName)
+        ? editableSelection.selectedSkills.filter((s) => s.toLowerCase() !== lower)
         : [...editableSelection.selectedSkills, skillName],
     });
   };
+
+  // ─── ATS Preview (recomputes when selection changes) ───
+  const atsPreview = useMemo(() => {
+    if (!store.parsedJD || !editableSelection) return null;
+    return computeATSPreview(store.parsedJD, editableSelection);
+  }, [store.parsedJD, editableSelection]);
 
   // ─── Render based on stage ───
   const stage = store.stage;
@@ -325,6 +333,128 @@ export function GeneratePage() {
             </span>
           </div>
 
+          {/* ─── ATS Preview Panel ─── */}
+          {atsPreview && (
+            <div className={styles['ats-preview']}>
+              <div className={styles['ats-preview-header']}>
+                <div className={styles['ats-score-ring']}>
+                  <svg viewBox="0 0 80 80">
+                    <circle
+                      cx="40"
+                      cy="40"
+                      r="34"
+                      fill="none"
+                      stroke="var(--border)"
+                      strokeWidth="6"
+                    />
+                    <circle
+                      cx="40"
+                      cy="40"
+                      r="34"
+                      fill="none"
+                      stroke={
+                        atsPreview.projectedScore >= 80
+                          ? 'var(--success)'
+                          : atsPreview.projectedScore >= 60
+                            ? 'var(--warning)'
+                            : 'var(--danger)'
+                      }
+                      strokeWidth="6"
+                      strokeDasharray={`${(atsPreview.projectedScore / 100) * 213.6} 213.6`}
+                      strokeLinecap="round"
+                      transform="rotate(-90 40 40)"
+                    />
+                  </svg>
+                  <span className={styles['ats-score-value']}>{atsPreview.projectedScore}</span>
+                </div>
+                <div className={styles['ats-preview-info']}>
+                  <h3>Projected ATS Score</h3>
+                  <p>
+                    {atsPreview.matchedCount} of {atsPreview.totalKeywords} keywords covered
+                  </p>
+                  {atsPreview.projectedScore >= 80 ? (
+                    <span className={styles['ats-badge-good']}>Strong Match</span>
+                  ) : atsPreview.projectedScore >= 60 ? (
+                    <span className={styles['ats-badge-warn']}>Needs Improvement</span>
+                  ) : (
+                    <span className={styles['ats-badge-bad']}>Low Coverage</span>
+                  )}
+                </div>
+              </div>
+
+              {/* Missing Keywords Section */}
+              {(atsPreview.missingRequired.length > 0 ||
+                atsPreview.missingPreferred.length > 0 ||
+                atsPreview.missingOther.length > 0) && (
+                <div className={styles['ats-gaps']}>
+                  {atsPreview.missingRequired.length > 0 && (
+                    <div className={styles['ats-gap-group']}>
+                      <span className={styles['ats-gap-label-critical']}>
+                        Missing Required ({atsPreview.missingRequired.length})
+                      </span>
+                      <div className={styles['ats-gap-chips']}>
+                        {atsPreview.missingRequired.map((g) => (
+                          <span
+                            key={g.keyword}
+                            className={`${styles['ats-gap-chip']} ${styles['gap-critical']}`}
+                            onClick={() => toggleSkill(g.keyword)}
+                            title="Click to add to skills"
+                          >
+                            + {g.keyword}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  {atsPreview.missingPreferred.length > 0 && (
+                    <div className={styles['ats-gap-group']}>
+                      <span className={styles['ats-gap-label-warn']}>
+                        Missing Preferred ({atsPreview.missingPreferred.length})
+                      </span>
+                      <div className={styles['ats-gap-chips']}>
+                        {atsPreview.missingPreferred.map((g) => (
+                          <span
+                            key={g.keyword}
+                            className={`${styles['ats-gap-chip']} ${styles['gap-warn']}`}
+                            onClick={() => toggleSkill(g.keyword)}
+                            title="Click to add to skills"
+                          >
+                            + {g.keyword}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  {atsPreview.missingOther.length > 0 && (
+                    <div className={styles['ats-gap-group']}>
+                      <span className={styles['ats-gap-label-other']}>
+                        Missing Keywords ({atsPreview.missingOther.length})
+                      </span>
+                      <div className={styles['ats-gap-chips']}>
+                        {atsPreview.missingOther.map((g) => (
+                          <span
+                            key={g.keyword}
+                            className={`${styles['ats-gap-chip']} ${styles['gap-other']}`}
+                            onClick={() => toggleSkill(g.keyword)}
+                            title="Click to add to skills"
+                          >
+                            + {g.keyword}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {atsPreview.projectedScore === 100 && (
+                <div className={styles['ats-perfect']}>
+                  All JD keywords are covered — ready to generate!
+                </div>
+              )}
+            </div>
+          )}
+
           {/* Proposed Summary */}
           <div className={styles['review-group']}>
             <div className={styles['review-group-header']}>Professional Summary</div>
@@ -381,20 +511,34 @@ export function GeneratePage() {
 
           {/* Skills */}
           <div className={styles['review-group']}>
-            <div className={styles['review-group-header']}>Skills</div>
+            <div className={styles['review-group-header']}>
+              Skills
+              <span style={{ fontSize: 12, fontWeight: 400, color: 'var(--text-secondary)' }}>
+                {editableSelection.selectedSkills.length} selected
+              </span>
+            </div>
             <div style={{ padding: 16 }}>
               <div className={styles['skills-list']}>
-                {store.parsedJD.requiredSkills
-                  .concat(store.parsedJD.preferredSkills)
-                  .map((skill) => (
+                {(() => {
+                  // Show all JD skills + any extra skills the user added via gap chips
+                  const jdSkills = store.parsedJD.requiredSkills.concat(
+                    store.parsedJD.preferredSkills,
+                  );
+                  const jdSkillSet = new Set(jdSkills.map((s) => s.toLowerCase()));
+                  const extraSkills = editableSelection.selectedSkills.filter(
+                    (s) => !jdSkillSet.has(s.toLowerCase()),
+                  );
+                  const allSkills = [...jdSkills, ...extraSkills];
+                  return allSkills.map((skill) => (
                     <span
                       key={skill}
-                      className={`${styles['skill-chip']} ${editableSelection.selectedSkills.includes(skill) ? styles.selected : ''}`}
+                      className={`${styles['skill-chip']} ${editableSelection.selectedSkills.some((s) => s.toLowerCase() === skill.toLowerCase()) ? styles.selected : ''}`}
                       onClick={() => toggleSkill(skill)}
                     >
                       {skill}
                     </span>
-                  ))}
+                  ));
+                })()}
               </div>
             </div>
           </div>

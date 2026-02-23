@@ -2,6 +2,51 @@
 
 import type { ResumeData, ParsedJobDescription, ATSScoreResult, ATSSuggestion } from '@resu/shared';
 
+/**
+ * Normalize text for ATS comparison:
+ * - lowercase
+ * - strip parentheses, brackets, and special characters
+ * - collapse whitespace
+ */
+function normalizeForATS(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[()[\]{}]/g, ' ')
+    .replace(/[+#./@&*,;:!?'"\\]/g, ' ')
+    .replace(/\-/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+/**
+ * Check if a single JD keyword matches the resume text using fuzzy rules:
+ * 1. Direct substring match after normalization
+ * 2. Token-level match: every word in the keyword appears in the resume
+ *    - Short tokens (≤2 chars) require exact word match
+ *    - Longer tokens (≥3 chars) allow substring match (e.g., "rest" in "restful")
+ */
+function keywordMatches(normalizedResumeText: string, rawKeyword: string): boolean {
+  const normalized = normalizeForATS(rawKeyword);
+  if (!normalized) return true; // empty keyword counts as matched
+
+  // 1. Direct normalized substring match
+  if (normalizedResumeText.includes(normalized)) return true;
+
+  // 2. Token-level fuzzy matching
+  const kwTokens = normalized.split(' ').filter((t) => t.length > 0);
+  if (kwTokens.length === 0) return true;
+
+  const resumeWords = normalizedResumeText.split(' ');
+  return kwTokens.every((token) => {
+    // Short tokens (like "go", "js", "c") — require exact word match
+    if (token.length <= 2) {
+      return resumeWords.includes(token);
+    }
+    // Longer tokens — allow substring match (e.g., "rest" found inside "restful")
+    return resumeWords.some((rw) => rw.includes(token));
+  });
+}
+
 export function scoreATS(resumeData: ResumeData, parsedJD: ParsedJobDescription): ATSScoreResult {
   const suggestions: ATSSuggestion[] = [];
 
@@ -15,21 +60,21 @@ export function scoreATS(resumeData: ResumeData, parsedJD: ParsedJobDescription)
     ].map((k) => k.toLowerCase().trim()),
   );
 
-  // Flatten all resume text
-  const resumeText = [
-    resumeData.summary,
-    ...resumeData.experience.flatMap((e) => [e.title, e.company, ...e.bullets]),
-    ...resumeData.skills.categories.flatMap((c) => c.skills),
-    ...resumeData.projects.flatMap((p) => [p.name, p.description, ...p.highlights]),
-    ...resumeData.certifications.map((c) => c.name),
-  ]
-    .join(' ')
-    .toLowerCase();
+  // Flatten all resume text and normalize for comparison
+  const resumeText = normalizeForATS(
+    [
+      resumeData.summary,
+      ...resumeData.experience.flatMap((e) => [e.title, e.company, ...e.bullets]),
+      ...resumeData.skills.categories.flatMap((c) => c.skills),
+      ...resumeData.projects.flatMap((p) => [p.name, p.description, ...p.highlights]),
+      ...resumeData.certifications.map((c) => c.name),
+    ].join(' '),
+  );
 
   let matchedKeywords = 0;
   const missingKeywords: string[] = [];
   for (const keyword of jdKeywords) {
-    if (resumeText.includes(keyword)) {
+    if (keywordMatches(resumeText, keyword)) {
       matchedKeywords++;
     } else {
       missingKeywords.push(keyword);
