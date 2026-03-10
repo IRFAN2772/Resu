@@ -3,14 +3,7 @@
 
 import { z } from 'zod';
 
-export const AI_PROVIDERS = [
-  'openai',
-  'azure',
-  'anthropic',
-  'gemini',
-  'deepseek',
-  'groq',
-] as const;
+export const AI_PROVIDERS = ['openai', 'azure', 'anthropic', 'gemini', 'deepseek', 'groq'] as const;
 
 export type AIProvider = (typeof AI_PROVIDERS)[number];
 

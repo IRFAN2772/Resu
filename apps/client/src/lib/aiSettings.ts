@@ -40,8 +40,10 @@ export function getAIHeaders(): Record<string, string> {
   if (config.modelSmart) headers['X-AI-Model-Smart'] = config.modelSmart;
   if (config.azureEndpoint) headers['X-AI-Azure-Endpoint'] = config.azureEndpoint;
   if (config.azureApiVersion) headers['X-AI-Azure-Api-Version'] = config.azureApiVersion;
-  if (config.azureDeploymentFast) headers['X-AI-Azure-Deployment-Fast'] = config.azureDeploymentFast;
-  if (config.azureDeploymentSmart) headers['X-AI-Azure-Deployment-Smart'] = config.azureDeploymentSmart;
+  if (config.azureDeploymentFast)
+    headers['X-AI-Azure-Deployment-Fast'] = config.azureDeploymentFast;
+  if (config.azureDeploymentSmart)
+    headers['X-AI-Azure-Deployment-Smart'] = config.azureDeploymentSmart;
 
   return headers;
 }
