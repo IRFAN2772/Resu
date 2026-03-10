@@ -6,7 +6,9 @@
   display: inline;
   cursor: pointer;
   border-radius: 3px;
-  transition: background 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    background 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .editWrap:hover {
@@ -41,7 +43,9 @@
   display: block;
   cursor: pointer;
   border-radius: 3px;
-  transition: background 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    background 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .editWrapBlock:hover {
@@ -81,14 +85,19 @@
   color: inherit;
   background: #f8faff;
   outline: none;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
   box-shadow: 0 1px 3px rgba(37, 99, 235, 0.08);
 }
 
 .editInput:focus {
   border-color: #2563eb;
   background: #fff;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12), 0 1px 3px rgba(0, 0, 0, 0.06);
+  box-shadow:
+    0 0 0 3px rgba(37, 99, 235, 0.12),
+    0 1px 3px rgba(0, 0, 0, 0.06);
 }
 
 /* Textarea styling */
@@ -106,14 +115,19 @@
   outline: none;
   resize: vertical;
   min-height: 48px;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
   box-shadow: 0 1px 3px rgba(37, 99, 235, 0.08);
 }
 
 .editTextarea:focus {
   border-color: #2563eb;
   background: #fff;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12), 0 1px 3px rgba(0, 0, 0, 0.06);
+  box-shadow:
+    0 0 0 3px rgba(37, 99, 235, 0.12),
+    0 1px 3px rgba(0, 0, 0, 0.06);
 }
 
 /* Hint label below input */

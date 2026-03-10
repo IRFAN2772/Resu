@@ -30,22 +30,28 @@ export const EditableText = memo(function EditableText({
   const prevValue = useRef(value);
   const isEditing = isEdit && editingField === fieldKey;
 
-  const handleFocus = useCallback((el: HTMLInputElement | HTMLTextAreaElement | null) => {
-    if (el) {
-      prevValue.current = value;
-      el.focus();
-      el.select();
-    }
-  }, [value]);
+  const handleFocus = useCallback(
+    (el: HTMLInputElement | HTMLTextAreaElement | null) => {
+      if (el) {
+        prevValue.current = value;
+        el.focus();
+        el.select();
+      }
+    },
+    [value],
+  );
 
-  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !multiline) {
-      onBlur();
-    } else if (e.key === 'Escape') {
-      onChange(prevValue.current);
-      onBlur();
-    }
-  }, [multiline, onBlur, onChange]);
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key === 'Enter' && !multiline) {
+        onBlur();
+      } else if (e.key === 'Escape') {
+        onChange(prevValue.current);
+        onBlur();
+      }
+    },
+    [multiline, onBlur, onChange],
+  );
 
   if (isEditing) {
     const field = multiline ? (
@@ -73,7 +79,11 @@ export const EditableText = memo(function EditableText({
       <span className={multiline ? s.editWrapBlock : undefined}>
         {field}
         <span className={s.editHint}>
-          {multiline ? null : <><kbd>Enter</kbd> save</>}
+          {multiline ? null : (
+            <>
+              <kbd>Enter</kbd> save
+            </>
+          )}
           <kbd>Esc</kbd> cancel
         </span>
       </span>

@@ -110,7 +110,9 @@
 .clean-minimal .editable {
   cursor: pointer;
   border-radius: 3px;
-  transition: background 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    background 0.2s ease,
+    box-shadow 0.2s ease;
 }
 .clean-minimal .editable:hover {
   background: rgba(37, 99, 235, 0.06);
@@ -128,7 +130,9 @@
   min-height: 48px;
   background: #f8faff;
   outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
 }
 .clean-minimal .edit-textarea:focus {
   border-color: #2563eb;
@@ -145,7 +149,9 @@
   line-height: inherit;
   background: #f8faff;
   outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
 }
 .clean-minimal .edit-input:focus {
   border-color: #2563eb;
@@ -201,7 +207,10 @@
   cursor: pointer;
   opacity: 0;
   transform: scale(0.8);
-  transition: opacity 0.2s ease, transform 0.2s ease, background 0.15s ease;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease,
+    background 0.15s ease;
   z-index: 2;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 }
@@ -235,7 +244,10 @@
   opacity: 0;
   transform: scale(0.8);
   vertical-align: middle;
-  transition: opacity 0.2s ease, transform 0.2s ease, background 0.15s ease;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease,
+    background 0.15s ease;
   flex-shrink: 0;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
 }

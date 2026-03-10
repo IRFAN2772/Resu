@@ -212,7 +212,13 @@ export function PreviewPage() {
         <div className={styles['top-bar-left']}>
           <button className={styles['back-btn']} onClick={() => navigate('/')}>
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path d="M10 12L6 8L10 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path
+                d="M10 12L6 8L10 4"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
             </svg>
             Dashboard
           </button>
@@ -245,9 +251,24 @@ export function PreviewPage() {
                 onClick={() => setEditMode(!editMode)}
               >
                 {editMode ? (
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M12 4L4 12M4 4L12 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path
+                      d="M12 4L4 12M4 4L12 12"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                    />
+                  </svg>
                 ) : (
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M11.5 1.5L14.5 4.5L5 14H2V11L11.5 1.5Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path
+                      d="M11.5 1.5L14.5 4.5L5 14H2V11L11.5 1.5Z"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
                 )}
                 {editMode ? 'Cancel' : 'Edit'}
               </button>
@@ -259,7 +280,15 @@ export function PreviewPage() {
                 {exporting ? (
                   <span className={styles['btn-spinner']} />
                 ) : (
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 10V13H14V10M8 2V10M8 10L5 7M8 10L11 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path
+                      d="M2 10V13H14V10M8 2V10M8 10L5 7M8 10L11 7"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
                 )}
                 Export PDF
               </button>
@@ -270,19 +299,48 @@ export function PreviewPage() {
             <>
               {editCoverLetter ? (
                 <>
-                  <button className={`${styles['action-btn']} ${styles['action-btn-primary']}`} onClick={handleCoverLetterSave}>
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8L6.5 11.5L13 4.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                  <button
+                    className={`${styles['action-btn']} ${styles['action-btn-primary']}`}
+                    onClick={handleCoverLetterSave}
+                  >
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                      <path
+                        d="M3 8L6.5 11.5L13 4.5"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
                     Save
                   </button>
-                  <button className={styles['action-btn']} onClick={() => setEditCoverLetter(false)}>
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M12 4L4 12M4 4L12 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
+                  <button
+                    className={styles['action-btn']}
+                    onClick={() => setEditCoverLetter(false)}
+                  >
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                      <path
+                        d="M12 4L4 12M4 4L12 12"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                      />
+                    </svg>
                     Cancel
                   </button>
                 </>
               ) : (
                 <>
                   <button className={styles['action-btn']} onClick={startEditCoverLetter}>
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M11.5 1.5L14.5 4.5L5 14H2V11L11.5 1.5Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                      <path
+                        d="M11.5 1.5L14.5 4.5L5 14H2V11L11.5 1.5Z"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
                     Edit
                   </button>
                   <button
@@ -293,7 +351,15 @@ export function PreviewPage() {
                     {exporting ? (
                       <span className={styles['btn-spinner']} />
                     ) : (
-                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 10V13H14V10M8 2V10M8 10L5 7M8 10L11 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path
+                          d="M2 10V13H14V10M8 2V10M8 10L5 7M8 10L11 7"
+                          stroke="currentColor"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
                     )}
                     Export PDF
                   </button>
@@ -314,14 +380,38 @@ export function PreviewPage() {
               className={`${styles['sidebar-tab']} ${activeTab === 'resume' ? styles['sidebar-tab-active'] : ''}`}
               onClick={() => setActiveTab('resume')}
             >
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="1" width="12" height="14" rx="1.5" stroke="currentColor" strokeWidth="1.5"/><path d="M5 5H11M5 8H11M5 11H9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <rect
+                  x="2"
+                  y="1"
+                  width="12"
+                  height="14"
+                  rx="1.5"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                />
+                <path
+                  d="M5 5H11M5 8H11M5 11H9"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                />
+              </svg>
               Resume
             </button>
             <button
               className={`${styles['sidebar-tab']} ${activeTab === 'cover-letter' ? styles['sidebar-tab-active'] : ''}`}
               onClick={() => setActiveTab('cover-letter')}
             >
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 4L8 9L14 4M2 4V12H14V4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path
+                  d="M2 4L8 9L14 4M2 4V12H14V4"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
               Cover Letter
             </button>
           </div>
@@ -331,9 +421,19 @@ export function PreviewPage() {
             <div className={styles['ats-card-header']}>
               <div className={styles['ats-ring-container']}>
                 <svg className={styles['ats-ring']} viewBox="0 0 80 80">
-                  <circle cx="40" cy="40" r="34" fill="none" stroke="var(--border)" strokeWidth="6" />
                   <circle
-                    cx="40" cy="40" r="34" fill="none"
+                    cx="40"
+                    cy="40"
+                    r="34"
+                    fill="none"
+                    stroke="var(--border)"
+                    strokeWidth="6"
+                  />
+                  <circle
+                    cx="40"
+                    cy="40"
+                    r="34"
+                    fill="none"
                     stroke={scoreColor}
                     strokeWidth="6"
                     strokeLinecap="round"
@@ -343,7 +443,9 @@ export function PreviewPage() {
                   />
                 </svg>
                 <div className={styles['ats-ring-text']}>
-                  <span className={styles['ats-ring-score']} style={{ color: scoreColor }}>{atsScore.score}</span>
+                  <span className={styles['ats-ring-score']} style={{ color: scoreColor }}>
+                    {atsScore.score}
+                  </span>
                 </div>
               </div>
               <div className={styles['ats-meta']}>
@@ -352,7 +454,20 @@ export function PreviewPage() {
                   {getScoreLabel(atsScore.score)}
                 </span>
               </div>
-              <svg className={`${styles['chevron']} ${expandedSidebar === 'ats' ? styles['chevron-open'] : ''}`} width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6L8 10L12 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
+              <svg
+                className={`${styles['chevron']} ${expandedSidebar === 'ats' ? styles['chevron-open'] : ''}`}
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="none"
+              >
+                <path
+                  d="M4 6L8 10L12 6"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
+              </svg>
             </div>
 
             {expandedSidebar === 'ats' && (
@@ -365,8 +480,12 @@ export function PreviewPage() {
                   ].map((item) => (
                     <div key={item.label} className={styles['ats-bar-row']}>
                       <div className={styles['ats-bar-label']}>
-                        <span>{item.icon} {item.label}</span>
-                        <span style={{ color: getScoreColor(item.value), fontWeight: 600 }}>{item.value}%</span>
+                        <span>
+                          {item.icon} {item.label}
+                        </span>
+                        <span style={{ color: getScoreColor(item.value), fontWeight: 600 }}>
+                          {item.value}%
+                        </span>
                       </div>
                       <div className={styles['ats-bar-track']}>
                         <div
@@ -382,9 +501,16 @@ export function PreviewPage() {
                   <div className={styles['ats-suggestions']}>
                     <div className={styles['ats-suggestions-title']}>Suggestions</div>
                     {atsScore.suggestions.map((s, i) => (
-                      <div key={i} className={`${styles['ats-suggestion']} ${styles[`ats-suggestion-${s.severity}`]}`}>
+                      <div
+                        key={i}
+                        className={`${styles['ats-suggestion']} ${styles[`ats-suggestion-${s.severity}`]}`}
+                      >
                         <span className={styles['ats-suggestion-icon']}>
-                          {s.severity === 'critical' ? '🔴' : s.severity === 'warning' ? '🟡' : '🔵'}
+                          {s.severity === 'critical'
+                            ? '🔴'
+                            : s.severity === 'warning'
+                              ? '🟡'
+                              : '🔵'}
                         </span>
                         {s.message}
                       </div>
@@ -403,10 +529,60 @@ export function PreviewPage() {
                 onClick={() => toggleSidebar('templates')}
               >
                 <span>
-                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="6" height="6" rx="1" stroke="currentColor" strokeWidth="1.5"/><rect x="9" y="1" width="6" height="6" rx="1" stroke="currentColor" strokeWidth="1.5"/><rect x="1" y="9" width="6" height="6" rx="1" stroke="currentColor" strokeWidth="1.5"/><rect x="9" y="9" width="6" height="6" rx="1" stroke="currentColor" strokeWidth="1.5"/></svg>
+                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                    <rect
+                      x="1"
+                      y="1"
+                      width="6"
+                      height="6"
+                      rx="1"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                    />
+                    <rect
+                      x="9"
+                      y="1"
+                      width="6"
+                      height="6"
+                      rx="1"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                    />
+                    <rect
+                      x="1"
+                      y="9"
+                      width="6"
+                      height="6"
+                      rx="1"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                    />
+                    <rect
+                      x="9"
+                      y="9"
+                      width="6"
+                      height="6"
+                      rx="1"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                    />
+                  </svg>
                   Templates
                 </span>
-                <svg className={`${styles['chevron']} ${expandedSidebar === 'templates' ? styles['chevron-open'] : ''}`} width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6L8 10L12 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
+                <svg
+                  className={`${styles['chevron']} ${expandedSidebar === 'templates' ? styles['chevron-open'] : ''}`}
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                >
+                  <path
+                    d="M4 6L8 10L12 6"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                  />
+                </svg>
               </button>
               {expandedSidebar === 'templates' && (
                 <div className={styles['sidebar-section-body']}>
@@ -419,14 +595,35 @@ export function PreviewPage() {
                       >
                         <div className={styles['template-card-preview']}>
                           <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                            <rect x="3" y="2" width="18" height="20" rx="2" stroke="currentColor" strokeWidth="1.5"/>
-                            <path d="M7 7H17M7 11H17M7 15H13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                            <rect
+                              x="3"
+                              y="2"
+                              width="18"
+                              height="20"
+                              rx="2"
+                              stroke="currentColor"
+                              strokeWidth="1.5"
+                            />
+                            <path
+                              d="M7 7H17M7 11H17M7 15H13"
+                              stroke="currentColor"
+                              strokeWidth="1.5"
+                              strokeLinecap="round"
+                            />
                           </svg>
                         </div>
                         <span className={styles['template-card-name']}>{t.name}</span>
                         {resume.templateId === t.id && (
                           <span className={styles['template-check']}>
-                            <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8L6.5 11.5L13 4.5" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                            <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
+                              <path
+                                d="M3 8L6.5 11.5L13 4.5"
+                                stroke="currentColor"
+                                strokeWidth="2.5"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                            </svg>
                           </span>
                         )}
                       </button>
@@ -445,11 +642,32 @@ export function PreviewPage() {
                 onClick={() => toggleSidebar('versions')}
               >
                 <span>
-                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" strokeWidth="1.5"/><path d="M8 4.5V8L10.5 10.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
+                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                    <circle cx="8" cy="8" r="6.5" stroke="currentColor" strokeWidth="1.5" />
+                    <path
+                      d="M8 4.5V8L10.5 10.5"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                    />
+                  </svg>
                   History
                   <span className={styles['history-count']}>{resume.versions.length}</span>
                 </span>
-                <svg className={`${styles['chevron']} ${expandedSidebar === 'versions' ? styles['chevron-open'] : ''}`} width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6L8 10L12 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
+                <svg
+                  className={`${styles['chevron']} ${expandedSidebar === 'versions' ? styles['chevron-open'] : ''}`}
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                >
+                  <path
+                    d="M4 6L8 10L12 6"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                  />
+                </svg>
               </button>
               {expandedSidebar === 'versions' && (
                 <div className={styles['sidebar-section-body']}>
@@ -458,7 +676,9 @@ export function PreviewPage() {
                       <div key={v.id} className={styles['version-entry']}>
                         <div className={styles['version-dot-line']}>
                           <div className={styles['version-dot']} />
-                          {i < resume.versions.length - 1 && <div className={styles['version-line']} />}
+                          {i < resume.versions.length - 1 && (
+                            <div className={styles['version-line']} />
+                          )}
                         </div>
                         <div className={styles['version-content']}>
                           <div className={styles['version-desc']}>{v.changeDescription}</div>
@@ -491,8 +711,19 @@ export function PreviewPage() {
           {/* Edit mode banner */}
           {editMode && activeTab === 'resume' && (
             <div className={styles['edit-banner']}>
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M11.5 1.5L14.5 4.5L5 14H2V11L11.5 1.5Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-              <span>Edit mode — click on any text to edit inline. Changes are auto-saved when you press Enter or click away.</span>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path
+                  d="M11.5 1.5L14.5 4.5L5 14H2V11L11.5 1.5Z"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              <span>
+                Edit mode — click on any text to edit inline. Changes are auto-saved when you press
+                Enter or click away.
+              </span>
             </div>
           )}
 
@@ -547,7 +778,9 @@ export function PreviewPage() {
 
                     <div className={styles['cl-section']}>
                       <div className={styles['cl-section-label']}>
-                        <span className={styles['cl-section-number']}>{coverLetterData.bodyParagraphs.length + 2}</span>
+                        <span className={styles['cl-section-number']}>
+                          {coverLetterData.bodyParagraphs.length + 2}
+                        </span>
                         Closing Paragraph
                       </div>
                       <textarea
@@ -599,7 +832,13 @@ export function PreviewPage() {
           {activeTab === 'cover-letter' && !resume.coverLetter && (
             <div className={styles['empty-state']}>
               <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-                <path d="M6 12L24 24L42 12M6 12V36H42V12" stroke="var(--text-secondary)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                <path
+                  d="M6 12L24 24L42 12M6 12V36H42V12"
+                  stroke="var(--text-secondary)"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
               </svg>
               <h3>No Cover Letter</h3>
               <p>Generate a new resume with cover letter enabled to get one.</p>
