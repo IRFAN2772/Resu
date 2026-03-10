@@ -4,6 +4,7 @@ import { DashboardPage } from './pages/Dashboard';
 import { GeneratePage } from './pages/Generate';
 import { PreviewPage } from './pages/Preview';
 import { ProfilePage } from './pages/Profile';
+import { SettingsPage } from './pages/Settings';
 import { NotFoundPage } from './pages/NotFound';
 
 export function App() {
@@ -14,6 +15,7 @@ export function App() {
         <Route path="/generate" element={<GeneratePage />} />
         <Route path="/resume/:id" element={<PreviewPage />} />
         <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/settings" element={<SettingsPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>

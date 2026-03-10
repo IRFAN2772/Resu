@@ -4,6 +4,7 @@ import {
   ParsedJobDescriptionSchema,
   type ParsedJobDescription,
   type GenerationConfig,
+  type UserAIConfig,
 } from '@resu/shared';
 import { chatCompletion, type TokenUsage } from './aiClient.js';
 import { loadPrompt } from './promptLoader.js';
@@ -17,6 +18,7 @@ export interface ParseJDResult {
 export async function parseJobDescription(
   jdText: string,
   config?: GenerationConfig,
+  userAI?: UserAIConfig,
 ): Promise<ParseJDResult> {
   const systemPrompt = loadPrompt('parseJD');
 
@@ -34,7 +36,8 @@ export async function parseJobDescription(
     systemPrompt,
     userMessage,
     jsonMode: true,
-    temperature: 0.1, // Low temp for factual extraction
+    temperature: 0.1,
+    userAI,
   });
 
   const parsed = JSON.parse(result.content);

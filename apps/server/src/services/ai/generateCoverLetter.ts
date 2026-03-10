@@ -7,6 +7,7 @@ import {
   type ParsedJobDescription,
   type RelevanceSelection,
   type GenerationConfig,
+  type UserAIConfig,
 } from '@resu/shared';
 import { chatCompletion, type TokenUsage } from './aiClient.js';
 import { loadPrompt } from './promptLoader.js';
@@ -22,6 +23,7 @@ export async function generateCoverLetter(
   parsedJD: ParsedJobDescription,
   selection: RelevanceSelection,
   config: GenerationConfig,
+  userAI?: UserAIConfig,
 ): Promise<GenerateCoverLetterResult> {
   const systemPrompt = loadPrompt('generateCoverLetter', {
     tone: config.tone ?? 'professional',
@@ -61,6 +63,7 @@ export async function generateCoverLetter(
     userMessage,
     jsonMode: true,
     temperature: 0.5,
+    userAI,
   });
 
   const parsed = JSON.parse(result.content);

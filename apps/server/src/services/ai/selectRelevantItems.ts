@@ -6,6 +6,7 @@ import {
   type PersonalProfile,
   type ParsedJobDescription,
   type GenerationConfig,
+  type UserAIConfig,
 } from '@resu/shared';
 import { chatCompletion, type TokenUsage } from './aiClient.js';
 import { loadPrompt } from './promptLoader.js';
@@ -20,6 +21,7 @@ export async function selectRelevantItems(
   profile: PersonalProfile,
   parsedJD: ParsedJobDescription,
   config?: GenerationConfig,
+  userAI?: UserAIConfig,
 ): Promise<SelectRelevantResult> {
   const systemPrompt = loadPrompt('selectRelevant');
 
@@ -42,6 +44,7 @@ export async function selectRelevantItems(
     userMessage,
     jsonMode: true,
     temperature: 0.3,
+    userAI,
   });
 
   const raw = JSON.parse(result.content);

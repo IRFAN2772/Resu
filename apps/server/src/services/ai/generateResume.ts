@@ -7,6 +7,7 @@ import {
   type ParsedJobDescription,
   type RelevanceSelection,
   type GenerationConfig,
+  type UserAIConfig,
 } from '@resu/shared';
 import { chatCompletion, type TokenUsage } from './aiClient.js';
 import { loadPrompt } from './promptLoader.js';
@@ -22,6 +23,7 @@ export async function generateResume(
   parsedJD: ParsedJobDescription,
   selection: RelevanceSelection,
   config: GenerationConfig,
+  userAI?: UserAIConfig,
 ): Promise<GenerateResumeResult> {
   const systemPrompt = loadPrompt('generateResume', {
     targetPageLength: String(config.targetPageLength ?? 1),
@@ -100,6 +102,7 @@ export async function generateResume(
     userMessage,
     jsonMode: true,
     temperature: 0.4,
+    userAI,
   });
 
   const raw = JSON.parse(result.content);

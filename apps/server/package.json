@@ -12,13 +12,14 @@
     "validate-profile": "tsx src/scripts/validateProfile.ts"
   },
   "dependencies": {
-    "@resu/shared": "*",
-    "fastify": "^5.2.0",
+    "@anthropic-ai/sdk": "^0.78.0",
     "@fastify/cors": "^11.0.0",
+    "@resu/shared": "*",
     "better-sqlite3": "^11.8.0",
+    "dotenv": "^16.4.0",
+    "fastify": "^5.2.0",
     "openai": "^4.85.0",
     "puppeteer": "^24.2.0",
-    "dotenv": "^16.4.0",
     "uuid": "^11.1.0",
     "zod": "^3.24.0"
   },

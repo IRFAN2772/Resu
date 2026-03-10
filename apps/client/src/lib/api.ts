@@ -10,13 +10,19 @@ import type {
   PersonalProfile,
   ExportRequest,
 } from '@resu/shared';
+import { getAIHeaders } from './aiSettings';
 
 const BASE = '/api';
 
 async function fetchJSON<T>(url: string, options?: RequestInit): Promise<T> {
+  const aiHeaders = getAIHeaders();
   const response = await fetch(`${BASE}${url}`, {
-    headers: { 'Content-Type': 'application/json' },
     ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...aiHeaders,
+      ...options?.headers,
+    },
   });
 
   if (!response.ok) {

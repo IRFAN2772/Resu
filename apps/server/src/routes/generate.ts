@@ -1,10 +1,13 @@
-import type { FastifyPluginAsync } from 'fastify';
+import type { FastifyPluginAsync, FastifyRequest } from 'fastify';
 import {
   GenerateParseRequestSchema,
   GenerateConfirmRequestSchema,
   type GenerateParseRequest,
   type GenerateConfirmRequest,
   type GenerationConfig,
+  type UserAIConfig,
+  type AIProvider,
+  AI_PROVIDERS,
 } from '@resu/shared';
 import { parseJobDescription } from '../services/ai/parseJobDescription.js';
 import { selectRelevantItems } from '../services/ai/selectRelevantItems.js';
@@ -18,9 +21,34 @@ let generationInProgress = false;
 
 const PROMPT_VERSION = 'v1';
 
+/**
+ * Extract optional user AI config from request headers (BYO key).
+ * Returns undefined if no X-AI-Key header is present (falls back to server env).
+ */
+function extractUserAI(request: FastifyRequest): UserAIConfig | undefined {
+  const apiKey = request.headers['x-ai-key'] as string | undefined;
+  if (!apiKey) return undefined;
+
+  const provider = ((request.headers['x-ai-provider'] as string) || 'openai')
+    .toLowerCase()
+    .trim() as AIProvider;
+
+  if (!AI_PROVIDERS.includes(provider)) return undefined;
+
+  return {
+    provider,
+    apiKey,
+    modelFast: (request.headers['x-ai-model-fast'] as string) || undefined,
+    modelSmart: (request.headers['x-ai-model-smart'] as string) || undefined,
+    azureEndpoint: (request.headers['x-ai-azure-endpoint'] as string) || undefined,
+    azureApiVersion: (request.headers['x-ai-azure-api-version'] as string) || undefined,
+    azureDeploymentFast: (request.headers['x-ai-azure-deployment-fast'] as string) || undefined,
+    azureDeploymentSmart: (request.headers['x-ai-azure-deployment-smart'] as string) || undefined,
+  };
+}
+
 export const generateRoutes: FastifyPluginAsync = async (app) => {
   // ─── Step 1+2: Parse JD and Select Relevant Items ───
-  // Returns the parsed JD + relevance selection for the user to review at the checkpoint.
   app.post<{ Body: GenerateParseRequest }>('/generate/parse', async (request, reply) => {
     if (generationInProgress) {
       return reply.status(429).send({ error: 'A generation is already in progress. Please wait.' });
@@ -34,6 +62,7 @@ export const generateRoutes: FastifyPluginAsync = async (app) => {
     }
 
     const { jdText, config } = parseResult.data;
+    const userAI = extractUserAI(request);
 
     try {
       generationInProgress = true;
@@ -43,14 +72,14 @@ export const generateRoutes: FastifyPluginAsync = async (app) => {
         parsedJD,
         tokenUsage: parseTokens,
         cost: parseCost,
-      } = await parseJobDescription(jdText, config);
+      } = await parseJobDescription(jdText, config, userAI);
 
       // Step 2: Select relevant items
       const {
         selection,
         tokenUsage: selectTokens,
         cost: selectCost,
-      } = await selectRelevantItems(app.profile, parsedJD, config);
+      } = await selectRelevantItems(app.profile, parsedJD, config, userAI);
 
       return {
         parsedJD,
@@ -73,7 +102,6 @@ export const generateRoutes: FastifyPluginAsync = async (app) => {
   });
 
   // ─── Step 3+4+5: Generate Resume, Score ATS, Generate Cover Letter ───
-  // Called after the user reviews and confirms the relevance selection.
   app.post<{ Body: GenerateConfirmRequest }>('/generate/confirm', async (request, reply) => {
     if (generationInProgress) {
       return reply.status(429).send({ error: 'A generation is already in progress. Please wait.' });
@@ -87,6 +115,7 @@ export const generateRoutes: FastifyPluginAsync = async (app) => {
     }
 
     const { jdText, parsedJD, relevanceSelection, config } = parseResult.data;
+    const userAI = extractUserAI(request);
 
     try {
       generationInProgress = true;
@@ -96,7 +125,7 @@ export const generateRoutes: FastifyPluginAsync = async (app) => {
         resumeData,
         tokenUsage: genTokens,
         cost: genCost,
-      } = await generateResume(app.profile, parsedJD, relevanceSelection, config);
+      } = await generateResume(app.profile, parsedJD, relevanceSelection, config, userAI);
 
       // Step 4: ATS scoring (code-based, no LLM)
       const atsScore = scoreATS(resumeData, parsedJD);
@@ -106,11 +135,11 @@ export const generateRoutes: FastifyPluginAsync = async (app) => {
         coverLetter,
         tokenUsage: clTokens,
         cost: clCost,
-      } = await generateCoverLetter(app.profile, parsedJD, relevanceSelection, config);
+      } = await generateCoverLetter(app.profile, parsedJD, relevanceSelection, config, userAI);
 
       // Save to database
       const tokenUsage = {
-        parseTokens: 0, // Already counted in parse step
+        parseTokens: 0,
         selectTokens: 0,
         generateTokens: genTokens.totalTokens,
         coverLetterTokens: clTokens.totalTokens,

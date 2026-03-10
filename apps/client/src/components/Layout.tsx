@@ -38,6 +38,9 @@ export function Layout() {
           <Link to="/profile" className={isActive('/profile')}>
             Profile
           </Link>
+          <Link to="/settings" className={isActive('/settings')}>
+            Settings
+          </Link>
           <button className={styles['theme-toggle']} onClick={toggleTheme} title="Toggle theme">
             {theme === 'light' ? '🌙' : '☀️'}
           </button>

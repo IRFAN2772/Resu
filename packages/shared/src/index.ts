@@ -9,4 +9,5 @@ export * from './types/relevanceSelection.js';
 export * from './types/resume.js';
 export * from './types/coverLetter.js';
 export * from './types/atsScore.js';
+export * from './types/aiConfig.js';
 export * from './types/api.js';
