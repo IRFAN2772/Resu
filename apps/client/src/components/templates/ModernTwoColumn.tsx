@@ -506,7 +506,7 @@ export function ModernTwoColumnTemplate({ data, mode, onSave }: ResumeTemplatePr
       {isEdit && (
         <div className={styles.editActions}>
           <button className="btn btn-primary btn-sm" onClick={handleSave}>
-            Save Changes
+            ✓ Save Changes
           </button>
         </div>
       )}

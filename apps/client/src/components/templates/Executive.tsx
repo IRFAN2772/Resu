@@ -513,7 +513,7 @@ export function ExecutiveTemplate({ data, mode, onSave }: ResumeTemplateProps) {
       {isEdit && (
         <div className={styles.editActions}>
           <button className="btn btn-primary btn-sm" onClick={handleSave}>
-            Save Changes
+            ✓ Save Changes
           </button>
         </div>
       )}

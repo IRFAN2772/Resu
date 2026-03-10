@@ -1,4 +1,5 @@
-import { memo } from 'react';
+import { memo, useRef, useCallback } from 'react';
+import s from './EditableText.module.css';
 
 interface EditableTextProps {
   fieldKey: string;
@@ -25,37 +26,73 @@ export const EditableText = memo(function EditableText({
   tag: Tag = 'span',
   className,
   multiline = false,
-  styles,
 }: EditableTextProps) {
-  if (isEdit && editingField === fieldKey) {
-    if (multiline) {
-      return (
-        <textarea
-          className={styles['edit-textarea']}
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          onBlur={onBlur}
-          autoFocus
-        />
-      );
+  const prevValue = useRef(value);
+  const isEditing = isEdit && editingField === fieldKey;
+
+  const handleFocus = useCallback((el: HTMLInputElement | HTMLTextAreaElement | null) => {
+    if (el) {
+      prevValue.current = value;
+      el.focus();
+      el.select();
     }
-    return (
-      <input
-        className={styles['edit-input']}
+  }, [value]);
+
+  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && !multiline) {
+      onBlur();
+    } else if (e.key === 'Escape') {
+      onChange(prevValue.current);
+      onBlur();
+    }
+  }, [multiline, onBlur, onChange]);
+
+  if (isEditing) {
+    const field = multiline ? (
+      <textarea
+        className={s.editTextarea}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         onBlur={onBlur}
-        onKeyDown={(e) => e.key === 'Enter' && onBlur()}
-        autoFocus
+        onKeyDown={handleKeyDown}
+        ref={handleFocus}
+        rows={Math.max(2, value.split('\n').length)}
+      />
+    ) : (
+      <input
+        className={s.editInput}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        onBlur={onBlur}
+        onKeyDown={handleKeyDown}
+        ref={handleFocus}
       />
     );
+
+    return (
+      <span className={multiline ? s.editWrapBlock : undefined}>
+        {field}
+        <span className={s.editHint}>
+          {multiline ? null : <><kbd>Enter</kbd> save</>}
+          <kbd>Esc</kbd> cancel
+        </span>
+      </span>
+    );
   }
+
+  if (!isEdit) {
+    return <Tag className={className}>{value}</Tag>;
+  }
+
+  const wrapClass = multiline || Tag === 'p' ? s.editWrapBlock : s.editWrap;
+
   return (
     <Tag
-      className={`${className ?? ''} ${isEdit ? styles.editable : ''}`}
+      className={`${className ?? ''} ${wrapClass}`}
       onClick={() => onFieldClick(fieldKey)}
+      title="Click to edit"
     >
-      {value}
+      {value || '\u00A0'}
     </Tag>
   );
 });

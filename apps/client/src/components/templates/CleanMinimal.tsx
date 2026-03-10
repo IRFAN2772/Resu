@@ -583,7 +583,7 @@ export function CleanMinimalTemplate({ data, mode, onSave }: ResumeTemplateProps
       {isEdit && (
         <div className={styles['edit-actions']}>
           <button className="btn btn-primary btn-sm" onClick={handleSave}>
-            Save Changes
+            ✓ Save Changes
           </button>
         </div>
       )}
