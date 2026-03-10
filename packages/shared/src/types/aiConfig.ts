@@ -12,6 +12,8 @@ export const UserAIConfigSchema = z.object({
   apiKey: z.string().min(1),
   modelFast: z.string().optional(),
   modelSmart: z.string().optional(),
+  /** When true, uses the fast model for ALL steps to avoid free-tier rate limits. */
+  freeTier: z.boolean().optional(),
   // Azure-specific
   azureEndpoint: z.string().optional(),
   azureApiVersion: z.string().optional(),

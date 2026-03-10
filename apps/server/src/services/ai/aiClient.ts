@@ -64,32 +64,35 @@ function resolveProvider(userAI?: UserAIConfig): AIProvider {
 }
 
 function resolveModel(provider: AIProvider, tier: ModelTier, userAI?: UserAIConfig): string {
+  // Free-tier mode → always use the fast model (higher RPM limits)
+  const effectiveTier = userAI?.freeTier ? 'fast' : tier;
+
   // User-provided model overrides
   if (userAI) {
-    if (tier === 'fast' && userAI.modelFast) return userAI.modelFast;
-    if (tier === 'smart' && userAI.modelSmart) return userAI.modelSmart;
+    if (effectiveTier === 'fast' && userAI.modelFast) return userAI.modelFast;
+    if (effectiveTier === 'smart' && userAI.modelSmart) return userAI.modelSmart;
     // Azure user config
     if (provider === 'azure') {
-      if (tier === 'fast' && userAI.azureDeploymentFast) return userAI.azureDeploymentFast;
-      if (tier === 'smart' && userAI.azureDeploymentSmart) return userAI.azureDeploymentSmart;
+      if (effectiveTier === 'fast' && userAI.azureDeploymentFast) return userAI.azureDeploymentFast;
+      if (effectiveTier === 'smart' && userAI.azureDeploymentSmart) return userAI.azureDeploymentSmart;
     }
-    return PROVIDER_INFO[provider].defaultModels[tier];
+    return PROVIDER_INFO[provider].defaultModels[effectiveTier];
   }
 
   // Server env overrides
-  if (tier === 'fast' && process.env.AI_MODEL_FAST) return process.env.AI_MODEL_FAST;
-  if (tier === 'smart' && process.env.AI_MODEL_SMART) return process.env.AI_MODEL_SMART;
+  if (effectiveTier === 'fast' && process.env.AI_MODEL_FAST) return process.env.AI_MODEL_FAST;
+  if (effectiveTier === 'smart' && process.env.AI_MODEL_SMART) return process.env.AI_MODEL_SMART;
 
   if (provider === 'azure') {
-    if (tier === 'fast' && process.env.AZURE_OPENAI_DEPLOYMENT_FAST) {
+    if (effectiveTier === 'fast' && process.env.AZURE_OPENAI_DEPLOYMENT_FAST) {
       return process.env.AZURE_OPENAI_DEPLOYMENT_FAST;
     }
-    if (tier === 'smart' && process.env.AZURE_OPENAI_DEPLOYMENT_SMART) {
+    if (effectiveTier === 'smart' && process.env.AZURE_OPENAI_DEPLOYMENT_SMART) {
       return process.env.AZURE_OPENAI_DEPLOYMENT_SMART;
     }
   }
 
-  return PROVIDER_INFO[provider].defaultModels[tier];
+  return PROVIDER_INFO[provider].defaultModels[effectiveTier];
 }
 
 // ─── Cost Estimation ─────────────────────────────────────────────────────────

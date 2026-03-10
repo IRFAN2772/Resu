@@ -41,6 +41,7 @@ function extractUserAI(request: FastifyRequest): UserAIConfig | undefined {
     apiKey,
     modelFast: (request.headers['x-ai-model-fast'] as string) || undefined,
     modelSmart: (request.headers['x-ai-model-smart'] as string) || undefined,
+    freeTier: request.headers['x-ai-free-tier'] === '1',
     azureEndpoint: (request.headers['x-ai-azure-endpoint'] as string) || undefined,
     azureApiVersion: (request.headers['x-ai-azure-api-version'] as string) || undefined,
     azureDeploymentFast: (request.headers['x-ai-azure-deployment-fast'] as string) || undefined,

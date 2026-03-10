@@ -36,6 +36,8 @@ export function getAIHeaders(): Record<string, string> {
     'X-AI-Key': config.apiKey,
   };
 
+  if (config.freeTier) headers['X-AI-Free-Tier'] = '1';
+
   if (config.modelFast) headers['X-AI-Model-Fast'] = config.modelFast;
   if (config.modelSmart) headers['X-AI-Model-Smart'] = config.modelSmart;
   if (config.azureEndpoint) headers['X-AI-Azure-Endpoint'] = config.azureEndpoint;

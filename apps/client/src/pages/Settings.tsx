@@ -15,6 +15,7 @@ export function SettingsPage() {
   const [azureDeploymentSmart, setAzureDeploymentSmart] = useState('');
   const [showKey, setShowKey] = useState(false);
   const [hasConfig, setHasConfig] = useState(false);
+  const [freeTier, setFreeTier] = useState(true);
 
   // Load existing settings
   useEffect(() => {
@@ -25,6 +26,7 @@ export function SettingsPage() {
       setApiKey(existing.apiKey);
       setModelFast(existing.modelFast || defaults.fast);
       setModelSmart(existing.modelSmart || defaults.smart);
+      setFreeTier(existing.freeTier ?? true);
       setAzureEndpoint(existing.azureEndpoint ?? '');
       setAzureApiVersion(existing.azureApiVersion ?? '2024-10-21');
       setAzureDeploymentFast(existing.azureDeploymentFast || defaults.fast);
@@ -48,6 +50,7 @@ export function SettingsPage() {
     const config: UserAIConfig = {
       provider,
       apiKey: apiKey.trim(),
+      freeTier,
       ...(modelFast ? { modelFast } : {}),
       ...(modelSmart ? { modelSmart } : {}),
       ...(provider === 'azure'
@@ -233,6 +236,24 @@ export function SettingsPage() {
             </div>
           </div>
         )}
+
+        {/* Free Tier Toggle */}
+        <div className={styles['free-tier-row']}>
+          <label className={styles['toggle-label']}>
+            <input
+              type="checkbox"
+              checked={freeTier}
+              onChange={(e) => setFreeTier(e.target.checked)}
+            />
+            <span className={styles['toggle-switch']} />
+            <span>Free Tier Mode</span>
+          </label>
+          <span className={styles['free-tier-hint']}>
+            {freeTier
+              ? `Uses ${info.defaultModels.fast} for all steps — avoids rate limits on free API plans`
+              : 'Uses fast model for parsing + smart model for generation — needs a paid API plan'}
+          </span>
+        </div>
 
         <div className={styles.actions}>
           <button className="btn btn-primary" onClick={handleSave}>
