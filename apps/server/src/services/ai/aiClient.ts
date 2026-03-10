@@ -74,7 +74,8 @@ function resolveModel(provider: AIProvider, tier: ModelTier, userAI?: UserAIConf
     // Azure user config
     if (provider === 'azure') {
       if (effectiveTier === 'fast' && userAI.azureDeploymentFast) return userAI.azureDeploymentFast;
-      if (effectiveTier === 'smart' && userAI.azureDeploymentSmart) return userAI.azureDeploymentSmart;
+      if (effectiveTier === 'smart' && userAI.azureDeploymentSmart)
+        return userAI.azureDeploymentSmart;
     }
     return PROVIDER_INFO[provider].defaultModels[effectiveTier];
   }
