@@ -101,7 +101,7 @@ export async function generateResume(
     systemPrompt,
     userMessage,
     jsonMode: true,
-    temperature: 0.4,
+    temperature: 0.25,
     userAI,
   });
 
