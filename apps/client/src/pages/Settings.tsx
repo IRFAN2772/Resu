@@ -7,8 +7,8 @@ import styles from './Settings.module.css';
 export function SettingsPage() {
   const [provider, setProvider] = useState<AIProvider>('openai');
   const [apiKey, setApiKey] = useState('');
-  const [modelFast, setModelFast] = useState('');
-  const [modelSmart, setModelSmart] = useState('');
+  const [modelFast, setModelFast] = useState(PROVIDER_INFO['openai'].defaultModels.fast);
+  const [modelSmart, setModelSmart] = useState(PROVIDER_INFO['openai'].defaultModels.smart);
   const [azureEndpoint, setAzureEndpoint] = useState('');
   const [azureApiVersion, setAzureApiVersion] = useState('2024-10-21');
   const [azureDeploymentFast, setAzureDeploymentFast] = useState('');
@@ -20,14 +20,15 @@ export function SettingsPage() {
   useEffect(() => {
     const existing = getAISettings();
     if (existing) {
+      const defaults = PROVIDER_INFO[existing.provider].defaultModels;
       setProvider(existing.provider);
       setApiKey(existing.apiKey);
-      setModelFast(existing.modelFast ?? '');
-      setModelSmart(existing.modelSmart ?? '');
+      setModelFast(existing.modelFast || defaults.fast);
+      setModelSmart(existing.modelSmart || defaults.smart);
       setAzureEndpoint(existing.azureEndpoint ?? '');
       setAzureApiVersion(existing.azureApiVersion ?? '2024-10-21');
-      setAzureDeploymentFast(existing.azureDeploymentFast ?? '');
-      setAzureDeploymentSmart(existing.azureDeploymentSmart ?? '');
+      setAzureDeploymentFast(existing.azureDeploymentFast || defaults.fast);
+      setAzureDeploymentSmart(existing.azureDeploymentSmart || defaults.smart);
       setHasConfig(true);
     }
   }, []);
@@ -66,12 +67,13 @@ export function SettingsPage() {
 
   const handleClear = () => {
     clearAISettings();
+    const defaults = PROVIDER_INFO[provider].defaultModels;
     setApiKey('');
-    setModelFast('');
-    setModelSmart('');
+    setModelFast(defaults.fast);
+    setModelSmart(defaults.smart);
     setAzureEndpoint('');
-    setAzureDeploymentFast('');
-    setAzureDeploymentSmart('');
+    setAzureDeploymentFast(defaults.fast);
+    setAzureDeploymentSmart(defaults.smart);
     setHasConfig(false);
     setShowKey(false);
     toast.success('AI settings cleared');
@@ -110,7 +112,17 @@ export function SettingsPage() {
             <button
               key={p}
               className={`${styles['provider-card']} ${provider === p ? styles.active : ''}`}
-              onClick={() => setProvider(p)}
+              onClick={() => {
+                setProvider(p);
+                // Auto-fill best default models for this provider
+                const defaults = PROVIDER_INFO[p].defaultModels;
+                setModelFast(defaults.fast);
+                setModelSmart(defaults.smart);
+                if (p === 'azure') {
+                  setAzureDeploymentFast(defaults.fast);
+                  setAzureDeploymentSmart(defaults.smart);
+                }
+              }}
             >
               <span className={styles['provider-name']}>{pi.name}</span>
               <span className={styles['provider-desc']}>{pi.description}</span>

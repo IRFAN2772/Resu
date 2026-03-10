@@ -107,9 +107,13 @@ export const generateRoutes: FastifyPluginAsync = async (app) => {
       };
     } catch (err: any) {
       app.log.error(err);
-      const status = err?.statusCode ?? 500;
+      const status = err?.statusCode ?? err?.status ?? 500;
+      const labels: Record<number, string> = {
+        401: 'API key required',
+        429: 'Rate limited — try again shortly',
+      };
       return reply.status(status).send({
-        error: status === 401 ? 'API key required' : 'Failed to parse job description',
+        error: labels[status] ?? 'Failed to parse job description',
         message: err instanceof Error ? err.message : 'Unknown error',
       });
     } finally {
@@ -186,9 +190,13 @@ export const generateRoutes: FastifyPluginAsync = async (app) => {
       };
     } catch (err: any) {
       app.log.error(err);
-      const status = err?.statusCode ?? 500;
+      const status = err?.statusCode ?? err?.status ?? 500;
+      const labels: Record<number, string> = {
+        401: 'API key required',
+        429: 'Rate limited — try again shortly',
+      };
       return reply.status(status).send({
-        error: status === 401 ? 'API key required' : 'Failed to generate resume',
+        error: labels[status] ?? 'Failed to generate resume',
         message: err instanceof Error ? err.message : 'Unknown error',
       });
     } finally {

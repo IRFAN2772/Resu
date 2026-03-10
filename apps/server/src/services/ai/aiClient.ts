@@ -108,6 +108,7 @@ const PRICING: Record<string, { input: number; output: number }> = {
   'deepseek-chat': { input: 0.14 / 1_000_000, output: 0.28 / 1_000_000 },
   // Groq (free tier / very cheap)
   'llama-3.3-70b-versatile': { input: 0.59 / 1_000_000, output: 0.79 / 1_000_000 },
+  'llama-3.1-8b-instant': { input: 0.05 / 1_000_000, output: 0.08 / 1_000_000 },
   'mixtral-8x7b-32768': { input: 0.24 / 1_000_000, output: 0.24 / 1_000_000 },
 };
 
@@ -338,9 +339,49 @@ async function completionViaAnthropic(
 
 // ─── Public API ──────────────────────────────────────────────────────────────
 
+// ─── Per-Provider Rate Throttle ──────────────────────────────────────────────
+// Prevents hitting free-tier RPM limits by enforcing minimum spacing between calls.
+
+const lastCallTime: Partial<Record<AIProvider, number>> = {};
+
+/** Minimum milliseconds between calls per provider (based on free-tier RPM). */
+const PROVIDER_MIN_INTERVAL: Partial<Record<AIProvider, number>> = {
+  gemini: 5000, // Free tier ~15 RPM → 1 call every 4s, pad to 5s
+  groq: 3000, // Free tier ~30 RPM → pad to 3s
+  deepseek: 3000, // Conservative padding
+  anthropic: 3000, // Free tier is limited
+};
+
+async function throttle(provider: AIProvider): Promise<void> {
+  const minInterval = PROVIDER_MIN_INTERVAL[provider];
+  if (!minInterval) return;
+
+  const last = lastCallTime[provider] ?? 0;
+  const elapsed = Date.now() - last;
+  if (elapsed < minInterval) {
+    const wait = minInterval - elapsed;
+    console.log(`[AI] Throttling ${provider} — waiting ${wait}ms to respect rate limits`);
+    await new Promise((r) => setTimeout(r, wait));
+  }
+  lastCallTime[provider] = Date.now();
+}
+
+/** Extract retry-after seconds from an API error (OpenAI SDK / Anthropic SDK). */
+function getRetryAfterMs(err: any): number | null {
+  // OpenAI SDK stores response headers
+  const header =
+    err?.headers?.['retry-after'] ?? err?.response?.headers?.get?.('retry-after');
+  if (header) {
+    const secs = Number(header);
+    if (!isNaN(secs) && secs > 0) return secs * 1000;
+  }
+  return null;
+}
+
 /**
  * Unified chat completion — routes to the right provider.
  * If opts.userAI is set, uses the user's BYO key; otherwise server env vars.
+ * Automatically retries on 429 (rate limit) with exponential backoff.
  */
 export async function chatCompletion(opts: ChatCompletionOptions): Promise<ChatCompletionResult> {
   const provider = resolveProvider(opts.userAI);
@@ -350,15 +391,52 @@ export async function chatCompletion(opts: ChatCompletionOptions): Promise<ChatC
     `[AI] Provider: ${provider} | Model: ${model} | Tier: ${opts.modelTier} | BYO: ${!!opts.userAI}`,
   );
 
-  switch (provider) {
-    case 'anthropic':
-      return completionViaAnthropic(model, opts);
-    case 'azure':
-      return completionViaAzure(model, opts);
-    default:
-      // openai, gemini, deepseek, groq — all OpenAI-compatible
-      return completionViaOpenAICompat(provider, model, opts);
+  const MAX_RETRIES = 5;
+  let lastError: unknown;
+
+  for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
+    try {
+      // Throttle to prevent hitting free-tier RPM limits
+      await throttle(provider);
+
+      switch (provider) {
+        case 'anthropic':
+          return await completionViaAnthropic(model, opts);
+        case 'azure':
+          return await completionViaAzure(model, opts);
+        default:
+          return await completionViaOpenAICompat(provider, model, opts);
+      }
+    } catch (err: any) {
+      lastError = err;
+      const status = err?.status ?? err?.statusCode ?? err?.code;
+      if (status === 429 && attempt < MAX_RETRIES) {
+        // Prefer the server's Retry-After header; otherwise use exponential backoff
+        const retryAfter = getRetryAfterMs(err);
+        const backoff = retryAfter ?? Math.min(Math.pow(2, attempt + 1) * 2000, 60_000); // 4s, 8s, 16s, 32s, 60s
+        console.log(
+          `[AI] Rate limited by ${provider} (429). ` +
+            `${retryAfter ? 'Server asked to wait ' + retryAfter / 1000 + 's' : 'Backing off ' + backoff / 1000 + 's'}. ` +
+            `Attempt ${attempt + 1}/${MAX_RETRIES}…`,
+        );
+        await new Promise((r) => setTimeout(r, backoff));
+        continue;
+      }
+      // Re-throw with a clearer message for rate limits
+      if (status === 429) {
+        throw Object.assign(
+          new Error(
+            `Rate limited by ${provider} after ${MAX_RETRIES} retries. ` +
+              `Free-tier APIs have strict limits — wait a minute and try again, or upgrade your plan.`,
+          ),
+          { statusCode: 429 },
+        );
+      }
+      throw err;
+    }
   }
+
+  throw lastError;
 }
 
 /** Reset cached clients (for tests or env changes). */

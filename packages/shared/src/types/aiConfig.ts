@@ -34,7 +34,7 @@ export const PROVIDER_INFO: Record<
 > = {
   openai: {
     name: 'OpenAI',
-    description: 'GPT-4o, GPT-4o-mini, o1',
+    description: 'GPT-4o-mini (fast) · GPT-4o (smart)',
     defaultModels: { fast: 'gpt-4o-mini', smart: 'gpt-4o' },
     keyPlaceholder: 'sk-proj-...',
     keyPrefix: 'sk-',
@@ -49,7 +49,7 @@ export const PROVIDER_INFO: Record<
   },
   anthropic: {
     name: 'Anthropic (Claude)',
-    description: 'Claude 3.5 Sonnet, Claude 3.5 Haiku',
+    description: 'Claude 3.5 Haiku (fast) · Claude 3.5 Sonnet (smart)',
     defaultModels: { fast: 'claude-3-5-haiku-latest', smart: 'claude-3-5-sonnet-latest' },
     keyPlaceholder: 'sk-ant-...',
     keyPrefix: 'sk-ant-',
@@ -57,22 +57,22 @@ export const PROVIDER_INFO: Record<
   },
   gemini: {
     name: 'Google Gemini',
-    description: 'Gemini 2.0 Flash, Gemini 1.5 Pro',
+    description: 'Gemini 2.0 Flash (fast) · Gemini 1.5 Pro (smart)',
     defaultModels: { fast: 'gemini-2.0-flash', smart: 'gemini-1.5-pro' },
     keyPlaceholder: 'AIza...',
     docsUrl: 'https://aistudio.google.com/app/apikey',
   },
   deepseek: {
     name: 'DeepSeek',
-    description: 'DeepSeek Chat, DeepSeek Reasoner',
+    description: 'DeepSeek-V3 (fast & smart) — best value',
     defaultModels: { fast: 'deepseek-chat', smart: 'deepseek-chat' },
     keyPlaceholder: 'sk-...',
     docsUrl: 'https://platform.deepseek.com/api_keys',
   },
   groq: {
     name: 'Groq',
-    description: 'LLaMA 3.3 70B, Mixtral — ultra-fast inference',
-    defaultModels: { fast: 'mixtral-8x7b-32768', smart: 'llama-3.3-70b-versatile' },
+    description: 'LLaMA 3.1 8B (fast) · LLaMA 3.3 70B (smart)',
+    defaultModels: { fast: 'llama-3.1-8b-instant', smart: 'llama-3.3-70b-versatile' },
     keyPlaceholder: 'gsk_...',
     keyPrefix: 'gsk_',
     docsUrl: 'https://console.groq.com/keys',
