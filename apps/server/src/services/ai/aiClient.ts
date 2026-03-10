@@ -118,8 +118,16 @@ function estimateCost(model: string, usage: TokenUsage): number {
 
 // ─── OpenAI-Compatible Completion (OpenAI, Gemini, DeepSeek, Groq) ──────────
 
-/** Cached client only for server env-var mode */
-let cachedOpenAIClient: OpenAI | null = null;
+/** Environment variable name for each provider's API key */
+const PROVIDER_KEY_ENV: Record<string, string> = {
+  openai: 'OPENAI_API_KEY',
+  gemini: 'GEMINI_API_KEY',
+  deepseek: 'DEEPSEEK_API_KEY',
+  groq: 'GROQ_API_KEY',
+};
+
+/** Cached clients per provider for server env-var mode */
+const cachedOpenAIClients: Partial<Record<AIProvider, OpenAI>> = {};
 
 function createOpenAIClient(provider: AIProvider, apiKey: string): OpenAI {
   const baseURL = OPENAI_COMPATIBLE_URLS[provider];
@@ -133,15 +141,19 @@ function getOpenAIClient(provider: AIProvider, userAI?: UserAIConfig): OpenAI {
     return createOpenAIClient(provider, userAI.apiKey);
   }
 
-  // Server env-var mode — cache the singleton
-  if (cachedOpenAIClient) return cachedOpenAIClient;
+  // Server env-var mode — cache per provider
+  if (cachedOpenAIClients[provider]) return cachedOpenAIClients[provider];
 
-  const apiKey = process.env.OPENAI_API_KEY;
-  if (!apiKey || apiKey === 'your_openai_api_key_here') {
-    throw new Error(`API key not set for provider "${provider}". Check your .env file.`);
+  const envVar = PROVIDER_KEY_ENV[provider] ?? 'OPENAI_API_KEY';
+  const apiKey = process.env[envVar];
+  if (!apiKey || apiKey.startsWith('your_')) {
+    throw new Error(
+      `API key not set for provider "${provider}". Set ${envVar} in your .env file.`,
+    );
   }
-  cachedOpenAIClient = createOpenAIClient(provider, apiKey);
-  return cachedOpenAIClient;
+  const client = createOpenAIClient(provider, apiKey);
+  cachedOpenAIClients[provider] = client;
+  return client;
 }
 
 async function completionViaOpenAICompat(
@@ -151,22 +163,39 @@ async function completionViaOpenAICompat(
 ): Promise<ChatCompletionResult> {
   const client = getOpenAIClient(provider, opts.userAI);
 
-  // gpt-5 on Azure doesn't support custom temperature
-  const supportsTemperature = !model.startsWith('gpt-5');
+  // Gemini via the OpenAI compatibility layer doesn't support response_format
+  // DeepSeek and Groq support it for some models but unreliably
+  // For these providers, we inject a JSON instruction into the system prompt instead
+  const nativeJsonMode = provider === 'openai';
+  const useJsonResponseFormat = opts.jsonMode && nativeJsonMode;
+
+  let systemPrompt = opts.systemPrompt;
+  if (opts.jsonMode && !nativeJsonMode) {
+    systemPrompt +=
+      '\n\nIMPORTANT: You MUST respond with valid JSON only. No markdown code fences, no explanation, no extra text — just the raw JSON object.';
+  }
 
   const response = await client.chat.completions.create({
     model,
     messages: [
-      { role: 'system', content: opts.systemPrompt },
+      { role: 'system', content: systemPrompt },
       { role: 'user', content: opts.userMessage },
     ],
-    ...(opts.jsonMode ? { response_format: { type: 'json_object' as const } } : {}),
-    ...(supportsTemperature ? { temperature: opts.temperature ?? 0.3 } : {}),
+    ...(useJsonResponseFormat ? { response_format: { type: 'json_object' as const } } : {}),
+    temperature: opts.temperature ?? 0.3,
   });
 
-  const content = response.choices[0]?.message?.content;
+  let content = response.choices[0]?.message?.content;
   if (!content) {
     throw new Error(`No response from ${provider} (model: ${model})`);
+  }
+
+  // Strip markdown code fences that non-OpenAI providers sometimes wrap JSON in
+  if (opts.jsonMode && !nativeJsonMode) {
+    content = content
+      .replace(/^```(?:json)?\s*\n?/i, '')
+      .replace(/\n?```\s*$/i, '')
+      .trim();
   }
 
   const tokenUsage: TokenUsage = {
@@ -336,7 +365,9 @@ export async function chatCompletion(opts: ChatCompletionOptions): Promise<ChatC
 
 /** Reset cached clients (for tests or env changes). */
 export function resetClients(): void {
-  cachedOpenAIClient = null;
+  for (const key of Object.keys(cachedOpenAIClients)) {
+    delete cachedOpenAIClients[key as AIProvider];
+  }
   cachedAzureClient = null;
   cachedAnthropicClient = null;
 }

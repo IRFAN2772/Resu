@@ -22,8 +22,9 @@ let generationInProgress = false;
 const PROMPT_VERSION = 'v1';
 
 /**
- * Extract optional user AI config from request headers (BYO key).
- * Returns undefined if no X-AI-Key header is present (falls back to server env).
+ * Extract user AI config from request headers (BYO key).
+ * All AI keys come from the client Settings page — no server .env fallback.
+ * Returns undefined if no X-AI-Key header is present.
  */
 function extractUserAI(request: FastifyRequest): UserAIConfig | undefined {
   const apiKey = request.headers['x-ai-key'] as string | undefined;
@@ -47,6 +48,22 @@ function extractUserAI(request: FastifyRequest): UserAIConfig | undefined {
   };
 }
 
+/**
+ * Require AI config — returns the config or sends a 401 error.
+ */
+function requireUserAI(
+  request: FastifyRequest,
+): UserAIConfig {
+  const userAI = extractUserAI(request);
+  if (!userAI) {
+    throw Object.assign(
+      new Error('No API key configured. Go to Settings to add your AI provider key.'),
+      { statusCode: 401 },
+    );
+  }
+  return userAI;
+}
+
 export const generateRoutes: FastifyPluginAsync = async (app) => {
   // ─── Step 1+2: Parse JD and Select Relevant Items ───
   app.post<{ Body: GenerateParseRequest }>('/generate/parse', async (request, reply) => {
@@ -62,9 +79,9 @@ export const generateRoutes: FastifyPluginAsync = async (app) => {
     }
 
     const { jdText, config } = parseResult.data;
-    const userAI = extractUserAI(request);
 
     try {
+      const userAI = requireUserAI(request);
       generationInProgress = true;
 
       // Step 1: Parse JD
@@ -90,10 +107,11 @@ export const generateRoutes: FastifyPluginAsync = async (app) => {
           estimatedCost: parseCost + selectCost,
         },
       };
-    } catch (err) {
+    } catch (err: any) {
       app.log.error(err);
-      return reply.status(500).send({
-        error: 'Failed to parse job description',
+      const status = err?.statusCode ?? 500;
+      return reply.status(status).send({
+        error: status === 401 ? 'API key required' : 'Failed to parse job description',
         message: err instanceof Error ? err.message : 'Unknown error',
       });
     } finally {
@@ -115,9 +133,9 @@ export const generateRoutes: FastifyPluginAsync = async (app) => {
     }
 
     const { jdText, parsedJD, relevanceSelection, config } = parseResult.data;
-    const userAI = extractUserAI(request);
 
     try {
+      const userAI = requireUserAI(request);
       generationInProgress = true;
 
       // Step 3: Generate resume
@@ -168,10 +186,11 @@ export const generateRoutes: FastifyPluginAsync = async (app) => {
         atsScore,
         tokenUsage,
       };
-    } catch (err) {
+    } catch (err: any) {
       app.log.error(err);
-      return reply.status(500).send({
-        error: 'Failed to generate resume',
+      const status = err?.statusCode ?? 500;
+      return reply.status(status).send({
+        error: status === 401 ? 'API key required' : 'Failed to generate resume',
         message: err instanceof Error ? err.message : 'Unknown error',
       });
     } finally {

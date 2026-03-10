@@ -105,7 +105,7 @@ export async function generateResume(
     userAI,
   });
 
-  const raw = JSON.parse(result.content);
+  const raw = safeJSONParse(result.content);
   const normalized = normalizeResumeResponse(raw);
   const validated = ResumeDataSchema.parse(normalized);
 
@@ -114,6 +114,24 @@ export async function generateResume(
     tokenUsage: result.tokenUsage,
     cost: result.cost,
   };
+}
+
+/** Safely extract JSON from AI response, handling stray text/code fences */
+function safeJSONParse(text: string): any {
+  try { return JSON.parse(text); } catch { /* continue */ }
+
+  let cleaned = text
+    .replace(/^```(?:json)?\s*\n?/i, '')
+    .replace(/\n?```\s*$/i, '')
+    .trim();
+  try { return JSON.parse(cleaned); } catch { /* continue */ }
+
+  const match = cleaned.match(/\{[\s\S]*\}/);
+  if (match) {
+    try { return JSON.parse(match[0]); } catch { /* continue */ }
+  }
+
+  throw new Error('Failed to parse AI response as JSON');
 }
 
 /**

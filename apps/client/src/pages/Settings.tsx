@@ -74,7 +74,7 @@ export function SettingsPage() {
     setAzureDeploymentSmart('');
     setHasConfig(false);
     setShowKey(false);
-    toast.success('AI settings cleared — will use server default');
+    toast.success('AI settings cleared');
   };
 
   const maskKey = (key: string) => {
@@ -97,7 +97,7 @@ export function SettingsPage() {
             Using <strong>{info.name}</strong> with your API key
           </span>
           <button className="btn btn-sm btn-secondary" onClick={handleClear}>
-            Clear & Use Server Default
+            Clear Settings
           </button>
         </div>
       )}

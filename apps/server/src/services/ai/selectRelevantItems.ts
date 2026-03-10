@@ -47,7 +47,7 @@ export async function selectRelevantItems(
     userAI,
   });
 
-  const raw = JSON.parse(result.content);
+  const raw = safeJSONParse(result.content);
 
   // Normalize common AI format variations before Zod validation
   const normalized = normalizeSelectionResponse(raw);
@@ -58,6 +58,24 @@ export async function selectRelevantItems(
     tokenUsage: result.tokenUsage,
     cost: result.cost,
   };
+}
+
+/** Safely extract JSON from AI response, handling stray text/code fences */
+function safeJSONParse(text: string): any {
+  try { return JSON.parse(text); } catch { /* continue */ }
+
+  let cleaned = text
+    .replace(/^```(?:json)?\s*\n?/i, '')
+    .replace(/\n?```\s*$/i, '')
+    .trim();
+  try { return JSON.parse(cleaned); } catch { /* continue */ }
+
+  const match = cleaned.match(/\{[\s\S]*\}/);
+  if (match) {
+    try { return JSON.parse(match[0]); } catch { /* continue */ }
+  }
+
+  throw new Error('Failed to parse AI response as JSON');
 }
 
 /**
