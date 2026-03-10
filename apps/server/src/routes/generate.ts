@@ -51,9 +51,7 @@ function extractUserAI(request: FastifyRequest): UserAIConfig | undefined {
 /**
  * Require AI config — returns the config or sends a 401 error.
  */
-function requireUserAI(
-  request: FastifyRequest,
-): UserAIConfig {
+function requireUserAI(request: FastifyRequest): UserAIConfig {
   const userAI = extractUserAI(request);
   if (!userAI) {
     throw Object.assign(

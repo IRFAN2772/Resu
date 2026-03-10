@@ -59,15 +59,30 @@ function normalizeJDResponse(raw: any): any {
   if (raw.result) raw = raw.result;
 
   const validLevels = [
-    'intern', 'junior', 'mid', 'senior', 'staff',
-    'principal', 'lead', 'manager', 'director', 'unknown',
+    'intern',
+    'junior',
+    'mid',
+    'senior',
+    'staff',
+    'principal',
+    'lead',
+    'manager',
+    'director',
+    'unknown',
   ];
   let level = raw.seniorityLevel ?? raw.seniority_level ?? raw.seniority ?? raw.level ?? 'unknown';
   if (!validLevels.includes(level)) level = 'unknown';
 
   return {
     companyName: raw.companyName ?? raw.company_name ?? raw.company ?? '',
-    roleTitle: raw.roleTitle ?? raw.role_title ?? raw.role ?? raw.title ?? raw.jobTitle ?? raw.job_title ?? '',
+    roleTitle:
+      raw.roleTitle ??
+      raw.role_title ??
+      raw.role ??
+      raw.title ??
+      raw.jobTitle ??
+      raw.job_title ??
+      '',
     seniorityLevel: level,
     requiredSkills: ensureStringArray(raw.requiredSkills ?? raw.required_skills ?? []),
     preferredSkills: ensureStringArray(raw.preferredSkills ?? raw.preferred_skills ?? []),
@@ -89,19 +104,31 @@ function ensureStringArray(val: any): string[] {
 /** Safely extract JSON from AI response, handling stray text/code fences */
 function safeJSONParse(text: string): any {
   // First try direct parse
-  try { return JSON.parse(text); } catch { /* continue */ }
+  try {
+    return JSON.parse(text);
+  } catch {
+    /* continue */
+  }
 
   // Strip markdown code fences
   let cleaned = text
     .replace(/^```(?:json)?\s*\n?/i, '')
     .replace(/\n?```\s*$/i, '')
     .trim();
-  try { return JSON.parse(cleaned); } catch { /* continue */ }
+  try {
+    return JSON.parse(cleaned);
+  } catch {
+    /* continue */
+  }
 
   // Extract first JSON object
   const match = cleaned.match(/\{[\s\S]*\}/);
   if (match) {
-    try { return JSON.parse(match[0]); } catch { /* continue */ }
+    try {
+      return JSON.parse(match[0]);
+    } catch {
+      /* continue */
+    }
   }
 
   throw new Error('Failed to parse AI response as JSON');

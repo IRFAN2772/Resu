@@ -147,9 +147,7 @@ function getOpenAIClient(provider: AIProvider, userAI?: UserAIConfig): OpenAI {
   const envVar = PROVIDER_KEY_ENV[provider] ?? 'OPENAI_API_KEY';
   const apiKey = process.env[envVar];
   if (!apiKey || apiKey.startsWith('your_')) {
-    throw new Error(
-      `API key not set for provider "${provider}". Set ${envVar} in your .env file.`,
-    );
+    throw new Error(`API key not set for provider "${provider}". Set ${envVar} in your .env file.`);
   }
   const client = createOpenAIClient(provider, apiKey);
   cachedOpenAIClients[provider] = client;

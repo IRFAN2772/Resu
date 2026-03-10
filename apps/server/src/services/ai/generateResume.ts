@@ -118,17 +118,29 @@ export async function generateResume(
 
 /** Safely extract JSON from AI response, handling stray text/code fences */
 function safeJSONParse(text: string): any {
-  try { return JSON.parse(text); } catch { /* continue */ }
+  try {
+    return JSON.parse(text);
+  } catch {
+    /* continue */
+  }
 
   let cleaned = text
     .replace(/^```(?:json)?\s*\n?/i, '')
     .replace(/\n?```\s*$/i, '')
     .trim();
-  try { return JSON.parse(cleaned); } catch { /* continue */ }
+  try {
+    return JSON.parse(cleaned);
+  } catch {
+    /* continue */
+  }
 
   const match = cleaned.match(/\{[\s\S]*\}/);
   if (match) {
-    try { return JSON.parse(match[0]); } catch { /* continue */ }
+    try {
+      return JSON.parse(match[0]);
+    } catch {
+      /* continue */
+    }
   }
 
   throw new Error('Failed to parse AI response as JSON');
