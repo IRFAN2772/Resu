@@ -369,8 +369,7 @@ async function throttle(provider: AIProvider): Promise<void> {
 /** Extract retry-after seconds from an API error (OpenAI SDK / Anthropic SDK). */
 function getRetryAfterMs(err: any): number | null {
   // OpenAI SDK stores response headers
-  const header =
-    err?.headers?.['retry-after'] ?? err?.response?.headers?.get?.('retry-after');
+  const header = err?.headers?.['retry-after'] ?? err?.response?.headers?.get?.('retry-after');
   if (header) {
     const secs = Number(header);
     if (!isNaN(secs) && secs > 0) return secs * 1000;
