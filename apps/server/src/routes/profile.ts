@@ -1,10 +1,10 @@
 import type { FastifyPluginAsync } from 'fastify';
 import { PersonalProfileSchema } from '@resu/shared';
-import { saveProfile, invalidateProfileCache } from '../services/profile.js';
+import { saveProfile, loadProfile } from '../services/profile.js';
 
 export const profileRoutes: FastifyPluginAsync = async (app) => {
   app.get('/profile', async () => {
-    return app.profile;
+    return loadProfile();
   });
 
   app.put('/profile', async (request, reply) => {
@@ -20,8 +20,6 @@ export const profileRoutes: FastifyPluginAsync = async (app) => {
     }
 
     saveProfile(result.data);
-    // Update the in-memory profile on the app instance
-    (app as any).profile = result.data;
 
     return { success: true };
   });

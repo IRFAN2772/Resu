@@ -15,6 +15,7 @@ import { generateResume } from '../services/ai/generateResume.js';
 import { generateCoverLetter } from '../services/ai/generateCoverLetter.js';
 import { scoreATS } from '../services/ai/atsScorer.js';
 import { insertResume } from '../db/queries.js';
+import { loadProfile } from '../services/profile.js';
 
 // Simple in-memory lock to prevent concurrent generations
 let generationInProgress = false;
@@ -95,7 +96,7 @@ export const generateRoutes: FastifyPluginAsync = async (app) => {
         selection,
         tokenUsage: selectTokens,
         cost: selectCost,
-      } = await selectRelevantItems(app.profile, parsedJD, config, userAI);
+      } = await selectRelevantItems(loadProfile(), parsedJD, config, userAI);
 
       return {
         parsedJD,
@@ -146,7 +147,7 @@ export const generateRoutes: FastifyPluginAsync = async (app) => {
         resumeData,
         tokenUsage: genTokens,
         cost: genCost,
-      } = await generateResume(app.profile, parsedJD, relevanceSelection, config, userAI);
+      } = await generateResume(loadProfile(), parsedJD, relevanceSelection, config, userAI);
 
       // Step 4: ATS scoring (code-based, no LLM)
       const atsScore = scoreATS(resumeData, parsedJD);
@@ -156,7 +157,7 @@ export const generateRoutes: FastifyPluginAsync = async (app) => {
         coverLetter,
         tokenUsage: clTokens,
         cost: clCost,
-      } = await generateCoverLetter(app.profile, parsedJD, relevanceSelection, config, userAI);
+      } = await generateCoverLetter(loadProfile(), parsedJD, relevanceSelection, config, userAI);
 
       // Save to database
       const tokenUsage = {
