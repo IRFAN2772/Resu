@@ -6,9 +6,9 @@
     "location": "hyderabad, telangana, india",
     "linkedin": "https://www.linkedin.com/in/mohammad-irfanuddin-468430222/",
     "github": "github.com/IRFAN2772",
-    "website": "yourwebsite.com"
+    "website": "https://irfanuddin.is-a.dev/"
   },
-  "summary": "Experienced software engineer with 2+ years of experience building scalable web applications. Passionate about clean architecture, developer tooling, and delivering impactful user experiences.",
+  "summary": "A Full-Stack Developer with 2+ years of hands-on experience architecting and delivering production-grade applications. I take full ownership — from designing robust APIs and implementing enterprise-grade authentication to orchestrating third-party integrations and crafting polished user interfaces.\n\nDriven by an instinct for problem-solving and a relentless appetite for growth, I turn complex challenges into reliable, scalable solutions. Whether it's building secure authentication flows with Azure Entra, integrating external services like LinkedIn and Zoom, or debugging critical production issues — I thrive where impact meets complexity.\n\nI believe great software is built with ownership, clarity, and craft. Every line of code I write is in service of that standard.",
   "experience": [
     {
       "id": "exp-2",
@@ -154,6 +154,36 @@
       ],
       "proficiency": "expert",
       "category": "tools"
+    },
+    {
+      "name": "Third-Party Integrations",
+      "aliases": [],
+      "proficiency": "advanced",
+      "category": ""
+    },
+    {
+      "name": "Auth0",
+      "aliases": [],
+      "proficiency": "intermediate",
+      "category": ""
+    },
+    {
+      "name": "RBAC",
+      "aliases": [],
+      "proficiency": "advanced",
+      "category": ""
+    },
+    {
+      "name": "Tailwind CSS",
+      "aliases": [],
+      "proficiency": "advanced",
+      "category": ""
+    },
+    {
+      "name": "Vite",
+      "aliases": [],
+      "proficiency": "advanced",
+      "category": ""
     }
   ],
   "education": [
@@ -164,7 +194,7 @@
       "field": "Information Technology",
       "startDate": "2021-04",
       "endDate": "2024-04",
-      "gpa": "8.47/10",
+      "gpa": "",
       "highlights": [
         "Dean's List",
         "Senior Capstone: AI-powered scheduling system"
@@ -203,20 +233,64 @@
         "Developed with Python and TensorFlow, achieving 95% accuracy in detection",
         "Integrated with real-time alert system for immediate notifications"
       ]
+    },
+    {
+      "id": "f1d06594-8480-4863-911e-1045713f7769",
+      "name": "Portfolio",
+      "description": "A futuristic, dark-themed personal portfolio built with Next.js, React Three Fiber, Framer Motion, and GSAP — featuring interactive 3D scenes and scroll-driven animations.",
+      "url": "https://irfanuddin.is-a.dev/",
+      "tags": [
+        "Next.js",
+        "React",
+        "Three.js",
+        "Framer Motion",
+        "GSAP and Tailwind CSS"
+      ],
+      "highlights": []
     }
   ],
   "certifications": [
     {
-      "id": "cert-1",
-      "name": "AWS Solutions Architect Associate",
-      "issuer": "Amazon Web Services",
-      "date": "2023-06",
-      "url": "https://aws.amazon.com/certification/",
-      "tags": [
-        "aws",
-        "cloud",
-        "architecture"
-      ]
+      "id": "12827772-83f3-411b-9675-0af66e881d6c",
+      "name": "JavaScript + DSA",
+      "issuer": "Skillsoft — Percipio",
+      "date": "",
+      "tags": []
+    },
+    {
+      "id": "f7703148-bdba-4610-9b5a-b9b7c1d8b5b6",
+      "name": "Node.js",
+      "issuer": "Skillsoft — Percipio",
+      "date": "",
+      "tags": []
+    },
+    {
+      "id": "3cb29051-9684-4d08-9e2a-01dd2b7f95af",
+      "name": "React",
+      "issuer": "Skillsoft — Percipio",
+      "date": "",
+      "tags": []
+    },
+    {
+      "id": "29f43db8-5538-498c-b15e-a55058a71252",
+      "name": "Oracle",
+      "issuer": "oracle",
+      "date": "",
+      "tags": []
+    },
+    {
+      "id": "795bdd63-27fb-470b-8083-d16c5f739aa4",
+      "name": "Java",
+      "issuer": "IIT bombay",
+      "date": "",
+      "tags": []
+    },
+    {
+      "id": "725b7351-5051-4d62-8f93-c51ef8c801ef",
+      "name": "python",
+      "issuer": "IIT Bombay",
+      "date": "",
+      "tags": []
     }
   ],
   "achievements": [
