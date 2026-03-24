@@ -11,10 +11,7 @@ import {
 } from '@resu/shared';
 import { chatCompletion, type TokenUsage } from './aiClient.js';
 import { loadPrompt } from './promptLoader.js';
-import {
-  compressJDMinimal,
-  compressIntelligenceBrief,
-} from './contextCompressor.js';
+import { compressJDMinimal, compressIntelligenceBrief } from './contextCompressor.js';
 
 export interface CritiqueResumeResult {
   critique: ResumeCritique;
@@ -79,7 +76,9 @@ export async function critiqueResume(
 function safeJSONParse(text: string): any {
   try {
     return JSON.parse(text);
-  } catch { /* continue */ }
+  } catch {
+    /* continue */
+  }
 
   let cleaned = text
     .replace(/^```(?:json)?\s*\n?/i, '')
@@ -87,11 +86,17 @@ function safeJSONParse(text: string): any {
     .trim();
   try {
     return JSON.parse(cleaned);
-  } catch { /* continue */ }
+  } catch {
+    /* continue */
+  }
 
   const match = cleaned.match(/\{[\s\S]*\}/);
   if (match) {
-    try { return JSON.parse(match[0]); } catch { /* continue */ }
+    try {
+      return JSON.parse(match[0]);
+    } catch {
+      /* continue */
+    }
   }
 
   throw new Error('Failed to parse critique response as JSON');
@@ -106,7 +111,9 @@ function normalizeCritiqueResponse(raw: any): any {
     keywordCoverage: normalizeKeywordCoverage(raw.keywordCoverage ?? raw.keyword_coverage ?? {}),
     impactQuality: normalizeImpactQuality(raw.impactQuality ?? raw.impact_quality ?? {}),
     summaryQuality: normalizeSummaryQuality(raw.summaryQuality ?? raw.summary_quality ?? {}),
-    skillsAssessment: normalizeSkillsAssessment(raw.skillsAssessment ?? raw.skills_assessment ?? {}),
+    skillsAssessment: normalizeSkillsAssessment(
+      raw.skillsAssessment ?? raw.skills_assessment ?? {},
+    ),
     improvements: normalizeImprovements(raw.improvements ?? []),
     needsRevision: raw.needsRevision ?? raw.needs_revision ?? false,
   };

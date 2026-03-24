@@ -9,107 +9,107 @@
  */
 const SKILL_PARENTS: Record<string, string[]> = {
   // Frontend Frameworks → Languages
-  'react': ['JavaScript', 'HTML', 'CSS'],
+  react: ['JavaScript', 'HTML', 'CSS'],
   'next.js': ['React', 'JavaScript', 'HTML', 'CSS'],
-  'vue': ['JavaScript', 'HTML', 'CSS'],
-  'nuxt': ['Vue', 'JavaScript', 'HTML', 'CSS'],
-  'angular': ['TypeScript', 'JavaScript', 'HTML', 'CSS'],
-  'svelte': ['JavaScript', 'HTML', 'CSS'],
-  'sveltekit': ['Svelte', 'JavaScript', 'HTML', 'CSS'],
+  vue: ['JavaScript', 'HTML', 'CSS'],
+  nuxt: ['Vue', 'JavaScript', 'HTML', 'CSS'],
+  angular: ['TypeScript', 'JavaScript', 'HTML', 'CSS'],
+  svelte: ['JavaScript', 'HTML', 'CSS'],
+  sveltekit: ['Svelte', 'JavaScript', 'HTML', 'CSS'],
 
   // Backend Frameworks → Languages
   'node.js': ['JavaScript'],
-  'express': ['Node.js', 'JavaScript'],
-  'fastify': ['Node.js', 'JavaScript'],
+  express: ['Node.js', 'JavaScript'],
+  fastify: ['Node.js', 'JavaScript'],
   'nest.js': ['Node.js', 'TypeScript', 'JavaScript'],
-  'django': ['Python'],
-  'flask': ['Python'],
-  'fastapi': ['Python'],
-  'spring': ['Java'],
+  django: ['Python'],
+  flask: ['Python'],
+  fastapi: ['Python'],
+  spring: ['Java'],
   'spring boot': ['Spring', 'Java'],
   'ruby on rails': ['Ruby'],
-  'laravel': ['PHP'],
-  'gin': ['Go'],
-  'fiber': ['Go'],
-  'actix': ['Rust'],
-  'axum': ['Rust'],
+  laravel: ['PHP'],
+  gin: ['Go'],
+  fiber: ['Go'],
+  actix: ['Rust'],
+  axum: ['Rust'],
   'asp.net': ['C#', '.NET'],
 
   // TypeScript implies JavaScript
-  'typescript': ['JavaScript'],
+  typescript: ['JavaScript'],
 
   // Mobile
   'react native': ['React', 'JavaScript'],
-  'flutter': ['Dart'],
-  'swiftui': ['Swift'],
+  flutter: ['Dart'],
+  swiftui: ['Swift'],
   'jetpack compose': ['Kotlin'],
 
   // CSS frameworks → CSS
   'tailwind css': ['CSS'],
-  'bootstrap': ['CSS', 'HTML'],
-  'sass': ['CSS'],
+  bootstrap: ['CSS', 'HTML'],
+  sass: ['CSS'],
   'styled-components': ['CSS', 'React'],
   'material ui': ['React', 'CSS'],
 
   // Databases → Data concepts
-  'postgresql': ['SQL', 'Databases'],
-  'mysql': ['SQL', 'Databases'],
-  'mongodb': ['NoSQL', 'Databases'],
-  'redis': ['Caching', 'Databases'],
-  'elasticsearch': ['Search', 'Databases'],
-  'dynamodb': ['NoSQL', 'AWS', 'Databases'],
-  'firebase': ['NoSQL', 'Google Cloud'],
-  'prisma': ['Databases', 'ORM'],
-  'sequelize': ['Databases', 'ORM', 'Node.js'],
-  'typeorm': ['Databases', 'ORM', 'TypeScript'],
+  postgresql: ['SQL', 'Databases'],
+  mysql: ['SQL', 'Databases'],
+  mongodb: ['NoSQL', 'Databases'],
+  redis: ['Caching', 'Databases'],
+  elasticsearch: ['Search', 'Databases'],
+  dynamodb: ['NoSQL', 'AWS', 'Databases'],
+  firebase: ['NoSQL', 'Google Cloud'],
+  prisma: ['Databases', 'ORM'],
+  sequelize: ['Databases', 'ORM', 'Node.js'],
+  typeorm: ['Databases', 'ORM', 'TypeScript'],
 
   // Cloud & DevOps → Fundamentals
-  'docker': ['Containerization', 'CLI'],
-  'kubernetes': ['Docker', 'Containerization', 'Orchestration'],
-  'terraform': ['Infrastructure as Code', 'Cloud Computing'],
-  'aws': ['Cloud Computing'],
-  'azure': ['Cloud Computing'],
+  docker: ['Containerization', 'CLI'],
+  kubernetes: ['Docker', 'Containerization', 'Orchestration'],
+  terraform: ['Infrastructure as Code', 'Cloud Computing'],
+  aws: ['Cloud Computing'],
+  azure: ['Cloud Computing'],
   'google cloud': ['Cloud Computing'],
   'github actions': ['CI/CD', 'Git'],
-  'jenkins': ['CI/CD'],
+  jenkins: ['CI/CD'],
   'gitlab ci': ['CI/CD', 'Git'],
-  'circleci': ['CI/CD'],
+  circleci: ['CI/CD'],
 
   // Testing → Methodology
-  'jest': ['Testing', 'JavaScript'],
-  'vitest': ['Testing', 'JavaScript'],
-  'cypress': ['Testing', 'JavaScript', 'E2E Testing'],
-  'playwright': ['Testing', 'E2E Testing'],
-  'pytest': ['Testing', 'Python'],
-  'junit': ['Testing', 'Java'],
+  jest: ['Testing', 'JavaScript'],
+  vitest: ['Testing', 'JavaScript'],
+  cypress: ['Testing', 'JavaScript', 'E2E Testing'],
+  playwright: ['Testing', 'E2E Testing'],
+  pytest: ['Testing', 'Python'],
+  junit: ['Testing', 'Java'],
 
   // Build tools
-  'webpack': ['JavaScript', 'Build Tools'],
-  'vite': ['JavaScript', 'Build Tools'],
-  'rollup': ['JavaScript', 'Build Tools'],
+  webpack: ['JavaScript', 'Build Tools'],
+  vite: ['JavaScript', 'Build Tools'],
+  rollup: ['JavaScript', 'Build Tools'],
 
   // API styles
-  'graphql': ['API Design'],
+  graphql: ['API Design'],
   'rest api': ['API Design', 'HTTP'],
-  'grpc': ['API Design'],
+  grpc: ['API Design'],
 
   // Messaging & Real-time
-  'kafka': ['Event-Driven Architecture', 'Distributed Systems'],
-  'rabbitmq': ['Message Queues', 'Distributed Systems'],
-  'websocket': ['Real-time Communication'],
+  kafka: ['Event-Driven Architecture', 'Distributed Systems'],
+  rabbitmq: ['Message Queues', 'Distributed Systems'],
+  websocket: ['Real-time Communication'],
   'socket.io': ['WebSocket', 'Real-time Communication', 'Node.js'],
 
   // Data & ML
-  'tensorflow': ['Machine Learning', 'Python'],
-  'pytorch': ['Machine Learning', 'Python'],
-  'pandas': ['Data Analysis', 'Python'],
-  'numpy': ['Python'],
+  tensorflow: ['Machine Learning', 'Python'],
+  pytorch: ['Machine Learning', 'Python'],
+  pandas: ['Data Analysis', 'Python'],
+  numpy: ['Python'],
   'scikit-learn': ['Machine Learning', 'Python'],
 
   // Monitoring & Logging
-  'datadog': ['Monitoring', 'Observability'],
-  'grafana': ['Monitoring', 'Observability'],
-  'prometheus': ['Monitoring', 'Observability'],
+  datadog: ['Monitoring', 'Observability'],
+  grafana: ['Monitoring', 'Observability'],
+  prometheus: ['Monitoring', 'Observability'],
 };
 
 /**
@@ -117,19 +117,19 @@ const SKILL_PARENTS: Record<string, string[]> = {
  * These aren't strictly inferred, but are commonly paired and demonstrate breadth.
  */
 const SKILL_SIBLINGS: Record<string, string[]> = {
-  'react': ['Component Architecture', 'State Management', 'Single Page Applications'],
+  react: ['Component Architecture', 'State Management', 'Single Page Applications'],
   'node.js': ['Server-side JavaScript', 'Backend Development'],
-  'typescript': ['Type Safety', 'Static Analysis'],
-  'docker': ['Microservices'],
-  'kubernetes': ['Cloud Native', 'Microservices', 'Scalability'],
-  'aws': ['S3', 'Lambda', 'EC2', 'CloudFormation'],
-  'azure': ['Azure DevOps', 'Azure Functions'],
-  'postgresql': ['Data Modeling', 'Query Optimization'],
-  'mongodb': ['Document Databases', 'Schema Design'],
-  'graphql': ['Apollo', 'Schema Design'],
+  typescript: ['Type Safety', 'Static Analysis'],
+  docker: ['Microservices'],
+  kubernetes: ['Cloud Native', 'Microservices', 'Scalability'],
+  aws: ['S3', 'Lambda', 'EC2', 'CloudFormation'],
+  azure: ['Azure DevOps', 'Azure Functions'],
+  postgresql: ['Data Modeling', 'Query Optimization'],
+  mongodb: ['Document Databases', 'Schema Design'],
+  graphql: ['Apollo', 'Schema Design'],
   'rest api': ['RESTful Services', 'HTTP Methods'],
-  'git': ['Version Control', 'Code Review'],
-  'agile': ['Scrum', 'Sprint Planning', 'JIRA'],
+  git: ['Version Control', 'Code Review'],
+  agile: ['Scrum', 'Sprint Planning', 'JIRA'],
 };
 
 /**
@@ -137,23 +137,23 @@ const SKILL_SIBLINGS: Record<string, string[]> = {
  * Normalized to lowercase for matching.
  */
 const CERT_SKILL_MAP: Record<string, string[]> = {
-  'javascript': ['JavaScript', 'ES6+', 'Web Development'],
+  javascript: ['JavaScript', 'ES6+', 'Web Development'],
   'javascript + dsa': ['JavaScript', 'Data Structures', 'Algorithms', 'Problem Solving'],
   'node.js': ['Node.js', 'JavaScript', 'Backend Development', 'Server-side Development'],
-  'react': ['React', 'JavaScript', 'Frontend Development', 'Component Architecture'],
-  'python': ['Python', 'Programming'],
-  'java': ['Java', 'OOP'],
-  'oracle': ['Oracle', 'SQL', 'Databases'],
+  react: ['React', 'JavaScript', 'Frontend Development', 'Component Architecture'],
+  python: ['Python', 'Programming'],
+  java: ['Java', 'OOP'],
+  oracle: ['Oracle', 'SQL', 'Databases'],
   'aws solutions architect': ['AWS', 'Cloud Architecture', 'Cloud Computing'],
   'aws developer': ['AWS', 'Cloud Development', 'Serverless'],
   'aws cloud practitioner': ['AWS', 'Cloud Computing'],
   'azure fundamentals': ['Azure', 'Cloud Computing'],
   'azure developer': ['Azure', 'Cloud Development'],
   'google cloud associate': ['Google Cloud', 'Cloud Computing'],
-  'kubernetes': ['Kubernetes', 'Docker', 'Orchestration'],
-  'docker': ['Docker', 'Containerization'],
-  'terraform': ['Terraform', 'Infrastructure as Code'],
-  'pmp': ['Project Management', 'Leadership'],
+  kubernetes: ['Kubernetes', 'Docker', 'Orchestration'],
+  docker: ['Docker', 'Containerization'],
+  terraform: ['Terraform', 'Infrastructure as Code'],
+  pmp: ['Project Management', 'Leadership'],
   'scrum master': ['Agile', 'Scrum', 'Project Management'],
 };
 
@@ -162,17 +162,17 @@ const CERT_SKILL_MAP: Record<string, string[]> = {
  */
 const PROJECT_TAG_EXPANSIONS: Record<string, string[]> = {
   'node.js': ['JavaScript', 'Backend Development'],
-  'react': ['JavaScript', 'Frontend Development'],
+  react: ['JavaScript', 'Frontend Development'],
   'next.js': ['React', 'JavaScript', 'Full-stack Development'],
-  'python': ['Python', 'Programming'],
-  'ai': ['Artificial Intelligence', 'Machine Learning'],
+  python: ['Python', 'Programming'],
+  ai: ['Artificial Intelligence', 'Machine Learning'],
   'computer-vision': ['Computer Vision', 'Image Processing'],
-  'cli': ['Command Line Tools', 'Developer Tools'],
+  cli: ['Command Line Tools', 'Developer Tools'],
   'open-source': ['Open Source', 'Collaboration'],
-  'typescript': ['TypeScript', 'JavaScript'],
+  typescript: ['TypeScript', 'JavaScript'],
   'three.js': ['3D Graphics', 'WebGL', 'JavaScript'],
   'framer motion': ['Animation', 'React'],
-  'gsap': ['Animation', 'JavaScript'],
+  gsap: ['Animation', 'JavaScript'],
   'tailwind css': ['CSS', 'Styling'],
 };
 
@@ -291,10 +291,7 @@ export function inferProfileSkills(
     }
   }
 
-  const allSkills = new Set([
-    ...Array.from(explicitNames),
-    ...Array.from(inferredNames),
-  ]);
+  const allSkills = new Set([...Array.from(explicitNames), ...Array.from(inferredNames)]);
 
   // 4. Map certifications to skills they validate
   const certInferences: CertInference[] = profileCerts.map((cert) => {
@@ -359,9 +356,11 @@ export function inferProfileSkills(
 
   for (const jdSkill of allJDSkills) {
     // Check for exact match or if any all-skill contains/is contained by jd skill
-    const matched = allLower.has(jdSkill) ||
-      Array.from(allLower).some((s) =>
-        (s.length >= 3 && jdSkill.includes(s)) || (jdSkill.length >= 3 && s.includes(jdSkill))
+    const matched =
+      allLower.has(jdSkill) ||
+      Array.from(allLower).some(
+        (s) =>
+          (s.length >= 3 && jdSkill.includes(s)) || (jdSkill.length >= 3 && s.includes(jdSkill)),
       );
 
     if (matched) {
@@ -434,11 +433,14 @@ export function findRelevantCerts(
     if (validatesSkills) {
       const isRelevant = validatesSkills.some((s) => {
         const sLower = s.toLowerCase();
-        return jdLower.has(sLower) ||
-          Array.from(jdLower).some((jd) =>
-            (sLower.length >= 3 && jd.includes(sLower)) ||
-            (jd.length >= 3 && sLower.includes(jd))
-          );
+        return (
+          jdLower.has(sLower) ||
+          Array.from(jdLower).some(
+            (jd) =>
+              (sLower.length >= 3 && jd.includes(sLower)) ||
+              (jd.length >= 3 && sLower.includes(jd)),
+          )
+        );
       });
       if (isRelevant) relevantIds.push(cert.id);
     }
@@ -470,11 +472,12 @@ export function findRelevantProjects(
         for (const p of parents) projSkills.add(p.toLowerCase());
       }
     }
-    const isRelevant = Array.from(projSkills).some((ps) =>
-      jdLower.has(ps) ||
-      Array.from(jdLower).some((jd) =>
-        (ps.length >= 3 && jd.includes(ps)) || (jd.length >= 3 && ps.includes(jd))
-      )
+    const isRelevant = Array.from(projSkills).some(
+      (ps) =>
+        jdLower.has(ps) ||
+        Array.from(jdLower).some(
+          (jd) => (ps.length >= 3 && jd.includes(ps)) || (jd.length >= 3 && ps.includes(jd)),
+        ),
     );
     if (isRelevant) relevantIds.push(proj.id);
   }

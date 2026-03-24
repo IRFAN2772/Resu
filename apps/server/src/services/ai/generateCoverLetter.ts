@@ -52,7 +52,10 @@ export async function generateCoverLetter(
     .filter((se) => se.include)
     .map((se) => {
       const fullExp = profile.experience.find((e) => e.id === se.experienceId);
-      return `• ${fullExp?.title} @ ${fullExp?.company}: ${se.selectedBullets.slice(0, 3).map((b) => b.originalText).join(' | ')}`;
+      return `• ${fullExp?.title} @ ${fullExp?.company}: ${se.selectedBullets
+        .slice(0, 3)
+        .map((b) => b.originalText)
+        .join(' | ')}`;
     });
   sections.push(`[KEY EXPERIENCES]\n${expEntries.join('\n')}`);
 
@@ -71,7 +74,9 @@ export async function generateCoverLetter(
   // Resume awareness — compact
   if (context?.finalResume) {
     const resumeSkills = context.finalResume.skills.categories.flatMap((c) => c.skills);
-    sections.push(`[RESUME CONTEXT]\nSummary: ${context.finalResume.summary}\nSkills: ${resumeSkills.join(', ')}`);
+    sections.push(
+      `[RESUME CONTEXT]\nSummary: ${context.finalResume.summary}\nSkills: ${resumeSkills.join(', ')}`,
+    );
   }
 
   // ATS weak areas to compensate

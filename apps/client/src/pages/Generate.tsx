@@ -157,8 +157,15 @@ export function GeneratePage() {
   ];
 
   const isProcessing = [
-    'parsing', 'enriching', 'planning', 'selecting',
-    'generating', 'scoring', 'critiquing', 'revising', 'cover-letter',
+    'parsing',
+    'enriching',
+    'planning',
+    'selecting',
+    'generating',
+    'scoring',
+    'critiquing',
+    'revising',
+    'cover-letter',
   ].includes(stage);
 
   return (

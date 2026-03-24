@@ -67,7 +67,9 @@ export async function planResume(
 function safeJSONParse(text: string): any {
   try {
     return JSON.parse(text);
-  } catch { /* continue */ }
+  } catch {
+    /* continue */
+  }
 
   let cleaned = text
     .replace(/^```(?:json)?\s*\n?/i, '')
@@ -75,11 +77,17 @@ function safeJSONParse(text: string): any {
     .trim();
   try {
     return JSON.parse(cleaned);
-  } catch { /* continue */ }
+  } catch {
+    /* continue */
+  }
 
   const match = cleaned.match(/\{[\s\S]*\}/);
   if (match) {
-    try { return JSON.parse(match[0]); } catch { /* continue */ }
+    try {
+      return JSON.parse(match[0]);
+    } catch {
+      /* continue */
+    }
   }
 
   throw new Error('Failed to parse planning agent response as JSON');
@@ -96,13 +104,21 @@ function normalizeStrategyResponse(raw: any): any {
       gap: g.gap ?? '',
       mitigation: g.mitigation ?? g.strategy ?? '',
     })),
-    experiencePriority: (raw.experiencePriority ?? raw.experience_priority ?? raw.experiences ?? []).map((e: any) => ({
+    experiencePriority: (
+      raw.experiencePriority ??
+      raw.experience_priority ??
+      raw.experiences ??
+      []
+    ).map((e: any) => ({
       experienceId: e.experienceId ?? e.experience_id ?? e.id ?? '',
       reason: e.reason ?? '',
       keyAngle: e.keyAngle ?? e.key_angle ?? e.angle ?? '',
     })),
-    skillStrategy: normalizeSkillStrategy(raw.skillStrategy ?? raw.skill_strategy ?? raw.skills ?? {}),
-    positioningStatement: raw.positioningStatement ?? raw.positioning_statement ?? raw.positioning ?? '',
+    skillStrategy: normalizeSkillStrategy(
+      raw.skillStrategy ?? raw.skill_strategy ?? raw.skills ?? {},
+    ),
+    positioningStatement:
+      raw.positioningStatement ?? raw.positioning_statement ?? raw.positioning ?? '',
     strategySummary: raw.strategySummary ?? raw.strategy_summary ?? raw.summary ?? '',
   };
 }

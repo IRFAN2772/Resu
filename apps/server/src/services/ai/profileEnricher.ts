@@ -64,14 +64,19 @@ function buildIntelligenceBrief(
   }
 
   // Section 2: JD gap analysis
-  const matchPct = parsedJD.keywords.length > 0
-    ? Math.round((inferences.matchedJDSkills.length / parsedJD.keywords.length) * 100)
-    : 0;
+  const matchPct =
+    parsedJD.keywords.length > 0
+      ? Math.round((inferences.matchedJDSkills.length / parsedJD.keywords.length) * 100)
+      : 0;
   sections.push(`\n=== JD COVERAGE: ${matchPct}% ===`);
   sections.push(`Matched JD skills: ${inferences.matchedJDSkills.join(', ')}`);
   if (inferences.missingJDSkills.length > 0) {
-    sections.push(`Missing JD skills (candidate does NOT have): ${inferences.missingJDSkills.join(', ')}`);
-    sections.push('NOTE: Do NOT add skills the candidate does not possess. Focus on maximizing coverage from what they DO have.');
+    sections.push(
+      `Missing JD skills (candidate does NOT have): ${inferences.missingJDSkills.join(', ')}`,
+    );
+    sections.push(
+      'NOTE: Do NOT add skills the candidate does not possess. Focus on maximizing coverage from what they DO have.',
+    );
   }
 
   // Section 3: Certification intelligence
@@ -110,10 +115,16 @@ function buildIntelligenceBrief(
 
   // Section 6: Strategic recommendations
   sections.push('\n=== STRATEGIC DIRECTIVES ===');
-  sections.push('1. ALWAYS include foundational language skills when selecting framework skills (React → JavaScript, Node.js → JavaScript, Django → Python)');
-  sections.push('2. ALWAYS include certifications that validate ANY JD-required skill through the dependency chain');
+  sections.push(
+    '1. ALWAYS include foundational language skills when selecting framework skills (React → JavaScript, Node.js → JavaScript, Django → Python)',
+  );
+  sections.push(
+    '2. ALWAYS include certifications that validate ANY JD-required skill through the dependency chain',
+  );
   sections.push('3. Select projects that fill skill gaps not covered by work experience');
-  sections.push('4. When a JD requires a technology, include ALL profile evidence for it: skills, experience bullets, projects, AND certifications');
+  sections.push(
+    '4. When a JD requires a technology, include ALL profile evidence for it: skills, experience bullets, projects, AND certifications',
+  );
   sections.push('5. Treat inferred skills as REAL skills — they represent genuine competency');
 
   return sections.join('\n');

@@ -108,14 +108,17 @@ export async function generateResume(
   // tokens) instead of sending the full previous critique + resume (~3-5K).
   const sections: string[] = [];
 
-  sections.push(`[CONTACT]\n${profile.contact.name} | ${profile.contact.email} | ${profile.contact.location || ''}`);
+  sections.push(
+    `[CONTACT]\n${profile.contact.name} | ${profile.contact.email} | ${profile.contact.location || ''}`,
+  );
   sections.push(`[SUMMARY PROPOSAL]\n${selection.proposedSummary}`);
 
   // Experiences — compact representation
   const expLines = selectedExperiences
     .filter((e): e is NonNullable<typeof e> => e !== null)
     .map(
-      (e) => `• ${e.title} @ ${e.company} (${e.startDate}–${e.endDate || 'present'})\n  ${e.selectedBullets.slice(0, 4).join(' | ')}`,
+      (e) =>
+        `• ${e.title} @ ${e.company} (${e.startDate}–${e.endDate || 'present'})\n  ${e.selectedBullets.slice(0, 4).join(' | ')}`,
     );
   sections.push(`[EXPERIENCES]\n${expLines.join('\n')}`);
 
@@ -139,7 +142,9 @@ export async function generateResume(
 
   // Certifications
   if (selectedCerts.length) {
-    sections.push(`[CERTIFICATIONS]\n${selectedCerts.map((c) => `${c.name} (${c.issuer})`).join(', ')}`);
+    sections.push(
+      `[CERTIFICATIONS]\n${selectedCerts.map((c) => `${c.name} (${c.issuer})`).join(', ')}`,
+    );
   }
 
   // Compressed JD (minimal — role + company + top requirements only)
@@ -159,7 +164,9 @@ export async function generateResume(
 
   // Revision mode — delta-only instructions instead of full critique + previous resume
   if (context?.previousCritique && context?.previousResume) {
-    sections.push(`[REVISION MODE]\n${compressCritiqueToInstructions(context.previousCritique, context.previousResume)}`);
+    sections.push(
+      `[REVISION MODE]\n${compressCritiqueToInstructions(context.previousCritique, context.previousResume)}`,
+    );
   }
 
   const userMessage = sections.join('\n\n');

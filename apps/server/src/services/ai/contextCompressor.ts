@@ -64,7 +64,9 @@ export function compressProfileFull(profile: PersonalProfile): string {
   ];
 
   for (const exp of profile.experience) {
-    lines.push(`[${exp.id}] ${exp.title} @ ${exp.company} (${exp.startDate} - ${exp.endDate ?? 'Present'})`);
+    lines.push(
+      `[${exp.id}] ${exp.title} @ ${exp.company} (${exp.startDate} - ${exp.endDate ?? 'Present'})`,
+    );
     exp.bullets.forEach((b, i) => {
       lines.push(`  [${i}] ${b.text} [tags: ${b.tags.join(',')}] [strength: ${b.strength}]`);
     });
@@ -73,13 +75,18 @@ export function compressProfileFull(profile: PersonalProfile): string {
   lines.push('', '--- SKILLS ---');
   lines.push(
     profile.skills
-      .map((s) => `${s.name} (${s.proficiency}, ${s.category})${s.aliases.length ? ` aka ${s.aliases.join('/')}` : ''}`)
+      .map(
+        (s) =>
+          `${s.name} (${s.proficiency}, ${s.category})${s.aliases.length ? ` aka ${s.aliases.join('/')}` : ''}`,
+      )
       .join('; '),
   );
 
   lines.push('', '--- EDUCATION ---');
   for (const edu of profile.education) {
-    lines.push(`[${edu.id}] ${edu.degree} in ${edu.field} @ ${edu.institution} (${edu.startDate} - ${edu.endDate ?? 'Present'})${edu.gpa ? ` GPA: ${edu.gpa}` : ''}`);
+    lines.push(
+      `[${edu.id}] ${edu.degree} in ${edu.field} @ ${edu.institution} (${edu.startDate} - ${edu.endDate ?? 'Present'})${edu.gpa ? ` GPA: ${edu.gpa}` : ''}`,
+    );
     if (edu.highlights.length) lines.push(`  Highlights: ${edu.highlights.join('; ')}`);
   }
 
@@ -149,7 +156,9 @@ export function compressCritiqueToInstructions(
 
   // 2. Weak bullets — send only the specific fixes
   for (const wb of critique.impactQuality.weakBullets) {
-    instructions.push(`FIX BULLET in "${wb.experienceTitle}": "${wb.bulletText}" → "${wb.suggestedFix}"`);
+    instructions.push(
+      `FIX BULLET in "${wb.experienceTitle}": "${wb.bulletText}" → "${wb.suggestedFix}"`,
+    );
   }
 
   // 3. Summary rewrite

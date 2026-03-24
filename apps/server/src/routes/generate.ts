@@ -180,12 +180,9 @@ export const generateRoutes: FastifyPluginAsync = async (app) => {
       let revisionCount = 0;
 
       // Initial generation (with strategy + intelligence brief)
-      let genResult = await generateResume(
-        profile, parsedJD, relevanceSelection, config, userAI,
-        {
-          intelligenceBrief: enriched.intelligenceBrief,
-        },
-      );
+      let genResult = await generateResume(profile, parsedJD, relevanceSelection, config, userAI, {
+        intelligenceBrief: enriched.intelligenceBrief,
+      });
       let resumeData = genResult.resumeData;
       totalGenTokens += genResult.tokenUsage.totalTokens;
       totalGenCost += genResult.cost;
@@ -202,7 +199,10 @@ export const generateRoutes: FastifyPluginAsync = async (app) => {
 
         // Critique the current resume
         const critiqueResult = await critiqueResume(
-          resumeData, parsedJD, enriched.intelligenceBrief, userAI,
+          resumeData,
+          parsedJD,
+          enriched.intelligenceBrief,
+          userAI,
         );
         totalCritiqueTokens += critiqueResult.tokenUsage.totalTokens;
         totalCritiqueCost += critiqueResult.cost;
@@ -214,14 +214,11 @@ export const generateRoutes: FastifyPluginAsync = async (app) => {
         }
 
         // Regenerate with critique feedback
-        genResult = await generateResume(
-          profile, parsedJD, relevanceSelection, config, userAI,
-          {
-            intelligenceBrief: enriched.intelligenceBrief,
-            previousCritique: critiqueResult.critique,
-            previousResume: resumeData,
-          },
-        );
+        genResult = await generateResume(profile, parsedJD, relevanceSelection, config, userAI, {
+          intelligenceBrief: enriched.intelligenceBrief,
+          previousCritique: critiqueResult.critique,
+          previousResume: resumeData,
+        });
         resumeData = genResult.resumeData;
         totalGenTokens += genResult.tokenUsage.totalTokens;
         totalGenCost += genResult.cost;
