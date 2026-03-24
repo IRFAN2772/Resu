@@ -1,4 +1,4 @@
-import { memo, useRef, useCallback } from 'react';
+import { memo, useRef, useCallback, useEffect } from 'react';
 import s from './EditableText.module.css';
 
 interface EditableTextProps {
@@ -28,17 +28,24 @@ export const EditableText = memo(function EditableText({
   multiline = false,
 }: EditableTextProps) {
   const prevValue = useRef(value);
+  const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement | null>(null);
   const isEditing = isEdit && editingField === fieldKey;
 
-  const handleFocus = useCallback(
+  useEffect(() => {
+    if (isEditing && inputRef.current) {
+      prevValue.current = value;
+      inputRef.current.focus();
+      inputRef.current.select();
+    }
+    // Only run on initial mount of the editing state, not on every value change
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isEditing]);
+
+  const handleRef = useCallback(
     (el: HTMLInputElement | HTMLTextAreaElement | null) => {
-      if (el) {
-        prevValue.current = value;
-        el.focus();
-        el.select();
-      }
+      inputRef.current = el;
     },
-    [value],
+    [],
   );
 
   const handleKeyDown = useCallback(
@@ -61,7 +68,7 @@ export const EditableText = memo(function EditableText({
         onChange={(e) => onChange(e.target.value)}
         onBlur={onBlur}
         onKeyDown={handleKeyDown}
-        ref={handleFocus}
+        ref={handleRef}
         rows={Math.max(2, value.split('\n').length)}
       />
     ) : (
@@ -71,7 +78,7 @@ export const EditableText = memo(function EditableText({
         onChange={(e) => onChange(e.target.value)}
         onBlur={onBlur}
         onKeyDown={handleKeyDown}
-        ref={handleFocus}
+        ref={handleRef}
       />
     );
 
