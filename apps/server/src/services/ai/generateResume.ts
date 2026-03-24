@@ -1,4 +1,6 @@
 // Step 3: Generate polished resume from confirmed selection (smart model).
+// Now supports: strategy-guided generation, skill graph intelligence, and critique-driven revision.
+// Token optimization: compressed JD/strategy in user message; delta-based revision.
 
 import {
   ResumeDataSchema,
@@ -8,14 +10,33 @@ import {
   type RelevanceSelection,
   type GenerationConfig,
   type UserAIConfig,
+  type ResumeStrategy,
+  type ResumeCritique,
 } from '@resu/shared';
 import { chatCompletion, type TokenUsage } from './aiClient.js';
 import { loadPrompt } from './promptLoader.js';
+import {
+  compressJDMinimal,
+  compressStrategy,
+  compressIntelligenceBrief,
+  compressCritiqueToInstructions,
+} from './contextCompressor.js';
 
 export interface GenerateResumeResult {
   resumeData: ResumeData;
   tokenUsage: TokenUsage;
   cost: number;
+}
+
+export interface GenerateResumeContext {
+  /** Strategic plan from the planning agent */
+  strategy?: ResumeStrategy;
+  /** Intelligence brief from the skill graph */
+  intelligenceBrief?: string;
+  /** Critique from previous iteration (for revision mode) */
+  previousCritique?: ResumeCritique;
+  /** The previous resume (for revision mode - so AI knows what to improve) */
+  previousResume?: ResumeData;
 }
 
 export async function generateResume(
@@ -24,6 +45,7 @@ export async function generateResume(
   selection: RelevanceSelection,
   config: GenerationConfig,
   userAI?: UserAIConfig,
+  context?: GenerateResumeContext,
 ): Promise<GenerateResumeResult> {
   const systemPrompt = loadPrompt('generateResume', {
     targetPageLength: String(config.targetPageLength ?? 1),
@@ -79,22 +101,68 @@ export async function generateResume(
     selection.selectedCertifications.includes(c.id),
   );
 
-  const userMessage = JSON.stringify(
-    {
-      contact: profile.contact,
-      proposedSummary: selection.proposedSummary,
-      selectedExperiences,
-      selectedSkills: allSelectedSkills,
-      education: profile.education,
-      selectedProjects,
-      selectedCertifications: selectedCerts,
-      parsedJobDescription: parsedJD,
-      targetPageLength: config.targetPageLength,
-      tone: config.tone,
-    },
-    null,
-    2,
+  // Build a compressed text payload instead of verbose JSON.
+  // Uses compressJDMinimal (role/company/top-reqs only) since the full JD
+  // was already consumed by selectRelevant. Strategy & intelligence are also
+  // compressed to brief bullets. Revision mode uses delta instructions (~200-300
+  // tokens) instead of sending the full previous critique + resume (~3-5K).
+  const sections: string[] = [];
+
+  sections.push(`[CONTACT]\n${profile.contact.name} | ${profile.contact.email} | ${profile.contact.location || ''}`);
+  sections.push(`[SUMMARY PROPOSAL]\n${selection.proposedSummary}`);
+
+  // Experiences — compact representation
+  const expLines = selectedExperiences
+    .filter((e): e is NonNullable<typeof e> => e !== null)
+    .map(
+      (e) => `• ${e.title} @ ${e.company} (${e.startDate}–${e.endDate || 'present'})\n  ${e.selectedBullets.slice(0, 4).join(' | ')}`,
+    );
+  sections.push(`[EXPERIENCES]\n${expLines.join('\n')}`);
+
+  // Skills — names only, grouped
+  const skillNames = allSelectedSkills.map((s) => s.name);
+  sections.push(`[SKILLS]\n${skillNames.join(', ')}`);
+
+  // Education
+  const eduLines = profile.education.map(
+    (e) => `${e.degree} — ${e.institution} (${e.endDate || ''})`,
   );
+  sections.push(`[EDUCATION]\n${eduLines.join('\n')}`);
+
+  // Projects — brief
+  if (selectedProjects.length) {
+    const projLines = selectedProjects.map(
+      (p) => `• ${p.name}: ${p.description?.slice(0, 120) || ''}`,
+    );
+    sections.push(`[PROJECTS]\n${projLines.join('\n')}`);
+  }
+
+  // Certifications
+  if (selectedCerts.length) {
+    sections.push(`[CERTIFICATIONS]\n${selectedCerts.map((c) => `${c.name} (${c.issuer})`).join(', ')}`);
+  }
+
+  // Compressed JD (minimal — role + company + top requirements only)
+  sections.push(`[JOB TARGET]\n${compressJDMinimal(parsedJD)}`);
+
+  sections.push(`[FORMAT]\ntargetPages: ${config.targetPageLength}, tone: ${config.tone}`);
+
+  // Strategy — compressed to key bullets
+  if (context?.strategy) {
+    sections.push(`[STRATEGY]\n${compressStrategy(context.strategy)}`);
+  }
+
+  // Skill graph intelligence — compressed
+  if (context?.intelligenceBrief) {
+    sections.push(`[SKILL INTELLIGENCE]\n${compressIntelligenceBrief(context.intelligenceBrief)}`);
+  }
+
+  // Revision mode — delta-only instructions instead of full critique + previous resume
+  if (context?.previousCritique && context?.previousResume) {
+    sections.push(`[REVISION MODE]\n${compressCritiqueToInstructions(context.previousCritique, context.previousResume)}`);
+  }
+
+  const userMessage = sections.join('\n\n');
 
   const result = await chatCompletion({
     modelTier: 'smart',

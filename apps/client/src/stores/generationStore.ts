@@ -11,11 +11,15 @@ import type {
 export type PipelineStage =
   | 'idle'
   | 'parsing' // Step 1: Parsing JD
-  | 'selecting' // Step 2: Selecting relevant items
+  | 'enriching' // Step 1.5: Skill graph analysis
+  | 'planning' // Step 2: Strategic planning
+  | 'selecting' // Step 3: Selecting relevant items
   | 'reviewing' // Checkpoint: User reviewing selections
-  | 'generating' // Step 3: Generating resume
-  | 'scoring' // Step 4: ATS scoring
-  | 'cover-letter' // Step 5: Generating cover letter
+  | 'generating' // Step 4: Generating resume
+  | 'scoring' // Step 5: ATS scoring
+  | 'critiquing' // Step 5.5: Critic reviewing resume
+  | 'revising' // Step 5.6: Revising based on critique
+  | 'cover-letter' // Step 6: Generating cover letter
   | 'complete' // All done
   | 'error';
 

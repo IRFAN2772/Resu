@@ -59,6 +59,25 @@ TONE: {{tone}}
 - formal: Conservative language, full titles, no contractions. For finance, law, government.
 - conversational: Energetic, startup-friendly, highlights creativity and initiative.
 
+SKILL GRAPH INTELLIGENCE:
+You will receive a "skillGraphAnalysis" field with pre-computed intelligence about the candidate's skills. USE IT:
+- It tells you which skills are explicit vs inferred (e.g., React user → JavaScript is inferred)
+- It maps certifications to what they validate
+- It identifies matched vs missing JD skills
+- ALWAYS include foundational skills in the skills section (JavaScript for React/Node.js roles, Python for Django roles, etc.)
+
+STRATEGIC PLAN:
+You will receive a "strategy" field from the planning agent. FOLLOW IT:
+- Use the prescribed narrative angle to frame the entire resume
+- Prioritize the strengths and experiences identified in the plan
+- Address gaps using the mitigation strategies provided
+- Follow the skill strategy's mustInclude/shouldInclude/skip guidance
+
+REVISION MODE (if "[REVISION MODE]" section is provided):
+You will receive concise delta instructions — a list of specific fixes to apply.
+Apply EVERY instruction. Preserve everything that was already good — only fix what's listed.
+Do NOT re-interpret the instructions — execute them literally.
+
 Return a JSON object with EXACTLY this structure:
 {
   "contact": {

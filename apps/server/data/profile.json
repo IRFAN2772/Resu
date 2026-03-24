@@ -24,7 +24,7 @@
       "endDate": "still working",
       "bullets": [
         {
-          "text": "Built a customer-facing dashboard from scratch using React, TypeScript, and D3.js, increasing user engagement by 60%",
+          "text": "Built and maintained RESTful APIs powering production applications",
           "tags": [
             "react",
             "typescript",
@@ -37,7 +37,7 @@
           "strength": 5
         },
         {
-          "text": "Developed RESTful APIs with Node.js and Express, handling 10K+ requests/minute with comprehensive test coverage",
+          "text": "Implemented enterprise-grade authentication & authorization with Azure Entra and Auth0",
           "tags": [
             "node.js",
             "express",
@@ -57,6 +57,24 @@
             "sprint"
           ],
           "category": "collaboration",
+          "strength": 3
+        },
+        {
+          "text": "Integrated LinkedIn, Zoom, and internal tools into the platform",
+          "tags": [],
+          "category": "technical",
+          "strength": 3
+        },
+        {
+          "text": "Key problem-solver — consistently resolved complex production issues",
+          "tags": [],
+          "category": "leadership",
+          "strength": 3
+        },
+        {
+          "text": "Developed interactive dashboards and dynamic hero sections and from frontend to backend complete full stack work flow",
+          "tags": [],
+          "category": "technical",
           "strength": 3
         }
       ],

@@ -1,4 +1,5 @@
 // Step 5: Generate cover letter from confirmed selection (smart model).
+// Now receives the final generated resume to complement (not repeat) it.
 
 import {
   CoverLetterDataSchema,
@@ -8,6 +9,8 @@ import {
   type RelevanceSelection,
   type GenerationConfig,
   type UserAIConfig,
+  type ResumeData,
+  type ATSScoreResult,
 } from '@resu/shared';
 import { chatCompletion, type TokenUsage } from './aiClient.js';
 import { loadPrompt } from './promptLoader.js';
@@ -18,44 +21,70 @@ export interface GenerateCoverLetterResult {
   cost: number;
 }
 
+export interface CoverLetterContext {
+  /** The final generated resume — so cover letter can complement, not repeat */
+  finalResume?: ResumeData;
+  /** ATS score — so cover letter can compensate for weak areas */
+  atsScore?: ATSScoreResult;
+}
+
 export async function generateCoverLetter(
   profile: PersonalProfile,
   parsedJD: ParsedJobDescription,
   selection: RelevanceSelection,
   config: GenerationConfig,
   userAI?: UserAIConfig,
+  context?: CoverLetterContext,
 ): Promise<GenerateCoverLetterResult> {
   const systemPrompt = loadPrompt('generateCoverLetter', {
     tone: config.tone ?? 'professional',
   });
 
-  const userMessage = JSON.stringify(
-    {
-      candidateName: profile.contact.name,
-      companyName: parsedJD.companyName,
-      roleTitle: parsedJD.roleTitle,
-      proposedSummary: selection.proposedSummary,
-      selectedExperiences: selection.selectedExperiences
-        .filter((se) => se.include)
-        .map((se) => {
-          const fullExp = profile.experience.find((e) => e.id === se.experienceId);
-          return {
-            title: fullExp?.title,
-            company: fullExp?.company,
-            topBullets: se.selectedBullets.slice(0, 3).map((b) => b.originalText),
-          };
-        }),
-      keySkills: selection.selectedSkills.slice(0, 8),
-      parsedJobDescription: {
-        requiredSkills: parsedJD.requiredSkills,
-        responsibilities: parsedJD.responsibilities,
-        industryDomain: parsedJD.industryDomain,
-      },
-      tone: config.tone,
-    },
-    null,
-    2,
-  );
+  // Build a compressed text payload — already selective, now even leaner
+  const sections: string[] = [];
+
+  sections.push(`[CANDIDATE] ${profile.contact.name}`);
+  sections.push(`[ROLE] ${parsedJD.roleTitle} at ${parsedJD.companyName}`);
+  sections.push(`[SUMMARY PROPOSAL]\n${selection.proposedSummary}`);
+
+  // Top experiences — compact
+  const expEntries = selection.selectedExperiences
+    .filter((se) => se.include)
+    .map((se) => {
+      const fullExp = profile.experience.find((e) => e.id === se.experienceId);
+      return `• ${fullExp?.title} @ ${fullExp?.company}: ${se.selectedBullets.slice(0, 3).map((b) => b.originalText).join(' | ')}`;
+    });
+  sections.push(`[KEY EXPERIENCES]\n${expEntries.join('\n')}`);
+
+  sections.push(`[KEY SKILLS]\n${selection.selectedSkills.slice(0, 8).join(', ')}`);
+
+  // JD essentials — inline instead of nested JSON
+  const jdLines = [
+    `Required: ${parsedJD.requiredSkills.join(', ')}`,
+    `Responsibilities: ${parsedJD.responsibilities.slice(0, 5).join('; ')}`,
+    parsedJD.industryDomain ? `Domain: ${parsedJD.industryDomain}` : '',
+  ].filter(Boolean);
+  sections.push(`[JOB REQUIREMENTS]\n${jdLines.join('\n')}`);
+
+  sections.push(`[TONE] ${config.tone}`);
+
+  // Resume awareness — compact
+  if (context?.finalResume) {
+    const resumeSkills = context.finalResume.skills.categories.flatMap((c) => c.skills);
+    sections.push(`[RESUME CONTEXT]\nSummary: ${context.finalResume.summary}\nSkills: ${resumeSkills.join(', ')}`);
+  }
+
+  // ATS weak areas to compensate
+  if (context?.atsScore) {
+    const critical = context.atsScore.suggestions
+      .filter((s) => s.severity === 'critical' || s.severity === 'warning')
+      .map((s) => s.message);
+    if (critical.length > 0) {
+      sections.push(`[RESUME WEAK AREAS TO COMPENSATE]\n${critical.join('\n')}`);
+    }
+  }
+
+  const userMessage = sections.join('\n\n');
 
   const result = await chatCompletion({
     modelTier: 'smart',

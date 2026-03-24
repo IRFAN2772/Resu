@@ -21,7 +21,7 @@ export function GeneratePage() {
     queryFn: listTemplates,
   });
 
-  // ─── Step 1+2: Parse JD ───
+  // ─── Phase 1: Parse JD → Enrich → Plan → Select ───
   const handleAnalyze = useCallback(async () => {
     if (store.jdText.trim().length < 50) {
       toast.error('Job description must be at least 50 characters');
@@ -30,10 +30,21 @@ export function GeneratePage() {
 
     try {
       store.setStage('parsing');
+
+      // Simulate intermediate stages while waiting for the server
+      // (server does parse → enrich → plan → select in one call)
+      const stageTimer1 = setTimeout(() => store.setStage('enriching'), 3000);
+      const stageTimer2 = setTimeout(() => store.setStage('planning'), 7000);
+      const stageTimer3 = setTimeout(() => store.setStage('selecting'), 12000);
+
       const result = await parseJD({
         jdText: store.jdText,
         config: store.config,
       });
+
+      clearTimeout(stageTimer1);
+      clearTimeout(stageTimer2);
+      clearTimeout(stageTimer3);
 
       store.setParsedJD(result.parsedJD);
       store.setRelevanceSelection(result.relevanceSelection);
@@ -45,18 +56,30 @@ export function GeneratePage() {
     }
   }, [store]);
 
-  // ─── Step 3+4+5: Confirm and generate ───
+  // ─── Phase 2: Generate → Score → Critique → Iterate → Cover Letter ───
   const handleConfirmAndGenerate = useCallback(async () => {
     if (!store.parsedJD || !editableSelection) return;
 
     try {
       store.setStage('generating');
+
+      // Simulate intermediate stages while waiting for the agentic loop
+      const stageTimer1 = setTimeout(() => store.setStage('scoring'), 8000);
+      const stageTimer2 = setTimeout(() => store.setStage('critiquing'), 12000);
+      const stageTimer3 = setTimeout(() => store.setStage('revising'), 18000);
+      const stageTimer4 = setTimeout(() => store.setStage('cover-letter'), 25000);
+
       const result = await confirmGeneration({
         jdText: store.jdText,
         parsedJD: store.parsedJD,
         relevanceSelection: editableSelection,
         config: store.config,
       });
+
+      clearTimeout(stageTimer1);
+      clearTimeout(stageTimer2);
+      clearTimeout(stageTimer3);
+      clearTimeout(stageTimer4);
 
       store.setResumeData(result.resumeData);
       store.setCoverLetter(result.coverLetter);
@@ -123,15 +146,20 @@ export function GeneratePage() {
 
   const stageLabels: { key: PipelineStage; label: string }[] = [
     { key: 'parsing', label: 'Parsing job description...' },
+    { key: 'enriching', label: 'Analyzing skill graph...' },
+    { key: 'planning', label: 'Planning resume strategy...' },
     { key: 'selecting', label: 'Selecting relevant items...' },
     { key: 'generating', label: 'Generating resume...' },
     { key: 'scoring', label: 'Scoring ATS compatibility...' },
+    { key: 'critiquing', label: 'Reviewing resume quality...' },
+    { key: 'revising', label: 'Improving resume...' },
     { key: 'cover-letter', label: 'Generating cover letter...' },
   ];
 
-  const isProcessing = ['parsing', 'selecting', 'generating', 'scoring', 'cover-letter'].includes(
-    stage,
-  );
+  const isProcessing = [
+    'parsing', 'enriching', 'planning', 'selecting',
+    'generating', 'scoring', 'critiquing', 'revising', 'cover-letter',
+  ].includes(stage);
 
   return (
     <div className={styles['generate-page']}>
@@ -154,7 +182,7 @@ export function GeneratePage() {
         </div>
         <div className={styles['step-line']} />
         <div
-          className={`${styles.step} ${['generating', 'scoring', 'cover-letter'].includes(stage) ? styles.active : ''} ${stage === 'complete' ? styles.done : ''}`}
+          className={`${styles.step} ${['generating', 'scoring', 'critiquing', 'revising', 'cover-letter'].includes(stage) ? styles.active : ''} ${stage === 'complete' ? styles.done : ''}`}
         >
           <span className={styles['step-dot']}>3</span>
           <span>Generate</span>
@@ -285,9 +313,13 @@ export function GeneratePage() {
             {stageLabels.map((sl) => {
               const stageOrder: PipelineStage[] = [
                 'parsing',
+                'enriching',
+                'planning',
                 'selecting',
                 'generating',
                 'scoring',
+                'critiquing',
+                'revising',
                 'cover-letter',
               ];
               const currentIdx = stageOrder.indexOf(stage);

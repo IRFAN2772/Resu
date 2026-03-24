@@ -308,10 +308,17 @@ async function completionViaAnthropic(
       '\n\nIMPORTANT: You MUST respond with valid JSON only. No markdown code fences, no explanation — just the raw JSON object.';
   }
 
+  // Use Anthropic prompt caching: mark the system prompt as cacheable.
+  // This gives a 90% discount on the system prompt tokens for subsequent calls
+  // with the same prompt prefix within about 5 minutes.
+  const systemContent: any[] = [
+    { type: 'text', text: systemPrompt, cache_control: { type: 'ephemeral' } },
+  ];
+
   const response = await client.messages.create({
     model,
     max_tokens: 8192,
-    system: systemPrompt,
+    system: systemContent,
     messages: [{ role: 'user' as const, content: opts.userMessage }],
     temperature: opts.temperature ?? 0.3,
   });
@@ -326,11 +333,22 @@ async function completionViaAnthropic(
     .replace(/\n?```\s*$/i, '')
     .trim();
 
+  const cachedInput = (response.usage as any)?.cache_read_input_tokens ?? 0;
+  const cacheCreation = (response.usage as any)?.cache_creation_input_tokens ?? 0;
+  const rawInput = response.usage?.input_tokens ?? 0;
+
   const tokenUsage: TokenUsage = {
-    promptTokens: response.usage?.input_tokens ?? 0,
+    promptTokens: rawInput,
     completionTokens: response.usage?.output_tokens ?? 0,
-    totalTokens: (response.usage?.input_tokens ?? 0) + (response.usage?.output_tokens ?? 0),
+    totalTokens: rawInput + (response.usage?.output_tokens ?? 0),
   };
+
+  // Log cache hit for observability
+  if (cachedInput > 0) {
+    console.log(
+      `[AI] Anthropic prompt cache HIT: ${cachedInput} tokens cached (90% discount), ${cacheCreation} new cache tokens`,
+    );
+  }
 
   return {
     content,

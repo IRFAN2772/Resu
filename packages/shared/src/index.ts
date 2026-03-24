@@ -11,3 +11,5 @@ export * from './types/coverLetter.js';
 export * from './types/atsScore.js';
 export * from './types/aiConfig.js';
 export * from './types/api.js';
+export * from './types/resumeStrategy.js';
+export * from './types/resumeCritique.js';

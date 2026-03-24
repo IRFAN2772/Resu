@@ -14,13 +14,21 @@ import { selectRelevantItems } from '../services/ai/selectRelevantItems.js';
 import { generateResume } from '../services/ai/generateResume.js';
 import { generateCoverLetter } from '../services/ai/generateCoverLetter.js';
 import { scoreATS } from '../services/ai/atsScorer.js';
+import { planResume } from '../services/ai/planResume.js';
+import { critiqueResume } from '../services/ai/critiqueResume.js';
+import { enrichProfile } from '../services/ai/profileEnricher.js';
 import { insertResume } from '../db/queries.js';
 import { loadProfile } from '../services/profile.js';
 
 // Simple in-memory lock to prevent concurrent generations
 let generationInProgress = false;
 
-const PROMPT_VERSION = 'v1';
+const PROMPT_VERSION = 'v2-agentic';
+
+/** ATS score threshold — below this triggers a revision loop */
+const ATS_REVISION_THRESHOLD = 75;
+/** Maximum number of revision iterations */
+const MAX_REVISIONS = 2;
 
 /**
  * Extract user AI config from request headers (BYO key).
@@ -65,7 +73,7 @@ function requireUserAI(request: FastifyRequest): UserAIConfig {
 }
 
 export const generateRoutes: FastifyPluginAsync = async (app) => {
-  // ─── Step 1+2: Parse JD and Select Relevant Items ───
+  // ─── Phase 1: Parse JD → Enrich Profile → Plan Strategy → Select Items ───
   app.post<{ Body: GenerateParseRequest }>('/generate/parse', async (request, reply) => {
     if (generationInProgress) {
       return reply.status(429).send({ error: 'A generation is already in progress. Please wait.' });
@@ -84,27 +92,44 @@ export const generateRoutes: FastifyPluginAsync = async (app) => {
       const userAI = requireUserAI(request);
       generationInProgress = true;
 
-      // Step 1: Parse JD
+      const profile = loadProfile();
+
+      // Step 1: Parse JD (fast model)
       const {
         parsedJD,
         tokenUsage: parseTokens,
         cost: parseCost,
       } = await parseJobDescription(jdText, config, userAI);
 
-      // Step 2: Select relevant items
+      // Step 1.5: Enrich profile with skill graph (code-based, instant)
+      const enriched = enrichProfile(profile, parsedJD);
+
+      // Step 2: Plan strategy (smart model)
+      const {
+        strategy,
+        tokenUsage: planTokens,
+        cost: planCost,
+      } = await planResume(enriched, parsedJD, config, userAI);
+
+      // Step 3: Select relevant items (smart model) — now with strategy + intelligence
       const {
         selection,
         tokenUsage: selectTokens,
         cost: selectCost,
-      } = await selectRelevantItems(loadProfile(), parsedJD, config, userAI);
+      } = await selectRelevantItems(profile, parsedJD, config, userAI, {
+        strategy,
+        intelligenceBrief: enriched.intelligenceBrief,
+      });
 
       return {
         parsedJD,
         relevanceSelection: selection,
+        strategy,
         tokenUsage: {
           parseTokens: parseTokens.totalTokens,
+          planTokens: planTokens.totalTokens,
           selectTokens: selectTokens.totalTokens,
-          estimatedCost: parseCost + selectCost,
+          estimatedCost: parseCost + planCost + selectCost,
         },
       };
     } catch (err: any) {
@@ -123,7 +148,7 @@ export const generateRoutes: FastifyPluginAsync = async (app) => {
     }
   });
 
-  // ─── Step 3+4+5: Generate Resume, Score ATS, Generate Cover Letter ───
+  // ─── Phase 2: Generate → Score → Critique → Iterate → Cover Letter ───
   app.post<{ Body: GenerateConfirmRequest }>('/generate/confirm', async (request, reply) => {
     if (generationInProgress) {
       return reply.status(429).send({ error: 'A generation is already in progress. Please wait.' });
@@ -142,30 +167,89 @@ export const generateRoutes: FastifyPluginAsync = async (app) => {
       const userAI = requireUserAI(request);
       generationInProgress = true;
 
-      // Step 3: Generate resume
-      const {
-        resumeData,
-        tokenUsage: genTokens,
-        cost: genCost,
-      } = await generateResume(loadProfile(), parsedJD, relevanceSelection, config, userAI);
+      const profile = loadProfile();
 
-      // Step 4: ATS scoring (code-based, no LLM)
-      const atsScore = scoreATS(resumeData, parsedJD);
+      // Re-enrich profile for this phase (instant, code-based)
+      const enriched = enrichProfile(profile, parsedJD);
 
-      // Step 5: Generate cover letter
+      // ─── AGENTIC LOOP: Generate → Score → Critique → Revise ───
+      let totalGenTokens = 0;
+      let totalGenCost = 0;
+      let totalCritiqueTokens = 0;
+      let totalCritiqueCost = 0;
+      let revisionCount = 0;
+
+      // Initial generation (with strategy + intelligence brief)
+      let genResult = await generateResume(
+        profile, parsedJD, relevanceSelection, config, userAI,
+        {
+          intelligenceBrief: enriched.intelligenceBrief,
+        },
+      );
+      let resumeData = genResult.resumeData;
+      totalGenTokens += genResult.tokenUsage.totalTokens;
+      totalGenCost += genResult.cost;
+
+      // Score
+      let atsScore = scoreATS(resumeData, parsedJD);
+
+      // ─── Iteration: Critique + Revise if ATS score is below threshold ───
+      while (atsScore.score < ATS_REVISION_THRESHOLD && revisionCount < MAX_REVISIONS) {
+        revisionCount++;
+        app.log.info(
+          `Agentic revision ${revisionCount}/${MAX_REVISIONS}: ATS score ${atsScore.score} < ${ATS_REVISION_THRESHOLD}`,
+        );
+
+        // Critique the current resume
+        const critiqueResult = await critiqueResume(
+          resumeData, parsedJD, enriched.intelligenceBrief, userAI,
+        );
+        totalCritiqueTokens += critiqueResult.tokenUsage.totalTokens;
+        totalCritiqueCost += critiqueResult.cost;
+
+        // If critic says no revision needed, trust it and break
+        if (!critiqueResult.critique.needsRevision) {
+          app.log.info('Critic determined no revision needed despite low ATS score — accepting.');
+          break;
+        }
+
+        // Regenerate with critique feedback
+        genResult = await generateResume(
+          profile, parsedJD, relevanceSelection, config, userAI,
+          {
+            intelligenceBrief: enriched.intelligenceBrief,
+            previousCritique: critiqueResult.critique,
+            previousResume: resumeData,
+          },
+        );
+        resumeData = genResult.resumeData;
+        totalGenTokens += genResult.tokenUsage.totalTokens;
+        totalGenCost += genResult.cost;
+
+        // Re-score
+        atsScore = scoreATS(resumeData, parsedJD);
+        app.log.info(`After revision ${revisionCount}: ATS score improved to ${atsScore.score}`);
+      }
+
+      // Step 5: Generate cover letter (with resume awareness)
       const {
         coverLetter,
         tokenUsage: clTokens,
         cost: clCost,
-      } = await generateCoverLetter(loadProfile(), parsedJD, relevanceSelection, config, userAI);
+      } = await generateCoverLetter(profile, parsedJD, relevanceSelection, config, userAI, {
+        finalResume: resumeData,
+        atsScore,
+      });
 
       // Save to database
       const tokenUsage = {
         parseTokens: 0,
         selectTokens: 0,
-        generateTokens: genTokens.totalTokens,
+        generateTokens: totalGenTokens,
+        critiqueTokens: totalCritiqueTokens,
         coverLetterTokens: clTokens.totalTokens,
-        totalCost: genCost + clCost,
+        totalCost: totalGenCost + totalCritiqueCost + clCost,
+        revisionCount,
       };
 
       const id = insertResume(app.db, {

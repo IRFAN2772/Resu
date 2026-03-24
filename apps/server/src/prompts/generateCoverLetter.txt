@@ -51,6 +51,14 @@ ABSOLUTE RULES:
 - Match the energy and vocabulary of the JD (if they say "move fast", your letter should feel dynamic)
 - If the company/industry is known, weave in a relevant reference (their product, mission, recent news — but only if the data is provided to you)
 
+RESUME AWARENESS (CRITICAL — NEW):
+You will receive the FINAL GENERATED RESUME. Use it strategically:
+1. Do NOT repeat resume bullet points verbatim — paraphrase or reference them from a different angle
+2. Cover ANGLES the resume couldn't emphasize (soft skills, cultural fit, motivation, career growth narrative)
+3. If the resume has any keyword gaps (missing JD skills), try to address them through narrative context
+4. Reference 1-2 specific achievements from the resume but add NEW CONTEXT (the "behind the story" that bullets can't convey)
+5. If the ATS score flagged weak areas, the cover letter should compensate by demonstrating those skills through narrative
+
 Return a JSON object with:
 - opening: string (first paragraph — the hook)
 - bodyParagraphs: string[] (2-3 middle paragraphs — the proof)
