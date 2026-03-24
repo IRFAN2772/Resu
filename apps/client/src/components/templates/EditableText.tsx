@@ -41,12 +41,9 @@ export const EditableText = memo(function EditableText({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isEditing]);
 
-  const handleRef = useCallback(
-    (el: HTMLInputElement | HTMLTextAreaElement | null) => {
-      inputRef.current = el;
-    },
-    [],
-  );
+  const handleRef = useCallback((el: HTMLInputElement | HTMLTextAreaElement | null) => {
+    inputRef.current = el;
+  }, []);
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
