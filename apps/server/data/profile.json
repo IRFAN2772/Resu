@@ -90,90 +90,44 @@
     }
   ],
   "skills": [
-    {
-      "name": "TypeScript",
-      "aliases": ["TS", "typescript"],
-      "proficiency": "expert",
-      "category": "languages"
-    },
-    {
-      "name": "JavaScript",
-      "aliases": ["JS", "ES6", "ECMAScript", "ES2015+"],
-      "proficiency": "expert",
-      "category": "languages"
-    },
-    {
-      "name": "React",
-      "aliases": ["React.js", "ReactJS"],
-      "proficiency": "expert",
-      "category": "frontend"
-    },
-    {
-      "name": "Node.js",
-      "aliases": ["NodeJS", "Node"],
-      "proficiency": "advanced",
-      "category": "backend"
-    },
-    {
-      "name": "Python",
-      "aliases": ["Python3", "py"],
-      "proficiency": "advanced",
-      "category": "languages"
-    },
-    {
-      "name": "PostgreSQL",
-      "aliases": ["Postgres", "psql"],
-      "proficiency": "advanced",
-      "category": "databases"
-    },
-    {
-      "name": "Docker",
-      "aliases": ["Containerization", "docker-compose"],
-      "proficiency": "advanced",
-      "category": "devops"
-    },
-    {
-      "name": "Azure",
-      "aliases": ["Amazon Web Services", "S3", "Lambda", "EC2"],
-      "proficiency": "intermediate",
-      "category": "cloud"
-    },
-    {
-      "name": "Git",
-      "aliases": ["GitHub", "Version Control", "git"],
-      "proficiency": "expert",
-      "category": "tools"
-    },
-    {
-      "name": "Third-Party Integrations",
-      "aliases": [],
-      "proficiency": "advanced",
-      "category": ""
-    },
-    {
-      "name": "Auth0",
-      "aliases": [],
-      "proficiency": "intermediate",
-      "category": ""
-    },
-    {
-      "name": "RBAC",
-      "aliases": [],
-      "proficiency": "advanced",
-      "category": ""
-    },
-    {
-      "name": "Tailwind CSS",
-      "aliases": [],
-      "proficiency": "advanced",
-      "category": ""
-    },
-    {
-      "name": "Vite",
-      "aliases": [],
-      "proficiency": "advanced",
-      "category": ""
-    }
+    { "name": "TypeScript", "aliases": ["TS"], "proficiency": "expert", "category": "languages" },
+    { "name": "JavaScript", "aliases": ["JS", "ES6"], "proficiency": "expert", "category": "languages" },
+    { "name": "Python", "aliases": ["Python3", "py"], "proficiency": "advanced", "category": "languages" },
+    { "name": "Java", "aliases": [], "proficiency": "intermediate", "category": "languages" },
+    { "name": "Node.js", "aliases": ["NodeJS"], "proficiency": "expert", "category": "backend" },
+    { "name": "Restify", "aliases": [], "proficiency": "advanced", "category": "backend" },
+    { "name": "Sequelize", "aliases": ["Sequelize ORM"], "proficiency": "advanced", "category": "backend" },
+    { "name": "MSSQL", "aliases": ["SQL Server"], "proficiency": "advanced", "category": "databases" },
+    { "name": "REST APIs", "aliases": ["RESTful APIs"], "proficiency": "expert", "category": "backend" },
+    { "name": "Microservices", "aliases": [], "proficiency": "advanced", "category": "backend" },
+    { "name": "React 19", "aliases": ["React", "React.js", "ReactJS"], "proficiency": "expert", "category": "frontend" },
+    { "name": "Vite", "aliases": [], "proficiency": "advanced", "category": "frontend" },
+    { "name": "Tailwind CSS", "aliases": ["TailwindCSS"], "proficiency": "advanced", "category": "frontend" },
+    { "name": "Flowbite", "aliases": [], "proficiency": "advanced", "category": "frontend" },
+    { "name": "Context API", "aliases": [], "proficiency": "advanced", "category": "frontend" },
+    { "name": "Axios", "aliases": [], "proficiency": "advanced", "category": "frontend" },
+    { "name": "Azure AD B2C", "aliases": ["Azure Active Directory"], "proficiency": "advanced", "category": "security" },
+    { "name": "MSAL", "aliases": [], "proficiency": "advanced", "category": "security" },
+    { "name": "JWT", "aliases": ["JSON Web Token"], "proficiency": "advanced", "category": "security" },
+    { "name": "JWKS", "aliases": [], "proficiency": "advanced", "category": "security" },
+    { "name": "RBAC", "aliases": ["Role-Based Access Control"], "proficiency": "advanced", "category": "security" },
+    { "name": "Impersonation", "aliases": [], "proficiency": "advanced", "category": "security" },
+    { "name": "CSRF", "aliases": [], "proficiency": "advanced", "category": "security" },
+    { "name": "LinkedIn API", "aliases": [], "proficiency": "advanced", "category": "integrations" },
+    { "name": "Zoom SDK", "aliases": [], "proficiency": "advanced", "category": "integrations" },
+    { "name": "Microsoft Graph", "aliases": ["Graph API"], "proficiency": "advanced", "category": "integrations" },
+    { "name": "D365", "aliases": ["Dynamics 365"], "proficiency": "intermediate", "category": "integrations" },
+    { "name": "Skillable", "aliases": [], "proficiency": "advanced", "category": "integrations" },
+    { "name": "Azure Communication Services", "aliases": [], "proficiency": "intermediate", "category": "integrations" },
+    { "name": "Migrations", "aliases": ["Database Migrations"], "proficiency": "advanced", "category": "databases" },
+    { "name": "Database Views", "aliases": [], "proficiency": "advanced", "category": "databases" },
+    { "name": "Connection Pooling", "aliases": [], "proficiency": "advanced", "category": "databases" },
+    { "name": "Jest", "aliases": [], "proficiency": "advanced", "category": "testing" },
+    { "name": "Cypress", "aliases": [], "proficiency": "advanced", "category": "testing" },
+    { "name": "React Testing Library", "aliases": ["RTL"], "proficiency": "advanced", "category": "testing" },
+    { "name": "ESLint", "aliases": [], "proficiency": "advanced", "category": "testing" },
+    { "name": "Git", "aliases": ["GitHub", "Version Control"], "proficiency": "expert", "category": "tools" },
+    { "name": "Docker", "aliases": ["Containerization"], "proficiency": "advanced", "category": "devops" }
   ],
   "education": [
     {
@@ -262,48 +216,20 @@
     }
   ],
   "certifications": [
-    {
-      "id": "12827772-83f3-411b-9675-0af66e881d6c",
-      "name": "JavaScript + DSA",
-      "issuer": "Skillsoft — Percipio",
-      "date": "",
-      "tags": []
-    },
-    {
-      "id": "f7703148-bdba-4610-9b5a-b9b7c1d8b5b6",
-      "name": "Node.js",
-      "issuer": "Skillsoft — Percipio",
-      "date": "",
-      "tags": []
-    },
-    {
-      "id": "3cb29051-9684-4d08-9e2a-01dd2b7f95af",
-      "name": "React",
-      "issuer": "Skillsoft — Percipio",
-      "date": "",
-      "tags": []
-    },
-    {
-      "id": "29f43db8-5538-498c-b15e-a55058a71252",
-      "name": "Oracle",
-      "issuer": "oracle",
-      "date": "",
-      "tags": []
-    },
-    {
-      "id": "795bdd63-27fb-470b-8083-d16c5f739aa4",
-      "name": "Java",
-      "issuer": "IIT bombay",
-      "date": "",
-      "tags": []
-    },
-    {
-      "id": "725b7351-5051-4d62-8f93-c51ef8c801ef",
-      "name": "python",
-      "issuer": "IIT Bombay",
-      "date": "",
-      "tags": []
-    }
+    { "id": "cert-01", "name": "Full-Stack Engineer", "issuer": "Skillsoft", "date": "", "tags": ["full-stack"] },
+    { "id": "cert-02", "name": "GitHub Copilot", "issuer": "GitHub", "date": "", "tags": ["ai", "tools"] },
+    { "id": "cert-03", "name": "Prompt Engineering for Programmers", "issuer": "Skillsoft", "date": "", "tags": ["ai"] },
+    { "id": "cert-04", "name": "Programming Essential in Python", "issuer": "Cisco", "date": "", "tags": ["python"] },
+    { "id": "cert-05", "name": "Nodes Data Structure", "issuer": "Skillsoft", "date": "", "tags": ["dsa"] },
+    { "id": "cert-06", "name": "Java by Spoken Tutorial", "issuer": "IIT Bombay", "date": "", "tags": ["java"] },
+    { "id": "cert-07", "name": "Python by Spoken Tutorial", "issuer": "IIT Bombay", "date": "", "tags": ["python"] },
+    { "id": "cert-08", "name": "Microsoft Azure Essentials", "issuer": "Microsoft", "date": "", "tags": ["azure", "cloud"] },
+    { "id": "cert-09", "name": "Cloud Fundamentals for IT", "issuer": "Skillsoft", "date": "", "tags": ["cloud"] },
+    { "id": "cert-10", "name": "Networking Essential", "issuer": "Cisco", "date": "", "tags": ["networking"] },
+    { "id": "cert-11", "name": "Cybersecurity and Data Protection", "issuer": "Skillsoft", "date": "", "tags": ["security"] },
+    { "id": "cert-12", "name": "Database Design & Development", "issuer": "Skillsoft", "date": "", "tags": ["databases"] },
+    { "id": "cert-13", "name": "JS + DSA", "issuer": "Skillsoft", "date": "", "tags": ["javascript", "dsa"] },
+    { "id": "cert-14", "name": "REACT", "issuer": "Skillsoft", "date": "", "tags": ["react", "frontend"] }
   ],
   "achievements": [
     {
