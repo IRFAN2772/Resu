@@ -13,11 +13,7 @@
     {
       "id": "exp-2",
       "title": "Software Engineer",
-      "titleAliases": [
-        "SDE",
-        "Developer",
-        "Full Stack Engineer"
-      ],
+      "titleAliases": ["SDE", "Developer", "Full Stack Engineer"],
       "company": "Skillsoft Corp",
       "location": "hyderabad, telangana, india",
       "startDate": "2024-07",
@@ -90,98 +86,61 @@
           "strength": 3
         }
       ],
-      "tags": [
-        "frontend",
-        "backend",
-        "full-stack",
-        "startup"
-      ]
+      "tags": ["frontend", "backend", "full-stack", "startup"]
     }
   ],
   "skills": [
     {
       "name": "TypeScript",
-      "aliases": [
-        "TS",
-        "typescript"
-      ],
+      "aliases": ["TS", "typescript"],
       "proficiency": "expert",
       "category": "languages"
     },
     {
       "name": "JavaScript",
-      "aliases": [
-        "JS",
-        "ES6",
-        "ECMAScript",
-        "ES2015+"
-      ],
+      "aliases": ["JS", "ES6", "ECMAScript", "ES2015+"],
       "proficiency": "expert",
       "category": "languages"
     },
     {
       "name": "React",
-      "aliases": [
-        "React.js",
-        "ReactJS"
-      ],
+      "aliases": ["React.js", "ReactJS"],
       "proficiency": "expert",
       "category": "frontend"
     },
     {
       "name": "Node.js",
-      "aliases": [
-        "NodeJS",
-        "Node"
-      ],
+      "aliases": ["NodeJS", "Node"],
       "proficiency": "advanced",
       "category": "backend"
     },
     {
       "name": "Python",
-      "aliases": [
-        "Python3",
-        "py"
-      ],
+      "aliases": ["Python3", "py"],
       "proficiency": "advanced",
       "category": "languages"
     },
     {
       "name": "PostgreSQL",
-      "aliases": [
-        "Postgres",
-        "psql"
-      ],
+      "aliases": ["Postgres", "psql"],
       "proficiency": "advanced",
       "category": "databases"
     },
     {
       "name": "Docker",
-      "aliases": [
-        "Containerization",
-        "docker-compose"
-      ],
+      "aliases": ["Containerization", "docker-compose"],
       "proficiency": "advanced",
       "category": "devops"
     },
     {
       "name": "Azure",
-      "aliases": [
-        "Amazon Web Services",
-        "S3",
-        "Lambda",
-        "EC2"
-      ],
+      "aliases": ["Amazon Web Services", "S3", "Lambda", "EC2"],
       "proficiency": "intermediate",
       "category": "cloud"
     },
     {
       "name": "Git",
-      "aliases": [
-        "GitHub",
-        "Version Control",
-        "git"
-      ],
+      "aliases": ["GitHub", "Version Control", "git"],
       "proficiency": "expert",
       "category": "tools"
     },
@@ -225,10 +184,7 @@
       "startDate": "2021-04",
       "endDate": "2024-04",
       "gpa": "",
-      "highlights": [
-        "Dean's List",
-        "Senior Capstone: AI-powered scheduling system"
-      ]
+      "highlights": ["Dean's List", "Senior Capstone: AI-powered scheduling system"]
     }
   ],
   "projects": [
@@ -354,11 +310,7 @@
       "id": "ach-1",
       "title": "Hackathon Winner",
       "description": "1st place at Company Hackathon 2023 — built an AI-powered code review tool in 48 hours",
-      "tags": [
-        "ai",
-        "hackathon",
-        "innovation"
-      ]
+      "tags": ["ai", "hackathon", "innovation"]
     }
   ]
 }
