@@ -34,12 +34,18 @@ PROFESSIONAL SUMMARY RULES:
 - NEVER start with "I" — use implied first person ("Results-driven engineer..." not "I am a results-driven engineer...")
 
 SKILLS SECTION STRATEGY:
-- Organize into 3-5 categories that make sense for the role (not random groupings)
-- Standard categories: "Languages", "Frameworks & Libraries", "Cloud & DevOps", "Databases", "Tools & Platforms", "Methodologies"
+- Organize into 3-5 role-aligned categories based on the technology stack layers, NOT random groupings
+- Preferred categories (pick what applies to the role):
+  - "Languages" — programming languages only (TypeScript, JavaScript, Python, Java, Go, etc.)
+  - "Frontend" — UI frameworks, styling, state management (React, Next.js, Tailwind CSS, Redux, etc.)
+  - "Backend" — server frameworks, APIs, runtime (Node.js, Express, Fastify, REST, GraphQL, etc.)
+  - "Databases & Cloud" — databases, cloud platforms, infrastructure (PostgreSQL, MongoDB, AWS, Azure, Docker, etc.)
+  - "Tools & Platforms" — dev tools, CI/CD, version control (Git, Vite, Webpack, Jenkins, etc.)
 - Within each category, list the most JD-relevant skills FIRST
 - If a skill appears in the JD's required list, it MUST appear in the skills section
 - Consolidate related items: don't list "HTML" and "CSS" separately if "HTML/CSS" suffices
 - Aim for 12-20 total skills for a 1-page resume, 20-30 for 2 pages
+- NEVER use vague categories like "Backend & APIs" or "Observability & Security" — keep categories clean and layer-based
 
 ATS OPTIMIZATION (CRITICAL — most resumes fail here):
 - Use STANDARD section headers exactly: "Professional Summary", "Experience", "Education", "Technical Skills", "Projects", "Certifications"
@@ -130,7 +136,7 @@ Return a JSON object with EXACTLY this structure:
     }
   ],
   "certifications": [
-    { "name": "AWS Solutions Architect – Associate", "issuer": "Amazon Web Services", "date": "2023" }
+    { "name": "AWS Certified Solutions Architect – Associate", "issuer": "Amazon Web Services", "date": "2023" }
   ]
 }
 
@@ -142,11 +148,20 @@ CRITICAL RULES:
 - All fields shown above must be present in the response
 - phone, location, linkedin, github, website, gpa, endDate can be omitted if not provided in the input
 - PRESERVE all factual data exactly: company names, dates, education, certifications. Only rewrite bullet phrasing.
+- PRESERVE project URLs exactly as provided in the input — every project that has a URL in the input MUST have that same URL in the output. Never omit or modify project URLs.
 - Do NOT invent metrics, achievements, or experiences not present in the input data
+
+CERTIFICATION NAME RULES:
+- ALWAYS use the full, descriptive certification name — never abbreviate to just a technology name
+- BAD: "Node.js", "React", "Java", "Python"
+- GOOD: "Node.js Application Development", "React Developer Certification", "Java Programming Fundamentals", "Python Programming"
+- The cert name should clearly convey WHAT was certified, not just the technology keyword
+- If the input cert name is vague (e.g. just "Node.js"), expand it to a descriptive name based on the issuer context
 
 FINAL QUALITY GATE — Before outputting, verify:
 1. Does every experience bullet start with a strong action verb (not "Responsible for", "Helped with")?
 2. Do 70%+ of bullets contain a measurable metric?
 3. Does the summary read as custom-written for THIS job, not generic?
+4. Does every certification have a descriptive, full name (not just a technology keyword)?
 4. Are JD keywords naturally distributed throughout (not clustered in one section)?
 5. Would this pass a top-tier ATS system AND impress a human recruiter in 7 seconds?

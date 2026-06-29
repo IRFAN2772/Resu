@@ -475,13 +475,34 @@ export function CleanMinimalTemplate({ data, mode, onSave }: ResumeTemplateProps
                 </button>
               )}
               <div className={styles['entry-header']}>
-                <EditableText
-                  {...ep}
-                  fieldKey={`proj-name-${i}`}
-                  value={proj.name}
-                  onChange={(v) => updateProjectField(i, 'name', v)}
-                  className={styles['entry-title']}
-                />
+                <div>
+                  <EditableText
+                    {...ep}
+                    fieldKey={`proj-name-${i}`}
+                    value={proj.name}
+                    onChange={(v) => updateProjectField(i, 'name', v)}
+                    className={styles['entry-title']}
+                  />
+                  {proj.url && !isEdit && (
+                    <a
+                      href={proj.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={styles['project-link']}
+                    >
+                      {proj.url}
+                    </a>
+                  )}
+                  {isEdit && proj.url !== undefined && (
+                    <EditableText
+                      {...ep}
+                      fieldKey={`proj-url-${i}`}
+                      value={proj.url || ''}
+                      onChange={(v) => updateProjectField(i, 'url', v)}
+                      className={styles['project-link']}
+                    />
+                  )}
+                </div>
               </div>
               <EditableText
                 {...ep}
@@ -534,9 +555,9 @@ export function CleanMinimalTemplate({ data, mode, onSave }: ResumeTemplateProps
       {d.certifications.length > 0 && (
         <section className={styles.section}>
           <h2 className={styles['section-title']}>Certifications</h2>
-          <ul className={styles.bullets}>
+          <div className={styles['cert-grid']}>
             {d.certifications.map((cert, i) => (
-              <li key={i} className={isEdit ? styles['editable-li'] : ''}>
+              <div key={i} className={styles['cert-item']}>
                 <EditableText
                   {...ep}
                   fieldKey={`cert-name-${i}`}
@@ -551,14 +572,6 @@ export function CleanMinimalTemplate({ data, mode, onSave }: ResumeTemplateProps
                   value={cert.issuer}
                   onChange={(v) => updateCertField(i, 'issuer', v)}
                 />
-                <span> (</span>
-                <EditableText
-                  {...ep}
-                  fieldKey={`cert-date-${i}`}
-                  value={cert.date}
-                  onChange={(v) => updateCertField(i, 'date', v)}
-                />
-                <span>)</span>
                 {isEdit && (
                   <button
                     className={styles['remove-btn-inline']}
@@ -568,9 +581,9 @@ export function CleanMinimalTemplate({ data, mode, onSave }: ResumeTemplateProps
                     ×
                   </button>
                 )}
-              </li>
+              </div>
             ))}
-          </ul>
+          </div>
           {isEdit && (
             <button className={styles['add-btn']} onClick={addCertification}>
               + Add Certification

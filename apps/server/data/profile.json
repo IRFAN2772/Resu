@@ -4,11 +4,11 @@
     "email": "irfan2772uddin@gmail.com",
     "phone": "+91 7386189991",
     "location": "hyderabad, telangana, india",
-    "linkedin": "https://www.linkedin.com/in/mohammad-irfanuddin-468430222/",
+    "linkedin": "https://www.linkedin.com/in/mohammad-irfanuddin",
     "github": "github.com/IRFAN2772",
     "website": "https://irfanuddin.is-a.dev/"
   },
-  "summary": "A Full-Stack Developer with 2+ years of hands-on experience architecting and delivering production-grade applications. I take full ownership — from designing robust APIs and implementing enterprise-grade authentication to orchestrating third-party integrations and crafting polished user interfaces.\n\nDriven by an instinct for problem-solving and a relentless appetite for growth, I turn complex challenges into reliable, scalable solutions. Whether it's building secure authentication flows with Azure Entra, integrating external services like LinkedIn and Zoom, or debugging critical production issues — I thrive where impact meets complexity.\n\nI believe great software is built with ownership, clarity, and craft. Every line of code I write is in service of that standard.",
+  "summary": "A Full-Stack Developer with 2 years of hands-on experience designing and building enterprise microservices platforms from the ground up. I take full ownership — from decomposing systems into independent services to designing database schemas, shipping resilient integrations, and crafting polished UIs.\n\nDriven by an instinct for problem-solving and a relentless appetite for growth, I turn complex challenges into reliable, scalable solutions. Whether it's architecting a custom impersonation system with tamper-evident audit trails, building circuit breaker patterns for resilient third-party integrations, or debugging critical production issues across distributed services — I thrive where impact meets complexity.\n\nI believe great software is built with ownership, clarity, and craft. Every line of code I write is in service of that standard.",
   "experience": [
     {
       "id": "exp-2",
@@ -24,57 +24,69 @@
       "endDate": "still working",
       "bullets": [
         {
-          "text": "Built and maintained RESTful APIs powering production applications",
-          "tags": [
-            "react",
-            "typescript",
-            "d3",
-            "dashboard",
-            "frontend",
-            "data-visualization"
-          ],
-          "category": "technical",
-          "strength": 5
-        },
-        {
-          "text": "Implemented enterprise-grade authentication & authorization with Azure Entra and Auth0",
-          "tags": [
-            "node.js",
-            "express",
-            "rest-api",
-            "backend",
-            "testing"
-          ],
-          "category": "technical",
-          "strength": 4
-        },
-        {
-          "text": "Collaborated with product and design teams to define technical requirements and deliver features on a 2-week sprint cycle",
-          "tags": [
-            "agile",
-            "collaboration",
-            "product",
-            "sprint"
-          ],
-          "category": "collaboration",
+          "text": "Architected and built a 4-service microservices platform (Integrations, Events, Profile, Frontend) powering an enterprise learning management system",
+          "tags": [],
+          "category": "other",
           "strength": 3
         },
         {
-          "text": "Integrated LinkedIn, Zoom, and internal tools into the platform",
+          "text": "Integrated 9+ third-party systems — LinkedIn (certificate image processing), Zoom SDK, Skillable Labs, D365, Azure Communication Services, and more",
           "tags": [],
-          "category": "technical",
+          "category": "other",
           "strength": 3
         },
         {
-          "text": "Key problem-solver — consistently resolved complex production issues",
+          "text": "Developed the React 19 SPA with 13+ pages, 4 context providers (Auth, Impersonation, Consent, ValidatedContact), MSAL interceptors, and scope-based token management",
           "tags": [],
-          "category": "leadership",
+          "category": "other",
           "strength": 3
         },
         {
-          "text": "Developed interactive dashboards and dynamic hero sections and from frontend to backend complete full stack work flow",
+          "text": "Built comprehensive test suites — unit, integration, E2E (Cypress), security, negative, and performance tests with sub-200ms thresholds",
           "tags": [],
-          "category": "technical",
+          "category": "other",
+          "strength": 3
+        },
+        {
+          "text": "Designed and implemented a custom impersonation system with dual-token JWT validation, 15-minute session expiry, and tamper-evident audit trails logged to Azure Monitor",
+          "tags": [],
+          "category": "other",
+          "strength": 3
+        },
+        {
+          "text": "Built a full RBAC authorization system with fine-grained permissions (resource_type + action), junction tables, and role permission audit history",
+          "tags": [],
+          "category": "other",
+          "strength": 3
+        },
+        {
+          "text": "Implemented Azure AD token-based database authentication with Sequelize, including proactive 45-minute token refresh cycles and connection pooling",
+          "tags": [],
+          "category": "other",
+          "strength": 3
+        },
+        {
+          "text": "Developed a user provisioning pipeline that auto-creates users in Microsoft Entra ID via Microsoft Graph API, with secure password generation and status tracking",
+          "tags": [],
+          "category": "other",
+          "strength": 3
+        },
+        {
+          "text": "Built circuit breaker patterns (Opossum) with exponential backoff and fallback strategies for resilient external service calls",
+          "tags": [],
+          "category": "other",
+          "strength": 3
+        },
+        {
+          "text": "Engineered service-to-service communication for real-time impersonation session validation across microservices",
+          "tags": [],
+          "category": "other",
+          "strength": 3
+        },
+        {
+          "text": "Implemented centralized error handling with standardized error definitions, input sanitization (SQL keyword stripping), and email regex validation across all services",
+          "tags": [],
+          "category": "other",
           "strength": 3
         }
       ],
@@ -221,50 +233,76 @@
   ],
   "projects": [
     {
-      "id": "proj-1",
-      "name": "Big mart Sales Prediction",
-      "description": "A command-line tool for automating code scaffolding with 500+ GitHub stars",
-      "url": "https://github.com/yourname/cli-tool",
-      "tags": [
-        "node.js",
-        "cli",
-        "open-source",
-        "typescript"
-      ],
+      "id": "ai-chatbot",
+      "name": "AI Chatbot",
+      "description": "Full-stack AI chatbot supporting 9 providers (OpenAI, Claude, Gemini, Grok) through a unified interface with bring-your-own-key architecture.",
+      "url": "https://irfan-ai-chatbot.vercel.app",
+      "tags": ["react", "node.js", "express", "openai", "ai", "full-stack"],
       "highlights": [
-        "Built with Node.js and TypeScript, published to npm with 10K+ monthly downloads",
-        "Implemented plugin system allowing community extensions"
+        "Integrated 9 AI providers via unified adapter pattern, enabling seamless model switching",
+        "Implemented privacy-first architecture with client-side key storage — zero server-side credential persistence",
+        "Built context-aware conversation memory for multi-turn interactions"
       ]
     },
     {
-      "id": "proj-2",
-      "name": "Missing person detection system",
-      "description": "A system for detecting missing persons using AI and computer vision",
-      "url": "https://github.com/yourname/missing-person-detection",
-      "tags": [
-        "python",
-        "ai",
-        "computer-vision",
-        "open-source"
-      ],
+      "id": "ui-buddy",
+      "name": "UI Buddy — Multi-Viewport Preview",
+      "description": "Responsive QA tool that renders any URL across multiple device-sized viewports with synchronized navigation, scroll, and form interactions.",
+      "url": "https://view-sync.vercel.app/",
+      "tags": ["react", "typescript", "vite", "vercel-edge", "developer-tools"],
       "highlights": [
-        "Developed with Python and TensorFlow, achieving 95% accuracy in detection",
-        "Integrated with real-time alert system for immediate notifications"
+        "Built cross-viewport synchronization for navigation, scroll, and form inputs using postMessage API",
+        "Engineered proxy layer to bypass iframe restrictions by stripping frame-blocking headers",
+        "Supports up to 6 simultaneous device viewports with preset configurations"
       ]
     },
     {
-      "id": "f1d06594-8480-4863-911e-1045713f7769",
-      "name": "Portfolio",
-      "description": "A futuristic, dark-themed personal portfolio built with Next.js, React Three Fiber, Framer Motion, and GSAP — featuring interactive 3D scenes and scroll-driven animations.",
-      "url": "https://irfanuddin.is-a.dev/",
-      "tags": [
-        "Next.js",
-        "React",
-        "Three.js",
-        "Framer Motion",
-        "GSAP and Tailwind CSS"
-      ],
-      "highlights": []
+      "id": "missing-person-finder",
+      "name": "Missing Person Finder",
+      "description": "Facial recognition web app that matches uploaded photos against a registered database to help locate missing individuals.",
+      "url": "https://huggingface.co/spaces/irfanuddin/missing-person-finder",
+      "tags": ["python", "flask", "face-recognition", "ai", "machine-learning"],
+      "highlights": [
+        "Implemented AI-powered face matching using dlib and face_recognition library with high accuracy",
+        "Built registration and search workflow for missing person cases with confidence scoring",
+        "Deployed on Hugging Face Spaces for public accessibility"
+      ]
+    },
+    {
+      "id": "idea",
+      "name": "idea — Smart Notes",
+      "description": "Note-taking app with intelligent TF-IDF search engine and cross-device sync — find notes instantly with natural language queries.",
+      "url": "https://irfan-idea.vercel.app",
+      "tags": ["react", "express", "sqlite", "search", "docker", "full-stack"],
+      "highlights": [
+        "Built intelligent search engine using TF-IDF scoring with fuzzy matching for typo-tolerant queries",
+        "Implemented real-time cross-device sync with offline-first architecture and background sync",
+        "Containerized with Docker for consistent deployment across environments"
+      ]
+    },
+    {
+      "id": "portfolio",
+      "name": "3D Animated Portfolio",
+      "description": "Immersive personal portfolio featuring interactive 3D scenes, scroll-driven animations, and glassmorphism UI built with Next.js and Three.js.",
+      "url": "https://irfanuddin.is-a.dev",
+      "tags": ["next.js", "react", "three.js", "framer-motion", "gsap", "tailwind"],
+      "highlights": [
+        "Rendered real-time 3D scenes with React Three Fiber including particle effects and floating geometry",
+        "Implemented scroll-driven animations with GSAP and Framer Motion for immersive UX",
+        "Optimized with SSR, code splitting, and dynamic OpenGraph images for SEO"
+      ]
+    },
+    {
+      "id": "ball",
+      "name": "Ball Bounce",
+      "description": "Browser-based arcade game with real-time physics, progressive difficulty, and cross-input support (mouse, keyboard, touch).",
+      "url": "https://irfan2772.github.io/ball",
+      "tags": ["react", "javascript", "game-dev", "canvas", "animation"],
+      "highlights": [
+        "Built smooth 60fps game loop using requestAnimationFrame with real-time physics calculations",
+        "Implemented progressive difficulty system that scales gravity and speed with player score",
+        "Supported multi-input control (mouse, keyboard, touch) for cross-device compatibility"
+      ]
     }
   ],
   "certifications": [

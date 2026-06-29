@@ -135,7 +135,7 @@ export async function generateResume(
   // Projects — brief
   if (selectedProjects.length) {
     const projLines = selectedProjects.map(
-      (p) => `• ${p.name}: ${p.description?.slice(0, 120) || ''}`,
+      (p) => `• ${p.name}${p.url ? ` [${p.url}]` : ''}: ${p.description?.slice(0, 120) || ''}`,
     );
     sections.push(`[PROJECTS]\n${projLines.join('\n')}`);
   }

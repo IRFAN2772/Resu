@@ -157,9 +157,9 @@ function renderBody(data: ResumeData, templateId: string): string {
       ? `
   <section class="section">
     <h2 class="section-title" style="color: ${accentColor}">Certifications</h2>
-    <ul class="bullets">
-      ${data.certifications.map((cert) => `<li><strong>${escapeHTML(cert.name)}</strong> — ${escapeHTML(cert.issuer)} (${escapeHTML(cert.date)})</li>`).join('\n')}
-    </ul>
+    <div class="cert-grid">
+      ${data.certifications.map((cert) => `<div class="cert-item"><strong>${escapeHTML(cert.name)}</strong> — ${escapeHTML(cert.issuer)}</div>`).join('\n      ')}
+    </div>
   </section>`
       : ''
   }
@@ -189,6 +189,8 @@ function getTemplateCSS(templateId: string): string {
     .gpa { font-size: 10pt; color: #555; margin-top: 2px; }
     .skills { font-size: 10.5pt; }
     .skill-category { margin-bottom: 3px; }
+    .cert-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 24px; font-size: 10.5pt; }
+    .cert-item { font-size: 10.5pt; }
     .link { font-size: 9pt; color: #2563eb; text-decoration: none; margin-left: 8px; }
     @media print {
       body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }

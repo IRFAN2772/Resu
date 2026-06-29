@@ -100,6 +100,19 @@
   color: #2563eb;
 }
 
+.clean-minimal .cert-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 24px;
+  font-size: 10.5pt;
+}
+
+.clean-minimal .cert-item {
+  display: flex;
+  align-items: baseline;
+  gap: 0;
+}
+
 .clean-minimal .gpa {
   font-size: 10pt;
   color: #555;
@@ -266,4 +279,15 @@
   display: flex;
   align-items: flex-start;
   gap: 4px;
+}
+
+.clean-minimal .project-link {
+  font-size: 9pt;
+  color: #2563eb;
+  text-decoration: none;
+  margin-left: 8px;
+}
+
+.clean-minimal .project-link:hover {
+  text-decoration: underline;
 }

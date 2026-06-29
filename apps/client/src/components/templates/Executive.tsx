@@ -419,6 +419,25 @@ export function ExecutiveTemplate({ data, mode, onSave }: ResumeTemplateProps) {
                 tag="strong"
                 className={styles.entryTitle}
               />
+              {p.url && !isEdit && (
+                <a
+                  href={p.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.projectLink}
+                >
+                  {p.url}
+                </a>
+              )}
+              {isEdit && p.url !== undefined && (
+                <EditableText
+                  {...ep}
+                  fieldKey={`proj-url-${i}`}
+                  value={p.url || ''}
+                  onChange={(v) => updateProjectField(i, 'url', v)}
+                  className={styles.projectLink}
+                />
+              )}
               <EditableText
                 {...ep}
                 fieldKey={`proj-desc-${i}`}
@@ -485,19 +504,24 @@ export function ExecutiveTemplate({ data, mode, onSave }: ResumeTemplateProps) {
                   tag="strong"
                 />
                 <span className={styles.certMeta}>
+                  <span>— </span>
                   <EditableText
                     {...ep}
                     fieldKey={`cert-issuer-${i}`}
                     value={cert.issuer}
                     onChange={(v) => updateCertField(i, 'issuer', v)}
                   />
-                  <span> · </span>
-                  <EditableText
-                    {...ep}
-                    fieldKey={`cert-date-${i}`}
-                    value={cert.date}
-                    onChange={(v) => updateCertField(i, 'date', v)}
-                  />
+                  {cert.date && (
+                    <>
+                      <span>, </span>
+                      <EditableText
+                        {...ep}
+                        fieldKey={`cert-date-${i}`}
+                        value={cert.date}
+                        onChange={(v) => updateCertField(i, 'date', v)}
+                      />
+                    </>
+                  )}
                 </span>
               </div>
             ))}

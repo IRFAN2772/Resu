@@ -91,6 +91,19 @@
   margin-bottom: 3px;
 }
 
+.ats-classic .cert-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 24px;
+  font-size: 10.5pt;
+}
+
+.ats-classic .cert-item {
+  display: flex;
+  align-items: baseline;
+  gap: 0;
+}
+
 .ats-classic .gpa {
   font-size: 10pt;
   color: #555;
@@ -257,4 +270,15 @@
   display: flex;
   align-items: flex-start;
   gap: 4px;
+}
+
+.ats-classic .project-link {
+  font-size: 9pt;
+  color: #2563eb;
+  text-decoration: none;
+  margin-left: 8px;
+}
+
+.ats-classic .project-link:hover {
+  text-decoration: underline;
 }
